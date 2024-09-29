@@ -1,7 +1,9 @@
 import { useState } from "react";
-
 import { useNavigate } from "react-router-dom";
+
 import { FormField, Button, Form } from "semantic-ui-react";
+
+import { moviesPath } from "../constants/constants";
 
 export const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -19,14 +21,15 @@ export const LoginPage = () => {
     if (response.ok) {
       const data = await response.json();
       localStorage.setItem("user", JSON.stringify(data));
-      navigate("/movies/");
+      navigate(moviesPath);
     } else {
       setFailedLogin(true);
     }
   };
 
   return (
-    <div className="BluckBoster-header">
+    // @TODO: css not working
+    <div className="BluckBosterHeader">
       <Form>
         <FormField>
           <label>username </label>

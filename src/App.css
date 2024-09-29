@@ -29,7 +29,11 @@
   color: #61dafb;
 } */
 
-BluckBoster-header {
+.BluckBosterHeader {
   background-color: "gold";
   height: "175 px";
+}
+
+ul {
+  list-style-type: none;
 }
