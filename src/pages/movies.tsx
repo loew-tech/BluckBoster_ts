@@ -39,7 +39,6 @@ export const MoviesPage = () => {
   const cartUpdate = (movie_id: string, removeFromCart: boolean) => {
     if (!user) {
       return;
-    } else {
     }
     setCart(updateCart(user.username, movie_id, cart, removeFromCart));
     const index = user.cart ? user.cart.indexOf(movie_id) : -1;

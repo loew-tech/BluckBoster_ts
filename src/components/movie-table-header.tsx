@@ -1,5 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { Button, Table } from "semantic-ui-react";
+import {
+  Button,
+  TableRow,
+  TableHeader,
+  TableHeaderCell,
+} from "semantic-ui-react";
 
 import { Member } from "../types/types";
 import { checkoutPath } from "../constants/constants";
@@ -12,27 +17,27 @@ export const MovieTableHeader = ({ user, cart }: MovieTableHeaderProps) => {
   const navigate = useNavigate();
 
   return (
-    <Table.Header>
-      <Table.Row>
-        <Table.HeaderCell>Title</Table.HeaderCell>
-        <Table.HeaderCell>Rating</Table.HeaderCell>
-        <Table.HeaderCell>Year</Table.HeaderCell>
-        <Table.HeaderCell>Cast</Table.HeaderCell>
+    <TableHeader>
+      <TableRow>
+        <TableHeaderCell>Title</TableHeaderCell>
+        <TableHeaderCell>Rating</TableHeaderCell>
+        <TableHeaderCell>Year</TableHeaderCell>
+        <TableHeaderCell>Cast</TableHeaderCell>
         {user ? (
           <>
-            <Table.HeaderCell>Available</Table.HeaderCell>
-            <Table.HeaderCell>Rented</Table.HeaderCell>
-            <Table.HeaderCell>
+            <TableHeaderCell>Available</TableHeaderCell>
+            <TableHeaderCell>Rented</TableHeaderCell>
+            <TableHeaderCell>
               <Button
                 disabled={!cart.length}
                 onClick={() => navigate(checkoutPath)}
               >
                 Cart: ({cart.length})
               </Button>
-            </Table.HeaderCell>
+            </TableHeaderCell>
           </>
         ) : null}
-      </Table.Row>
-    </Table.Header>
+      </TableRow>
+    </TableHeader>
   );
 };

@@ -1,4 +1,10 @@
-import { Button, Table } from "semantic-ui-react";
+import {
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+} from "semantic-ui-react";
 
 import { Member, Movie } from "../types/types";
 import { MovieTableHeader } from "./movie-table-header";
@@ -19,16 +25,16 @@ export const MovieTable = ({
     <div className="MovieTable">
       <Table striped>
         <MovieTableHeader user={user} cart={cart} />
-        <Table.Body>
+        <TableBody>
           {movies.map((movie) => {
             return (
-              <Table.Row key={`${movie.id}`}>
-                <Table.Cell style={{ fontWeight: 1000, fontSize: "large" }}>
+              <TableRow key={`${movie.id}`}>
+                <TableCell style={{ fontWeight: 1000, fontSize: "large" }}>
                   {movie.title}
-                </Table.Cell>
-                <Table.Cell>{movie.rating}</Table.Cell>
-                <Table.Cell>{movie.year}</Table.Cell>
-                <Table.Cell>
+                </TableCell>
+                <TableCell>{movie.rating}</TableCell>
+                <TableCell>{movie.year}</TableCell>
+                <TableCell>
                   <div>
                     <p style={{ fontWeight: "bold" }}>Director:</p>
                     {movie.director}
@@ -37,12 +43,12 @@ export const MovieTable = ({
                     <p style={{ fontWeight: "bold" }}>Starring:</p>
                     {movie.cast.join(", ")}
                   </div>
-                </Table.Cell>
+                </TableCell>
                 {user ? (
                   <>
-                    <Table.Cell>{movie.inventory}</Table.Cell>
-                    <Table.Cell>{movie.rented ? movie.rented : 0}</Table.Cell>
-                    <Table.Cell>
+                    <TableCell>{movie.inventory}</TableCell>
+                    <TableCell>{movie.rented ? movie.rented : 0}</TableCell>
+                    <TableCell>
                       {movie.inventory && (
                         <Button
                           onClick={() => {
@@ -54,13 +60,13 @@ export const MovieTable = ({
                             : "Add to cart"}
                         </Button>
                       )}
-                    </Table.Cell>
+                    </TableCell>
                   </>
                 ) : null}
-              </Table.Row>
+              </TableRow>
             );
           })}
-        </Table.Body>
+        </TableBody>
       </Table>
     </div>
   );

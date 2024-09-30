@@ -27,7 +27,8 @@ export const HeaderBanner = ({ user }: HeaderBannerProps) => {
             }}
           >
             <p>
-              Currently rented: {user.checked_out ? user.checked_out.length : 0}
+              Currently rented:{" "}
+              {user?.checked_out ? user.checked_out.length : 0}
             </p>
           </li>
         ) : null}

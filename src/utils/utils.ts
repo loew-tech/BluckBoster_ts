@@ -38,13 +38,17 @@ export const updateCart = (
   return newCart;
 };
 
-//   export const getUser = async () => {
-//     const user = JSON.parse(localStorage.getItem("user"));
-//     const response = await fetch(
-//       `http://127.0.0.1:8080/api/v1/members/${user.username}`
-//     );
-//     if (response.ok) {
-//       const member = response.json();
-//       return member;
-//     }
-//   };
+export const getUser = async () => {
+  const data = localStorage.getItem("user");
+  if (!data) {
+    return;
+  }
+  const user = JSON.parse(data);
+  const response = await fetch(
+    `http://127.0.0.1:8080/api/v1/members/${user.username}`
+  );
+  if (response.ok) {
+    const member = response.json();
+    return member;
+  }
+};

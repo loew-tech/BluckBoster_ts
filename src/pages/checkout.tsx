@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import {
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+} from "semantic-ui-react";
+
 import { Member, Movie } from "../types/types";
 import { fetchCart, updateCart } from "../utils/utils";
-import { Button, Table } from "semantic-ui-react";
+import { HeaderBanner } from "../components/header-banner";
 
 export const CheckoutPage = () => {
   const member = localStorage.getItem("user");
@@ -31,11 +39,11 @@ export const CheckoutPage = () => {
     if (response.ok) {
       navigate("/movies/");
       //   @TODO: is there better way to handle this
-      if (!user.checked_out) {
+      if (!user?.checked_out) {
         user.checked_out = [];
       }
       cart.forEach((moive_id) => {
-        if (user.checked_out) {
+        if (user?.checked_out) {
           user.checked_out.push(moive_id);
         }
       });
@@ -73,55 +81,34 @@ export const CheckoutPage = () => {
   }, [user]);
 
   return (
-    <div style={{ backgroundColor: "darkblue" }}>
-      <div style={{ backgroundColor: "gold", height: "150px" }}>
-        <ul className="MemberBanner">
-          <li style={{ fontWeight: 1000, fontSize: "large", padding: "15px" }}>
-            <a href="/movies/">Back to Movies</a>
-          </li>
-          {user ? (
-            <>
-              <li
-                style={{ fontWeight: 1000, fontSize: "large", padding: "15px" }}
-              >
-                <a href="/member/">
-                  {user.first_name} {user.last_name}
-                </a>
-              </li>
-              <li style={{ fontWeight: 1000, fontSize: "large" }}>
-                {" "}
-                Currently rented:{" "}
-                {user.checked_out ? user.checked_out.length : 0}
-              </li>
-            </>
-          ) : null}
-        </ul>
-      </div>
+    <div>
+      <HeaderBanner user={user} />
+      {/* @TODO: this is causing warnings */}
       <Table striped>
-        <Table.Body>
+        <TableBody>
           {movies.map((movie) => {
             return (
-              <Table.Row key={movie.id}>
-                <Table.Cell style={{ fontWeight: 1000, fontSize: "large" }}>
+              <TableRow key={movie.id}>
+                <TableCell style={{ fontWeight: 1000, fontSize: "large" }}>
                   {movie.title}
-                </Table.Cell>
-                <Table.Cell>
+                </TableCell>
+                <TableCell>
                   {movie.inventory ? (
                     <Button
                       onClick={() => {
                         cartRemove(movie);
                       }}
                     >
-                      RemoveFromCart
+                      Remove From Cart
                     </Button>
                   ) : (
                     <Button disabled={true}>Out of Stock</Button>
                   )}
-                </Table.Cell>
-              </Table.Row>
+                </TableCell>
+              </TableRow>
             );
           })}
-        </Table.Body>
+        </TableBody>
       </Table>
       <div className="container">
         <div className="center">
