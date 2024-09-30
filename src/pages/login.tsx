@@ -3,17 +3,17 @@ import { useNavigate } from "react-router-dom";
 
 import { FormField, Button, Form } from "semantic-ui-react";
 
-import { moviesPath } from "../constants/constants";
+import { memberLoginURI, moviesPath } from "../constants/constants";
 
 export const LoginPage = () => {
-  localStorage.removeItem("user");
-  const [username, setUsername] = useState("");
-  const [failedLogin, setFailedLogin] = useState(false);
+  const [username, setUsername] = useState<string>("");
+  const [failedLogin, setFailedLogin] = useState<boolean>(false);
+  const [failedUsername, setFailedUsername] = useState<string>("");
 
   const navigate = useNavigate();
 
   const login = async () => {
-    const response = await fetch(`http://127.0.0.1:8080/api/v1/members/login`, {
+    const response = await fetch(memberLoginURI, {
       method: "POST",
       body: JSON.stringify({
         username: username,
@@ -25,12 +25,12 @@ export const LoginPage = () => {
       navigate(moviesPath);
     } else {
       setFailedLogin(true);
+      setFailedUsername(username);
     }
   };
 
   return (
-    // @TODO: css not working
-    <div className="BluckBosterHeader">
+    <div className="bluck-buster-login">
       <Form>
         <FormField>
           <label>username </label>
@@ -45,8 +45,13 @@ export const LoginPage = () => {
         Login
       </Button>
       {/* @TODO: better err message for failed to login */}
-      {failedLogin ? <>failed to login</> : null}
-      <Button onClick={() => navigate("/movies/")}>EXPLORE OUR MOVIES!</Button>
+
+      <Button onClick={() => navigate(moviesPath)}>EXPLORE OUR MOVIES!</Button>
+      {failedLogin ? (
+        <p className="err-text">
+          failed to login with username {failedUsername}
+        </p>
+      ) : null}
     </div>
   );
 };

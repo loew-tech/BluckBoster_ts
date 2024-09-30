@@ -1,5 +1,12 @@
 .App {
   text-align: center;
+  width: 100%;
+  background-color: darkblue;
+  height: 100%;
+  margin: 0;
+  left: 0;
+  top: 0;
+  position: fixed;
 }
 
 .ui.table {
@@ -30,14 +37,15 @@ ul#MemberBanner li {
 }
 
 .member-banner {
-  background-color: darkblue;
+  background-color: gold;
   font-weight: bold;
   font-size: large;
   /* padding: "8px"; */
   padding: 2%;
-  color: gold;
+  color: blue;
   display: flexbox;
   flex-direction: row;
+  /* margin-bottom: 1rem; */
 }
 
 .anchor-left {
@@ -48,6 +56,7 @@ ul#MemberBanner li {
 
 .movie-table {
   width: 100%;
+  background-color: silver;
 
   p {
     font-weight: bold;
@@ -57,4 +66,22 @@ ul#MemberBanner li {
 .title-cell {
   font-weight: bold;
   font-size: large;
+}
+
+.bluck-buster-login {
+  background-color: gold;
+  /* @TODO: better way to center element? */
+  padding: 25px;
+  /* height: 15%; */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+}
+
+.err-text {
+  font-weight: bold;
+  font-size: large;
+  color: red;
 }
