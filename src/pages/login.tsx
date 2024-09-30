@@ -6,6 +6,7 @@ import { FormField, Button, Form } from "semantic-ui-react";
 import { moviesPath } from "../constants/constants";
 
 export const LoginPage = () => {
+  localStorage.removeItem("user");
   const [username, setUsername] = useState("");
   const [failedLogin, setFailedLogin] = useState(false);
 
