@@ -22,25 +22,23 @@ export const MovieTable = ({
   cartUpdate,
 }: MovieTableProps) => {
   return (
-    <div className="MovieTable">
+    <div className="movie-table">
       <Table striped>
         <MovieTableHeader user={user} cart={cart} />
         <TableBody>
           {movies.map((movie) => {
             return (
               <TableRow key={`${movie.id}`}>
-                <TableCell style={{ fontWeight: 1000, fontSize: "large" }}>
-                  {movie.title}
-                </TableCell>
+                <TableCell className="title-cell">{movie.title}</TableCell>
                 <TableCell>{movie.rating}</TableCell>
                 <TableCell>{movie.year}</TableCell>
                 <TableCell>
                   <div>
-                    <p style={{ fontWeight: "bold" }}>Director:</p>
+                    <p>Director:</p>
                     {movie.director}
                   </div>
                   <div>
-                    <p style={{ fontWeight: "bold" }}>Starring:</p>
+                    <p>Starring:</p>
                     {movie.cast.join(", ")}
                   </div>
                 </TableCell>

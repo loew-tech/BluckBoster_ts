@@ -145,9 +145,7 @@ export const MemberPage = () => {
             {rentals.map((movie, i) => {
               return (
                 <TableRow key={`${i}-${movie.id}`}>
-                  <TableCell style={{ fontWeight: 1000, fontSize: "large" }}>
-                    {movie.title}
-                  </TableCell>
+                  <TableCell className="title-cell">{movie.title}</TableCell>
                   <TableCell>
                     <Button
                       onClick={() => {

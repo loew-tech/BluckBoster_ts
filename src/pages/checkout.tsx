@@ -78,7 +78,7 @@ export const CheckoutPage = () => {
       setMovies([]);
       setCart([]);
     }
-  }, [user]);
+  }, []);
 
   return (
     <div>
@@ -89,9 +89,7 @@ export const CheckoutPage = () => {
           {movies.map((movie) => {
             return (
               <TableRow key={movie.id}>
-                <TableCell style={{ fontWeight: 1000, fontSize: "large" }}>
-                  {movie.title}
-                </TableCell>
+                <TableCell className="title-cell">{movie.title}</TableCell>
                 <TableCell>
                   {movie.inventory ? (
                     <Button
@@ -112,13 +110,7 @@ export const CheckoutPage = () => {
       </Table>
       <div className="container">
         <div className="center">
-          <Button
-            onClick={() => {
-              checkout();
-            }}
-          >
-            Checkout
-          </Button>
+          <Button onClick={checkout}>Checkout</Button>
         </div>
       </div>
       {failedCheckout ? <p>Failed to checkout</p> : null}
