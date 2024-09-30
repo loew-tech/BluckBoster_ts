@@ -12,6 +12,7 @@ import {
 import { Member, Movie } from "../types/types";
 import { fetchCart, updateCart } from "../utils/utils";
 import { HeaderBanner } from "../components/header-banner";
+import { checkoutURI, moviesPath } from "../constants/constants";
 
 export const CheckoutPage = () => {
   const member = localStorage.getItem("user");
@@ -28,16 +29,13 @@ export const CheckoutPage = () => {
       setFailedCheckout(true);
       return;
     }
-    const response = await fetch(
-      "http://127.0.0.1:8080/api/v1/members/checkout",
-      {
-        method: "POST",
-        body: JSON.stringify({ username: user.username, movie_ids: cart }),
-      }
-    );
+    const response = await fetch(checkoutURI, {
+      method: "POST",
+      body: JSON.stringify({ username: user.username, movie_ids: cart }),
+    });
     console.log(response);
     if (response.ok) {
-      navigate("/movies/");
+      navigate(moviesPath);
       //   @TODO: is there better way to handle this
       if (!user?.checked_out) {
         user.checked_out = [];

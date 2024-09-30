@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { getUser } from "../utils/utils";
 import { Member, Movie } from "../types/types";
 import { HeaderBanner } from "../components/header-banner";
+import { loginPath, returnURI } from "../constants/constants";
 
 export const MemberPage = () => {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ export const MemberPage = () => {
   const logout = async () => {
     console.log("logout btn pressedd");
     localStorage.removeItem("user");
-    navigate("/login/");
+    navigate(loginPath);
   };
 
   const returnRental = async (movie_id: string) => {
@@ -56,16 +57,13 @@ export const MemberPage = () => {
       setReturnErr(true);
       return;
     }
-    const response = await fetch(
-      "http://127.0.0.1:8080/api/v1/members/return",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          username: member.username,
-          movie_ids: [movie_id],
-        }),
-      }
-    );
+    const response = await fetch(returnURI, {
+      method: "POST",
+      body: JSON.stringify({
+        username: member.username,
+        movie_ids: [movie_id],
+      }),
+    });
     console.log("$$ status=", response.status, response.ok);
     if (response.ok) {
       setRentals(rentals.filter((m) => m.id !== movie_id));
@@ -92,16 +90,13 @@ export const MemberPage = () => {
       setReturnErr(true);
       return;
     }
-    const response = await fetch(
-      "http://127.0.0.1:8080/api/v1/members/return",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          username: member.username,
-          movie_ids: rentals.map((movie) => movie.id),
-        }),
-      }
-    );
+    const response = await fetch(returnURI, {
+      method: "POST",
+      body: JSON.stringify({
+        username: member.username,
+        movie_ids: rentals.map((movie) => movie.id),
+      }),
+    });
     console.log("$$ returnAll called status=", response.status, response.ok);
     if (response.ok) {
       setRentals([]);

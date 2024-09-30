@@ -1,3 +1,5 @@
+import { cartRemoveURI, cartURI } from "../constants/constants";
+
 export const fetchCart = async (username: string) => {
   const response = await fetch(
     // @TODO: use /members/{username}/cart endpoint
@@ -21,13 +23,13 @@ export const updateCart = (
   let newCart = [...cart];
   if (!removeFromCart) {
     newCart.unshift(movie_id);
-    fetch("http://127.0.0.1:8080/api/v1/members/cart", {
+    fetch(cartURI, {
       method: "put",
       body: JSON.stringify({ username, movie_id }),
     });
   } else {
     console.log("$$ IN else block");
-    fetch("http://127.0.0.1:8080/api/v1/members/cart/remove", {
+    fetch(cartRemoveURI, {
       method: "put",
       body: JSON.stringify({ username, movie_id }),
     });
