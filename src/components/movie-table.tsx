@@ -7,7 +7,7 @@ import {
 } from "semantic-ui-react";
 
 import { Member, Movie } from "../types/types";
-import { MovieTableHeader } from "./movie-table-header";
+import { MovieTableHeader } from "./movieTableHeader";
 
 type MovieTableProps = {
   movies: Movie[];
