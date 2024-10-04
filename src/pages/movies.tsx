@@ -16,7 +16,7 @@ export const MoviesPage = () => {
 
   const getMovies = async () => {
     const response = await fetch("http://127.0.0.1:8080/api/v1/movies");
-    if (response) {
+    if (response.ok) {
       const newMovies = await response.json();
       setMovies(newMovies);
       setMovieErr(false);
