@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Member, Movie } from "../types/types";
 import { updateCart } from "../utils/utils";
-import { HeaderBanner } from "../components/header-banner";
+import { HeaderBanner } from "../components/headerBanner";
 import { MovieTable } from "../components/movie-table";
 
 export const MoviesPage = () => {

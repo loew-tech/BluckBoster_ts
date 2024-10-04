@@ -11,7 +11,7 @@ import {
 
 import { Member, Movie } from "../types/types";
 import { fetchCart, updateCart } from "../utils/utils";
-import { HeaderBanner } from "../components/header-banner";
+import { HeaderBanner } from "../components/headerBanner";
 import { checkoutURI, moviesPath } from "../constants/constants";
 
 export const CheckoutPage = () => {

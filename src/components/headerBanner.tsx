@@ -5,6 +5,7 @@ type HeaderBannerProps = {
   user: Member | null;
 };
 
+// @TODO: move cart in here
 export const HeaderBanner = ({ user }: HeaderBannerProps) => {
   return (
     <div className="member-banner">

@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 import { getUser } from "../utils/utils";
 import { Member, Movie } from "../types/types";
-import { HeaderBanner } from "../components/header-banner";
+import { HeaderBanner } from "../components/headerBanner";
 import { loginPath, returnURI } from "../constants/constants";
 
 export const MemberPage = () => {
