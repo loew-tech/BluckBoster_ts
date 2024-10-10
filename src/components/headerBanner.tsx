@@ -20,9 +20,9 @@ export const HeaderBanner = ({ user }: HeaderBannerProps) => {
         </div>
       </div>
       {user ? (
-        <p>
+        <a href={memberPath}>
           Currently rented: {user?.checked_out ? user.checked_out.length : 0}
-        </p>
+        </a>
       ) : null}
     </div>
   );

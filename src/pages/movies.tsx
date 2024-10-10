@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { Member, Movie } from "../types/types";
 import { updateCart } from "../utils/utils";
 import { HeaderBanner } from "../components/headerBanner";
-import { MovieTable } from "../components/movie-table";
+import { MovieTable } from "../components/movieTable";
+import { ErrorMessage } from "../components/errorMessage";
+
+const errorMsg = "An unexpected error occurred fetching our movie catalog";
 
 export const MoviesPage = () => {
   const data = localStorage.getItem("user");
@@ -60,7 +63,9 @@ export const MoviesPage = () => {
         />
       ) : (
         // @TODO: better handling of not fetching movies
-        <div>Err fetching movies</div>
+        <>
+          <ErrorMessage msg={errorMsg} />
+        </>
       )}
     </>
   );
