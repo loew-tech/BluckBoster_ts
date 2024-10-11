@@ -52,4 +52,6 @@ describe("movie table", () => {
       expect(cartUpdateSpy).toHaveBeenCalled();
     });
   });
+  // @TODO: implement test
+  //   it("navigates when cart button is clicked", () => {})
 });
