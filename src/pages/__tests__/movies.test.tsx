@@ -1,5 +1,6 @@
 import userEvent from "@testing-library/user-event";
 import { screen, waitFor } from "@testing-library/react";
+
 import { MoviesPage } from "../movies";
 import { testMovies, testMember, testMovieIDs } from "../../../test/test-data";
 import { renderWithNav } from "../../../test/renderHelpers";
@@ -13,7 +14,6 @@ jest.mock("../../utils/utils");
 
 describe("movies page", () => {
   beforeEach(() => {
-    console.log("$$ mock0");
     fetchSpy.mockImplementation(async () => {
       return {
         ok: true,
@@ -60,17 +60,17 @@ describe("movies page", () => {
       expect(screen.getByText("Cart: (2)")).toBeTruthy();
     });
   });
-  // @TODO: why is this test failing. movieErr not getting set to false?
-  // it("should render error message when failed to fetch movies", async () => {
-  //   fetchSpy.mockImplementationOnce(async () => {
-  //     console.log("$$ mock1");
-  //     return {
-  //       ok: false,
-  //       status: 404,
-  //       json: async () => jest.fn(),
-  //     } as Response;
-  //   });
-  //   renderWithNav(<MoviesPage />);
-  //   expect(screen.getByText("Err fetching movies")).toBeTruthy();
-  // });
+  it("should render error message when failed to fetch movies", async () => {
+    fetchSpy.mockImplementationOnce(async () => {
+      return {
+        ok: false,
+        status: 404,
+        json: async () => jest.fn(),
+      } as Response;
+    });
+    renderWithNav(<MoviesPage />);
+    await waitFor(() => {
+      expect(screen.getByText(/Whoops/)).toBeTruthy();
+    });
+  });
 });

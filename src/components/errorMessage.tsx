@@ -7,7 +7,8 @@ export const ErrorMessage = ({ msg }: ErrorMessageProps) => {
   return (
     <div className="error-text">
       {/* @TODO: why is icon not showing up? */}
-      <Message icon="frown">
+      <Message>
+        <Icon name="frown" />
         <MessageHeader>Whoops, something went wrong</MessageHeader>
         <p>{msg}</p>
       </Message>

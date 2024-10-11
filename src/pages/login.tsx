@@ -11,6 +11,7 @@ export const LoginPage = () => {
   const [failedUsername, setFailedUsername] = useState<string>("");
 
   const navigate = useNavigate();
+  localStorage.removeItem("user");
 
   const login = async () => {
     const response = await fetch(memberLoginURI, {
