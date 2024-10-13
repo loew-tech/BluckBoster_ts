@@ -19,7 +19,6 @@ export const updateCart = (
   cart: string[],
   removeFromCart: boolean
 ) => {
-  console.log(`$movie_id=${movie_id}`, `$removeFromCart=${removeFromCart}`);
   let newCart = [...cart];
   if (!removeFromCart) {
     newCart.unshift(movie_id);
@@ -28,7 +27,6 @@ export const updateCart = (
       body: JSON.stringify({ username, movie_id }),
     });
   } else {
-    console.log("$$ IN else block");
     fetch(cartRemoveURI, {
       method: "put",
       body: JSON.stringify({ username, movie_id }),
@@ -36,7 +34,6 @@ export const updateCart = (
     const index = newCart.indexOf(movie_id);
     newCart.splice(index, 1);
   }
-  console.log("cart=", cart, "newCart=", newCart);
   return newCart;
 };
 

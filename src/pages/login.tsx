@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FormField, Button, Form } from "semantic-ui-react";
 
 import { memberLoginURI, moviesPath } from "../constants/constants";
+import { ErrorMessage } from "../components/errorMessage";
 
 export const LoginPage = () => {
   const [username, setUsername] = useState<string>("");
@@ -45,13 +46,9 @@ export const LoginPage = () => {
       <Button type="submit" onClick={login}>
         Login
       </Button>
-      {/* @TODO: better err message for failed to login */}
-
       <Button onClick={() => navigate(moviesPath)}>EXPLORE OUR MOVIES!</Button>
       {failedLogin ? (
-        <p className="err-text">
-          failed to login with username {failedUsername}
-        </p>
+        <ErrorMessage msg={`failed to login with username ${failedUsername}`} />
       ) : null}
     </div>
   );

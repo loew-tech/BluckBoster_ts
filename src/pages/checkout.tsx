@@ -13,6 +13,7 @@ import { Member, Movie } from "../types/types";
 import { fetchCart, updateCart } from "../utils/utils";
 import { HeaderBanner } from "../components/headerBanner";
 import { checkoutURI, moviesPath } from "../constants/constants";
+import { ErrorMessage } from "../components/errorMessage";
 
 export const CheckoutPage = () => {
   const member = localStorage.getItem("user");
@@ -33,7 +34,6 @@ export const CheckoutPage = () => {
       method: "POST",
       body: JSON.stringify({ username: user.username, movie_ids: cart }),
     });
-    console.log(response);
     if (response.ok) {
       navigate(moviesPath);
       //   @TODO: is there better way to handle this
@@ -81,7 +81,6 @@ export const CheckoutPage = () => {
   return (
     <div>
       <HeaderBanner user={user} />
-      {/* @TODO: this is causing warnings */}
       <Table striped>
         <TableBody>
           {movies.map((movie) => {
@@ -111,7 +110,7 @@ export const CheckoutPage = () => {
           <Button onClick={checkout}>Checkout</Button>
         </div>
       </div>
-      {failedCheckout ? <p>Failed to checkout</p> : null}
+      {failedCheckout ? <ErrorMessage msg="Failed to checkout" /> : null}
     </div>
   );
 };

@@ -47,7 +47,6 @@ export const MemberPage = () => {
   }, [getCheckedoutMovies]);
 
   const logout = async () => {
-    console.log("logout btn pressedd");
     localStorage.removeItem("user");
     navigate(loginPath);
   };
@@ -64,7 +63,6 @@ export const MemberPage = () => {
         movie_ids: [movie_id],
       }),
     });
-    console.log("$$ status=", response.status, response.ok);
     if (response.ok) {
       setRentals(rentals.filter((m) => m.id !== movie_id));
       setCurrentlyRented(currentlyRented - 1);
@@ -97,7 +95,6 @@ export const MemberPage = () => {
         movie_ids: rentals.map((movie) => movie.id),
       }),
     });
-    console.log("$$ returnAll called status=", response.status, response.ok);
     if (response.ok) {
       setRentals([]);
       setCurrentlyRented(0);
