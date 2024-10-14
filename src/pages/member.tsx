@@ -14,6 +14,7 @@ import { getUser } from "../utils/utils";
 import { Member, Movie } from "../types/types";
 import { HeaderBanner } from "../components/headerBanner";
 import { loginPath, returnURI } from "../constants/constants";
+import { ErrorMessage } from "../components/errorMessage";
 
 export const MemberPage = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ export const MemberPage = () => {
   const [rentals, setRentals] = useState<Movie[]>([]);
   const [currentlyRented, setCurrentlyRented] = useState<number>(0);
   const [returnErr, setReturnErr] = useState<boolean>(false);
+  const [fetchCheckedOutErr, setFetchCheckedOutErr] = useState<boolean>(false);
 
   useEffect(() => {
     getUser().then((user: Member) => {
@@ -38,6 +40,9 @@ export const MemberPage = () => {
       if (response.ok) {
         const data = await response.json();
         setRentals(data);
+      } else {
+        setRentals([]);
+        setFetchCheckedOutErr(true);
       }
     }
   }, [member]);
@@ -153,8 +158,10 @@ export const MemberPage = () => {
           </TableBody>
         </Table>
       ) : null}
-      {/* @TODO: better error handling */}
-      {returnErr ? <p>Failed to return movies</p> : null}
+      {returnErr ? <ErrorMessage msg="Failed to return movies" /> : null}
+      {fetchCheckedOutErr ? (
+        <ErrorMessage msg="Failed to retrieve your currently rented movies" />
+      ) : null}
     </div>
   );
 };

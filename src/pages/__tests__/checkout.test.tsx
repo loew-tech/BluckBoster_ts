@@ -1,8 +1,8 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 
 import { CheckoutPage } from "../checkout";
 import { renderWithNav } from "../../../test/renderHelpers";
-import { testCart, testMember, testMovies } from "../../../test/test-data";
+import { testMember, testMovies } from "../../../test/test-data";
 import userEvent from "@testing-library/user-event";
 
 const fetchSpy = jest.spyOn(window, "fetch");

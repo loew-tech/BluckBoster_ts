@@ -42,4 +42,5 @@ export const testMember: Member = {
   username: "sea_captain",
   type: "advanced",
   cart: testCart,
+  checked_out: testMovieIDs,
 };

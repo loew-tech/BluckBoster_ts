@@ -48,6 +48,7 @@ export const getUser = async () => {
   );
   if (response.ok) {
     const member = response.json();
+    localStorage.setItem("user", JSON.stringify(member));
     return member;
   }
 };

@@ -9,8 +9,8 @@ describe("login", () => {
   it("should render login field and buttons", () => {
     renderWithNav(<LoginPage />);
     expect(screen.getByText("username")).toBeTruthy();
-    expect(screen.getByText("EXPLORE OUR MOVIES!")).toBeTruthy();
     expect(screen.getByText(/Login/)).toBeTruthy();
+    expect(screen.getByText("EXPLORE OUR MOVIES!")).toBeTruthy();
   });
   it("should render error message on failed login", async () => {
     fetchSpy.mockImplementation(async () => {
