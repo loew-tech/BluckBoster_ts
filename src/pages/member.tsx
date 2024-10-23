@@ -76,10 +76,10 @@ export const MemberPage = () => {
         // @TODO: handle not getting user
         return;
       }
-      const user = JSON.parse(data);
-      const index = user?.checked_out.indexOf(movie_id);
+      const user = JSON.parse(data) as Member;
+      const index = (user?.checked_out || []).indexOf(movie_id);
       if (-1 < index) {
-        user.checked_out = user.checked_out.splice(index, 1);
+        user.checked_out = (user?.checked_out || []).splice(index, 1);
         localStorage.setItem("user", JSON.stringify(user));
       }
       setReturnErr(false);
@@ -102,6 +102,7 @@ export const MemberPage = () => {
     });
     if (response.ok) {
       setRentals([]);
+      // @TODO: how to make header banner rerender after
       setCurrentlyRented(0);
       const data = localStorage.getItem("user");
       if (!data) {

@@ -21,15 +21,18 @@ export const MovieTable = ({
   cart,
   cartUpdate,
 }: MovieTableProps) => {
+  console.log("$$\t movies.length=", movies);
   return (
     <div className="movie-table">
       <Table striped>
         <MovieTableHeader user={user} cart={cart} />
         <TableBody>
-          {movies.map((movie) => {
+          {movies.map((movie, i) => {
             return (
               <TableRow key={`${movie.id}`}>
-                <TableCell className="title-cell">{movie.title}</TableCell>
+                <TableCell className="title-cell">
+                  <a href={movie.id}>{movie.title}</a>
+                </TableCell>
                 <TableCell>{movie.rating}</TableCell>
                 <TableCell>{movie.year}</TableCell>
                 <TableCell>

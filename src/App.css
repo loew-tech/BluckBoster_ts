@@ -7,6 +7,8 @@
   left: 0;
   top: 0;
   position: fixed;
+  /* @TODO: is this the right place to add this to make table scroll able? */
+  overflow-y: scroll;
 }
 
 .ui.table {
@@ -55,7 +57,7 @@ ul#MemberBanner li {
 }
 
 .movie-table {
-  width: 100%;
+  /* width: 100%; */
   background-color: silver;
 
   p {

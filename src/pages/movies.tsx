@@ -4,6 +4,7 @@ import { updateCart } from "../utils/utils";
 import { HeaderBanner } from "../components/headerBanner";
 import { MovieTable } from "../components/movieTable";
 import { ErrorMessage } from "../components/errorMessage";
+import { moviesURI } from "../constants/constants";
 
 const errorMsg = "An unexpected error occurred fetching our movie catalog";
 
@@ -18,7 +19,7 @@ export const MoviesPage = () => {
   const [movieErr, setMovieErr] = useState<boolean>(false);
 
   const getMovies = async () => {
-    const response = await fetch("http://127.0.0.1:8080/api/v1/movies");
+    const response = await fetch(moviesURI);
     if (response.ok) {
       const newMovies = await response.json();
       setMovies(newMovies);
@@ -62,7 +63,6 @@ export const MoviesPage = () => {
           cartUpdate={cartUpdate}
         />
       ) : (
-        // @TODO: better handling of not fetching movies
         <>
           <ErrorMessage msg={errorMsg} />
         </>

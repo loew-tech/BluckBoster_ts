@@ -4,6 +4,7 @@ import { LoginPage } from "./login";
 import { MoviesPage } from "./movies";
 import { CheckoutPage } from "./checkout";
 import { MemberPage } from "./member";
+import { MoviePage } from "./movie";
 import {
   checkoutPath,
   loginPath,
@@ -20,6 +21,7 @@ export const Main = () => {
         <Route path={moviesPath} element={<MoviesPage />} />
         <Route path={checkoutPath} element={<CheckoutPage />} />
         <Route path={memberPath} element={<MemberPage />} />
+        <Route path={`${moviesPath}/:movieID`} element={<MoviePage />} />
       </Routes>
     </BrowserRouter>
   );
