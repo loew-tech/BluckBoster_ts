@@ -8,6 +8,7 @@ import {
 
 import { Member, Movie } from "../types/types";
 import { MovieTableHeader } from "./movieTableHeader";
+import { moviesPath } from "../constants/constants";
 
 type MovieTableProps = {
   movies: Movie[];
@@ -31,7 +32,7 @@ export const MovieTable = ({
             return (
               <TableRow key={`${movie.id}`}>
                 <TableCell className="title-cell">
-                  <a href={movie.id}>{movie.title}</a>
+                  <a href={`${moviesPath}/${movie.id}`}>{movie.title}</a>
                 </TableCell>
                 <TableCell>{movie.rating}</TableCell>
                 <TableCell>{movie.year}</TableCell>

@@ -19,9 +19,9 @@ export const Main = () => {
         <Route path="/" element={<LoginPage />} />
         <Route path={loginPath} element={<LoginPage />} />
         <Route path={moviesPath} element={<MoviesPage />} />
+        <Route path={`${moviesPath}/:movieID`} element={<MoviePage />} />
         <Route path={checkoutPath} element={<CheckoutPage />} />
         <Route path={memberPath} element={<MemberPage />} />
-        <Route path={`${moviesPath}/:movieID`} element={<MoviePage />} />
       </Routes>
     </BrowserRouter>
   );

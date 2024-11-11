@@ -51,7 +51,7 @@ ul#MemberBanner li {
 }
 
 .anchor-left {
-  /* @TODO: better way to do this? Is this mobile friendly? */
+  /* @TODO: better way to do this? Is this mobile friendly? scroll friendly? */
   position: fixed;
   margin-left: 0%;
 }
