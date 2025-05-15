@@ -11,6 +11,10 @@
   overflow-y: scroll;
 }
 
+.title-field {
+  font-family: "Roboto", sans-serif;
+}
+
 .ui.table {
   width: 100%;
 }
@@ -31,11 +35,6 @@ ul#MemberBanner li {
 
 .ui.table tr {
   background-color: lightblue;
-}
-
-.container {
-  height: 200px;
-  position: relative;
 }
 
 .anchor-left {

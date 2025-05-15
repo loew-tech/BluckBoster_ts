@@ -6,7 +6,15 @@ import { TriviaContainer } from "../components/triviaContainer";
 import { useParams } from "react-router-dom";
 import { moviesURI } from "../constants/constants";
 import { ErrorMessage } from "../components/errorMessage";
-import { Grid, GridColumn, GridRow } from "semantic-ui-react";
+import {
+  Container,
+  Grid,
+  GridColumn,
+  GridRow,
+  Header,
+} from "semantic-ui-react";
+
+import "./movie.css";
 
 const WIKIPEDIA_URI = "https://en.wikipedia.org/wiki";
 
@@ -41,13 +49,15 @@ export const MoviePage = () => {
     <>
       <HeaderBanner user={user} />
       {movie ? (
-        <div>
-          <h2>{movie.title}</h2>
+        <Container text className="movie-container">
+          <Header as="h2" className="title-field">
+            {movie.title}
+          </Header>
           <Grid columns={2} divided>
             {movie.review.trim() ? (
               <GridRow>
                 <GridColumn>
-                  <h3>Review:</h3>
+                  <h3 className="title-field">Review:</h3>
                 </GridColumn>
                 <GridColumn>
                   <p>{movie.review}</p>
@@ -56,7 +66,7 @@ export const MoviePage = () => {
             ) : null}
             <GridRow>
               <GridColumn>
-                <h3>Synopsis:</h3>
+                <h3 className="title-field">Synopsis:</h3>
               </GridColumn>
               <GridColumn>
                 <p>
@@ -68,7 +78,7 @@ export const MoviePage = () => {
             {movie.trivia ? (
               <GridRow>
                 <GridColumn>
-                  <h3>Trivia:</h3>
+                  <h3 className="title-field">Trivia:</h3>
                 </GridColumn>
                 <GridColumn>
                   <TriviaContainer trivia={movie.trivia} />
@@ -76,7 +86,7 @@ export const MoviePage = () => {
               </GridRow>
             ) : null}
           </Grid>
-        </div>
+        </Container>
       ) : (
         <>
           <ErrorMessage msg="Failed to retrieve movies from cloud"></ErrorMessage>

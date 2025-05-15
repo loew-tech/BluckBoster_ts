@@ -1,0 +1,19 @@
+.movie-container {
+  margin: 0 auto;
+  width: 90%;
+  height: auto;
+  background-color: #92abbe;
+
+  h2 {
+    color: blue;
+  }
+
+  h3 {
+    text-decoration: underline;
+    font-weight: bold;
+  }
+
+  p {
+    font-weight: 350;
+  }
+}
