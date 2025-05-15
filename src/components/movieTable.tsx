@@ -10,6 +10,8 @@ import { Member, Movie } from "../types/types";
 import { MovieTableHeader } from "./movieTableHeader";
 import { moviesPath } from "../constants/constants";
 
+import "./movieTable.css";
+
 type MovieTableProps = {
   movies: Movie[];
   user: Member | null;

@@ -5,6 +5,7 @@ import { HeaderBanner } from "../components/headerBanner";
 import { useParams } from "react-router-dom";
 import { moviesURI } from "../constants/constants";
 import { ErrorMessage } from "../components/errorMessage";
+import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 
 const WIKIPEDIA_URI = "https://en.wikipedia.org/wiki";
 
@@ -41,25 +42,33 @@ export const MoviePage = () => {
       {movie ? (
         <div>
           <h2>{movie.title}</h2>
-          {movie.review.trim() ? (
-            <h3>
-              Review:
-              <p>{movie.review}</p>
-            </h3>
-          ) : null}
-
-          <h3>
-            Synopsis
-            <p>
-              {movie.synopsis}
-              <br></br>
-              <a href={`${WIKIPEDIA_URI}/${getWikiID(movie.id)}`}>[More]</a>
-            </p>
-          </h3>
+          <Grid columns={2} divided>
+            {movie.review.trim() ? (
+              <GridRow>
+                <GridColumn>
+                  <h3>Review:</h3>
+                </GridColumn>
+                <GridColumn>
+                  <p>{movie.review}</p>
+                </GridColumn>
+              </GridRow>
+            ) : null}
+            <GridRow>
+              <GridColumn>
+                <h3>Synopsis:</h3>
+              </GridColumn>
+              <GridColumn>
+                <p>
+                  {movie.synopsis}
+                  <a href={`${WIKIPEDIA_URI}/${getWikiID(movie.id)}`}>[More]</a>
+                </p>
+              </GridColumn>
+            </GridRow>
+          </Grid>
         </div>
       ) : (
         <>
-          <ErrorMessage msg="Failed to retrieve movies from cloud :/"></ErrorMessage>
+          <ErrorMessage msg="Failed to retrieve movies from cloud"></ErrorMessage>
         </>
       )}
     </>

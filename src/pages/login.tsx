@@ -6,6 +6,8 @@ import { FormField, Button, Form } from "semantic-ui-react";
 import { memberLoginURI, moviesPath } from "../constants/constants";
 import { ErrorMessage } from "../components/errorMessage";
 
+import "./login.css";
+
 export const LoginPage = () => {
   const [username, setUsername] = useState<string>("");
   const [failedLogin, setFailedLogin] = useState<boolean>(false);

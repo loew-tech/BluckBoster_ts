@@ -1,6 +1,8 @@
 import { loginPath, memberPath, moviesPath } from "../constants/constants";
 import { Member } from "../types/types";
 
+import "./headerBanner.css";
+
 type HeaderBannerProps = {
   user: Member | null;
 };
@@ -9,7 +11,7 @@ type HeaderBannerProps = {
 export const HeaderBanner = ({ user }: HeaderBannerProps) => {
   return (
     <div className="member-banner">
-      <div className="anchor-left">
+      <div>
         <div>
           <a href={moviesPath}>Movies</a>
           <br />
