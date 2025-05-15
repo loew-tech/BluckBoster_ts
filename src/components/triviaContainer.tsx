@@ -1,3 +1,7 @@
+import { Icon, Reveal, RevealContent } from "semantic-ui-react";
+
+import "./triviaContainer.css";
+
 type TriviaQ = {
   question: string;
   answer: string;
@@ -20,7 +24,19 @@ export const TriviaContainer = ({ trivia }: TriviaComponentProps) => {
         return (
           <>
             <p>{q.question}</p>
-            <p>{q.answer}</p>
+            <Reveal animated="move up">
+              <RevealContent visible>
+                <Icon
+                  name="question circle"
+                  size="massive"
+                  bordered
+                  style={{ content: "center", backgroundColor: "white" }}
+                />
+              </RevealContent>
+              <RevealContent hidden>
+                <p style={{ fontWeight: "normal" }}>{q.answer}</p>
+              </RevealContent>
+            </Reveal>
           </>
         );
       })}

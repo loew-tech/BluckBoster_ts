@@ -3,6 +3,7 @@
   width: 90%;
   height: auto;
   background-color: #92abbe;
+  text-align: right;
 
   h2 {
     color: blue;
@@ -10,10 +11,11 @@
 
   h3 {
     text-decoration: underline;
-    font-weight: bold;
+    font-weight: bolder;
   }
 
   p {
-    font-weight: 350;
+    text-align: left;
+    font-weight: bold;
   }
 }

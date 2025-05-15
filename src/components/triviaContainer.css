@@ -1,0 +1,14 @@
+p {
+  justify-content: center;
+  width: 70%;
+  overflow-wrap: break-word;
+
+  .question {
+    font-weight: bold;
+  }
+}
+
+.clipped-image {
+  height: 20%;
+  width: 100%;
+}
