@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Member, Movie } from "../types/types";
 import { HeaderBanner } from "../components/headerBanner";
+import { TriviaContainer } from "../components/triviaContainer";
 import { useParams } from "react-router-dom";
 import { moviesURI } from "../constants/constants";
 import { ErrorMessage } from "../components/errorMessage";
@@ -64,6 +65,16 @@ export const MoviePage = () => {
                 </p>
               </GridColumn>
             </GridRow>
+            {movie.trivia ? (
+              <GridRow>
+                <GridColumn>
+                  <h3>Trivia:</h3>
+                </GridColumn>
+                <GridColumn>
+                  <TriviaContainer trivia={movie.trivia} />
+                </GridColumn>
+              </GridRow>
+            ) : null}
           </Grid>
         </div>
       ) : (
