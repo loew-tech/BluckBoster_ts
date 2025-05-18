@@ -12,6 +12,8 @@
   h3 {
     text-decoration: underline;
     font-weight: bolder;
+    justify-content: right;
+    font-family: "Eras ITC", "Eras Light ITC", sans-serif;
   }
 
   p {

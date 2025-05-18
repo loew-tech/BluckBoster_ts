@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Container, Grid, Header } from "semantic-ui-react";
 
 import { Member, Movie } from "../types/types";
 import { HeaderBanner } from "../components/headerBanner";
-import { TriviaContainer } from "../components/triviaContainer";
-import { useParams } from "react-router-dom";
+import { TriviaContainer } from "../components/movieComponents/triviaContainer";
 import { moviesURI } from "../constants/constants";
+import { MovieElementRow } from "../components/movieComponents/movieElementRow";
 import { ErrorMessage } from "../components/errorMessage";
-import {
-  Container,
-  Grid,
-  GridColumn,
-  GridRow,
-  Header,
-} from "semantic-ui-react";
 
 import "./movie.css";
 
@@ -55,42 +50,30 @@ export const MoviePage = () => {
           </Header>
           <Grid columns={2} divided>
             {movie.review.trim() ? (
-              <GridRow>
-                <GridColumn>
-                  <h3 className="title-field">Review:</h3>
-                </GridColumn>
-                <GridColumn>
-                  <p>{movie.review}</p>
-                </GridColumn>
-              </GridRow>
+              <MovieElementRow
+                sectionTitle="Review:"
+                content={<p>{movie.review}</p>}
+              />
             ) : null}
-            <GridRow>
-              <GridColumn>
-                <h3 className="title-field">Synopsis:</h3>
-              </GridColumn>
-              <GridColumn>
+            <MovieElementRow
+              sectionTitle="Synopsis:"
+              content={
                 <p>
                   {movie.synopsis}
                   <a href={`${WIKIPEDIA_URI}/${getWikiID(movie.id)}`}>[More]</a>
                 </p>
-              </GridColumn>
-            </GridRow>
+              }
+            />
             {movie.trivia ? (
-              <GridRow>
-                <GridColumn>
-                  <h3 className="title-field">Trivia:</h3>
-                </GridColumn>
-                <GridColumn>
-                  <TriviaContainer trivia={movie.trivia} />
-                </GridColumn>
-              </GridRow>
+              <MovieElementRow
+                sectionTitle="Trivia:"
+                content={<TriviaContainer trivia={movie.trivia} />}
+              />
             ) : null}
           </Grid>
         </Container>
       ) : (
-        <>
-          <ErrorMessage msg="Failed to retrieve movies from cloud"></ErrorMessage>
-        </>
+        <ErrorMessage msg="Failed to retrieve movies from cloud"></ErrorMessage>
       )}
     </>
   );
