@@ -15,6 +15,8 @@ import { HeaderBanner } from "../components/headerBanner";
 import { checkoutURI, moviesPath } from "../constants/constants";
 import { ErrorMessage } from "../components/errorMessage";
 
+import "./checkout.css";
+
 export const CheckoutPage = () => {
   const member = localStorage.getItem("user");
   const user = member !== null ? (JSON.parse(member) as Member) : null;
@@ -105,7 +107,7 @@ export const CheckoutPage = () => {
           })}
         </TableBody>
       </Table>
-      <div className="container">
+      <div className="checkout-container">
         <div className="center">
           <Button onClick={checkout}>Checkout</Button>
         </div>

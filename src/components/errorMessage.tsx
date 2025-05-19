@@ -1,5 +1,7 @@
 import { MessageHeader, Message, Icon } from "semantic-ui-react";
 
+import "./errorMessage.css";
+
 type ErrorMessageProps = {
   msg: string;
 };

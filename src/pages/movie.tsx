@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Container, Grid, Header } from "semantic-ui-react";
 
 import { Member, Movie } from "../types/types";
 import { HeaderBanner } from "../components/headerBanner";
-import { useParams } from "react-router-dom";
+import { TriviaContainer } from "../components/movieComponents/triviaContainer";
 import { moviesURI } from "../constants/constants";
+import { MovieElementRow } from "../components/movieComponents/movieElementRow";
 import { ErrorMessage } from "../components/errorMessage";
+
+import "./movie.css";
 
 const WIKIPEDIA_URI = "https://en.wikipedia.org/wiki";
 
@@ -39,28 +44,36 @@ export const MoviePage = () => {
     <>
       <HeaderBanner user={user} />
       {movie ? (
-        <div>
-          <h2>{movie.title}</h2>
-          {movie.review.trim() ? (
-            <h3>
-              Review:
-              <p>{movie.review}</p>
-            </h3>
-          ) : null}
-
-          <h3>
-            Synopsis
-            <p>
-              {movie.synopsis}
-              <br></br>
-              <a href={`${WIKIPEDIA_URI}/${getWikiID(movie.id)}`}>[More]</a>
-            </p>
-          </h3>
-        </div>
+        <Container text className="movie-container">
+          <Header as="h2" className="title-field">
+            {movie.title}
+          </Header>
+          <Grid columns={2} divided>
+            {movie.review.trim() ? (
+              <MovieElementRow
+                sectionTitle="Review:"
+                content={<p>{movie.review}</p>}
+              />
+            ) : null}
+            <MovieElementRow
+              sectionTitle="Synopsis:"
+              content={
+                <p>
+                  {movie.synopsis}
+                  <a href={`${WIKIPEDIA_URI}/${getWikiID(movie.id)}`}>[More]</a>
+                </p>
+              }
+            />
+            {movie.trivia ? (
+              <MovieElementRow
+                sectionTitle="Trivia:"
+                content={<TriviaContainer trivia={movie.trivia} />}
+              />
+            ) : null}
+          </Grid>
+        </Container>
       ) : (
-        <>
-          <ErrorMessage msg="Failed to retrieve movies from cloud :/"></ErrorMessage>
-        </>
+        <ErrorMessage msg="Failed to retrieve movies from cloud"></ErrorMessage>
       )}
     </>
   );

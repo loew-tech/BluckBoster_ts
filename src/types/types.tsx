@@ -8,6 +8,7 @@ export type Movie = {
   rating: string;
   review: string;
   synopsis: string;
+  trivia?: string;
   year: string;
 };
 

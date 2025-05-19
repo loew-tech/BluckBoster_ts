@@ -28,7 +28,7 @@ export const MovieTableHeader = ({ user, cart }: MovieTableHeaderProps) => {
             <TableHeaderCell>Available</TableHeaderCell>
             <TableHeaderCell>Rented</TableHeaderCell>
             <TableHeaderCell>
-              {/* @TODO: move this into headerBanner.tsx */}
+              {/* @TODO: move this into headerBanner.tsx ?*/}
               <Button
                 disabled={!cart.length}
                 onClick={() => navigate(checkoutPath)}

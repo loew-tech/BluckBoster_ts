@@ -1,5 +1,3 @@
-import exp from "constants";
-
 export const checkoutPath = "/checkout";
 export const moviesPath = "/movies";
 export const memberPath = "/member";

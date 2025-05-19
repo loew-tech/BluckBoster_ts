@@ -1,0 +1,23 @@
+.movie-container {
+  margin: 0 auto;
+  width: 90%;
+  height: auto;
+  background-color: #92abbe;
+  text-align: right;
+
+  h2 {
+    color: blue;
+  }
+
+  h3 {
+    text-decoration: underline;
+    font-weight: bolder;
+    justify-content: right;
+    font-family: "Eras ITC", "Eras Light ITC", sans-serif;
+  }
+
+  p {
+    text-align: left;
+    font-weight: bold;
+  }
+}
