@@ -23,7 +23,6 @@ export const MoviePage = () => {
     const response = await fetch(`${moviesURI}/${movieID}`);
     if (response.ok) {
       const movie = await response.json();
-      console.log("movie=", movie);
       setMovie(movie);
     } else {
       setMovie(null);

@@ -24,7 +24,6 @@ export const MovieTable = ({
   cart,
   cartUpdate,
 }: MovieTableProps) => {
-  console.log("$$\t movies.length=", movies);
   return (
     <div className="movie-table">
       <Table striped>
