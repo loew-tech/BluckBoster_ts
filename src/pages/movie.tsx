@@ -48,7 +48,7 @@ export const MoviePage = () => {
             {movie.title}
           </Header>
           <Grid columns={2} divided>
-            {movie.review.trim() ? (
+            {movie.review && movie.review.trim() ? (
               <MovieElementRow
                 sectionTitle="Review:"
                 content={<p>{movie.review}</p>}
