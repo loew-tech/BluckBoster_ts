@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { Member, Movie } from "../types/types";
 import { updateCart } from "../utils/utils";
 import { HeaderBanner } from "../components/headerBanner";
@@ -18,8 +19,9 @@ export const MoviesPage = () => {
   );
   const [movieErr, setMovieErr] = useState<boolean>(false);
 
-  const getMovies = async () => {
-    const response = await fetch(moviesURI);
+  const getMovies = async (page: string = "A") => {
+    page = page === "#123?!" ? "%23" : page;
+    const response = await fetch(`${moviesURI}?page=${page}`);
     if (response.ok) {
       const newMovies = await response.json();
       setMovies(newMovies);
@@ -61,6 +63,7 @@ export const MoviesPage = () => {
           user={user}
           cart={cart}
           cartUpdate={cartUpdate}
+          updateMovies={getMovies}
         />
       ) : (
         <>
