@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Member, Movie } from "../types/types";
 import { updateCart } from "../utils/utils";
 import { HeaderBanner } from "../components/headerBanner";
-import { MovieTable } from "../components/movieTable";
+import { MovieTable } from "../components/movieTable/movieTable";
 import { ErrorMessage } from "../components/errorMessage";
 import { moviesURI } from "../constants/constants";
 

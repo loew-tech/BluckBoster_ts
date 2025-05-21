@@ -6,8 +6,8 @@ import {
   TableHeaderCell,
 } from "semantic-ui-react";
 
-import { Member } from "../types/types";
-import { checkoutPath } from "../constants/constants";
+import { Member } from "../../types/types";
+import { checkoutPath } from "../../constants/constants";
 
 type MovieTableHeaderProps = {
   user: Member | null;
@@ -16,6 +16,7 @@ type MovieTableHeaderProps = {
 export const MovieTableHeader = ({ user, cart }: MovieTableHeaderProps) => {
   const navigate = useNavigate();
 
+  // @TODO: fix headers moving depending on which page is loaded
   return (
     <TableHeader>
       <TableRow>

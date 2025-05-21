@@ -1,0 +1,16 @@
+ul {
+  cursor: pointer;
+  list-style: georgian outside;
+  justify-content: flex-start;
+  cursor: pointer;
+  /* background-color: lightblue; */
+}
+
+li {
+  display: inline;
+  color: blue;
+}
+
+li:not(:first-child):before {
+  content: " | ";
+}

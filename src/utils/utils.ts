@@ -3,8 +3,8 @@ import { cartRemoveURI, cartURI } from "../constants/constants";
 export const fetchCart = async (username: string) => {
   const response = await fetch(
     // @TODO: use /members/{username}/cart endpoint
-    // `http://127.0.0.1:8080/api/v1/members/cart/${username}`
-    `http://127.0.0.1:8080/api/v1/members/${username}/cart/`
+    `http://127.0.0.1:8080/api/v1/members/cart/${username}`
+    // `http://127.0.0.1:8080/api/v1/members/${username}/cart/`
   );
   if (response.ok) {
     const existingCart = await response.json();

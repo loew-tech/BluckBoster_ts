@@ -6,9 +6,9 @@ import {
   TableRow,
 } from "semantic-ui-react";
 
-import { Member, Movie } from "../types/types";
+import { Member, Movie } from "../../types/types";
 import { MovieTableHeader } from "./movieTableHeader";
-import { moviesPath } from "../constants/constants";
+import { moviesPath } from "../../constants/constants";
 import { PagePicker } from "./pagePicker";
 
 import "./movieTable.css";
