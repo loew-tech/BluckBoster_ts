@@ -9,6 +9,10 @@ ul {
 li {
   display: inline;
   color: blue;
+
+  .active-page {
+    color: purple;
+  }
 }
 
 li:not(:first-child):before {
