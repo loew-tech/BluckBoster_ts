@@ -1,8 +1,8 @@
 import { screen } from "@testing-library/react";
 
 import { MovieTableHeader } from "../movieTableHeader";
-import { renderWithNav } from "../../../test/renderHelpers";
-import { testCart, testMember } from "../../../test/test-data";
+import { renderWithNav } from "../../../../test/renderHelpers";
+import { testCart, testMember } from "../../../../test/test-data";
 
 describe("error message", () => {
   it("should render when user is null", () => {

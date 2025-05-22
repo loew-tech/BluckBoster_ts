@@ -5,8 +5,8 @@ export type Movie = {
   director: string;
   inventory?: number;
   rented?: number;
-  rating: string;
-  review: string;
+  rating?: string;
+  review?: string;
   synopsis: string;
   trivia?: string;
   year: string;

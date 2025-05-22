@@ -2,10 +2,11 @@ import userEvent from "@testing-library/user-event";
 import { screen, waitFor } from "@testing-library/react";
 
 import { MovieTable } from "../movieTable";
-import { testCart, testMember, testMovies } from "../../../test/test-data";
-import { renderWithNav } from "../../../test/renderHelpers";
+import { testCart, testMember, testMovies } from "../../../../test/test-data";
+import { renderWithNav } from "../../../../test/renderHelpers";
 
 const cartUpdateSpy = jest.fn();
+const updateMoviesSpy = jest.fn();
 
 describe("movie table", () => {
   it("should render when user is null", async () => {
@@ -15,6 +16,7 @@ describe("movie table", () => {
         movies={testMovies}
         cart={testCart}
         cartUpdate={cartUpdateSpy}
+        updateMovies={updateMoviesSpy}
       />
     );
     expect(screen.getByText("Title")).toBeTruthy();
@@ -28,6 +30,7 @@ describe("movie table", () => {
         movies={testMovies}
         cart={testCart}
         cartUpdate={cartUpdateSpy}
+        updateMovies={updateMoviesSpy}
       />
     );
     expect(screen.getByText(/Cart:/)).toBeTruthy();
@@ -41,6 +44,7 @@ describe("movie table", () => {
         movies={testMovies}
         cart={testCart}
         cartUpdate={cartUpdateSpy}
+        updateMovies={updateMoviesSpy}
       />
     );
     await userEvent.click(screen.getByText("Add to cart"));

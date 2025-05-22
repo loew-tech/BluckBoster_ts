@@ -1,0 +1,21 @@
+ul {
+  cursor: pointer;
+  list-style: georgian outside;
+  justify-content: flex-start;
+  cursor: pointer;
+}
+
+li {
+  display: inline;
+  font-size: larger;
+  vertical-align: middle;
+
+  .active-page {
+    color: #9400d3;
+  }
+}
+
+li:not(:first-child):before {
+  content: " | ";
+  padding: 1rem;
+}
