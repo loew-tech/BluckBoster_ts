@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { getUser } from "../utils/utils";
 import { Member, Movie } from "../types/types";
 import { HeaderBanner } from "../components/headerBanner";
-import { loginPath, returnURI } from "../constants/constants";
+import { loginPath, moviesPath, returnURI } from "../constants/constants";
 import { ErrorMessage } from "../components/errorMessage";
 
 export const MemberPage = () => {
@@ -143,7 +143,9 @@ export const MemberPage = () => {
             {rentals.map((movie, i) => {
               return (
                 <TableRow key={`${i}-${movie.id}`}>
-                  <TableCell className="title-cell">{movie.title}</TableCell>
+                  <TableCell className="title-cell">
+                    <a href={`${moviesPath}/${movie.id}`}>{movie.title}</a>
+                  </TableCell>
                   <TableCell>
                     <Button
                       onClick={() => {
