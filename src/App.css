@@ -34,6 +34,10 @@ ul#MemberBanner li {
   display: inline;
 }
 
+table {
+  table-layout: fixed;
+}
+
 .ui.table tr {
   background-color: lightblue;
 }
