@@ -39,6 +39,7 @@ export const LoginPage = () => {
         <FormField>
           <label>username </label>
           <input
+            className="login-input"
             placeholder="Enter username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}

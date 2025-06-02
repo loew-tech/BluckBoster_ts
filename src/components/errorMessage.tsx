@@ -8,7 +8,6 @@ type ErrorMessageProps = {
 export const ErrorMessage = ({ msg }: ErrorMessageProps) => {
   return (
     <div className="error-text">
-      {/* @TODO: why is icon not showing up? */}
       <Message>
         <Icon name="frown" />
         <MessageHeader>Whoops, something went wrong</MessageHeader>
