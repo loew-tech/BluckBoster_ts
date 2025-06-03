@@ -15,5 +15,6 @@ label {
 }
 
 .login-input {
+  text-align: center;
   width: 50% !important;
 }

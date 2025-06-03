@@ -10,7 +10,7 @@ import {
 } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 
-import { getUser } from "../utils/utils";
+import { getUser, fetchCheckedoutMovies, returnRentals } from "../utils/utils";
 import { Member, Movie } from "../types/types";
 import { HeaderBanner } from "../components/headerBanner";
 import { loginPath, moviesPath, returnURI } from "../constants/constants";
@@ -34,12 +34,9 @@ export const MemberPage = () => {
 
   const getCheckedoutMovies = useCallback(async () => {
     if (member) {
-      const response = await fetch(
-        `http://127.0.0.1:8080/api/v1/members/${member.username}/checkedout`
-      );
-      if (response.ok) {
-        const data = await response.json();
-        setRentals(data);
+      const movies = await fetchCheckedoutMovies(member.username);
+      if (movies) {
+        setRentals(movies);
       } else {
         setRentals([]);
         setFetchCheckedOutErr(true);
@@ -56,20 +53,15 @@ export const MemberPage = () => {
     navigate(loginPath);
   };
 
-  const returnRental = async (movie_id: string) => {
+  const rentalReturn = async (movie_ids: string[]) => {
     if (!member) {
       setReturnErr(true);
       return;
     }
-    const response = await fetch(returnURI, {
-      method: "POST",
-      body: JSON.stringify({
-        username: member.username,
-        movie_ids: [movie_id],
-      }),
-    });
-    if (response.ok) {
-      setRentals(rentals.filter((m) => m.id !== movie_id));
+
+    const success = await returnRentals(member.username, movie_ids);
+    if (success) {
+      setRentals(rentals.filter((m) => !movie_ids.includes(m.id)));
       setCurrentlyRented(currentlyRented - 1);
       const data = localStorage.getItem("user");
       if (!data) {
@@ -77,41 +69,12 @@ export const MemberPage = () => {
         return;
       }
       const user = JSON.parse(data) as Member;
-      const index = (user?.checked_out || []).indexOf(movie_id);
-      if (-1 < index) {
-        user.checked_out = (user?.checked_out || []).splice(index, 1);
-        localStorage.setItem("user", JSON.stringify(user));
-      }
-      setReturnErr(false);
-    } else {
-      setReturnErr(true);
-    }
-  };
-
-  const returnAllRentals = async () => {
-    if (!member) {
-      setReturnErr(true);
-      return;
-    }
-    const response = await fetch(returnURI, {
-      method: "POST",
-      body: JSON.stringify({
-        username: member.username,
-        movie_ids: rentals.map((movie) => movie.id),
-      }),
-    });
-    if (response.ok) {
-      setRentals([]);
-      // @TODO: how to make header banner rerender after
-      setCurrentlyRented(0);
-      const data = localStorage.getItem("user");
-      if (!data) {
-        // @TODO: handle not getting user
-        return;
-      }
-      const user = JSON.parse(data) as Member;
-      user.checked_out = [];
-      localStorage.setItem("user", JSON.stringify(user));
+      // @TODO: handle updating rentals
+      // const index = (user?.checked_out || []).indexOf(movie_id);
+      // if (-1 < index) {
+      //   user.checked_out = (user?.checked_out || []).splice(index, 1);
+      //   localStorage.setItem("user", JSON.stringify(user));
+      // }
       setReturnErr(false);
     } else {
       setReturnErr(true);
@@ -132,7 +95,7 @@ export const MemberPage = () => {
               <TableHeaderCell>
                 <button
                   disabled={!rentals.length}
-                  onClick={() => returnAllRentals()}
+                  onClick={() => rentalReturn(rentals.map((m) => m.id))}
                 >
                   Return All Movies
                 </button>
@@ -149,7 +112,7 @@ export const MemberPage = () => {
                   <TableCell>
                     <Button
                       onClick={() => {
-                        returnRental(movie.id);
+                        rentalReturn([movie.id]);
                       }}
                     >
                       Return Movie
