@@ -10,9 +10,9 @@ import {
 } from "semantic-ui-react";
 
 import { Member, Movie } from "../types/types";
-import { fetchCart, updateCart } from "../utils/utils";
+import { checkout, fetchCart, updateCart } from "../utils/utils";
 import { HeaderBanner } from "../components/headerBanner";
-import { checkoutURI, moviesPath } from "../constants/constants";
+import { moviesPath } from "../constants/constants";
 import { ErrorMessage } from "../components/errorMessage";
 
 import "./checkout.css";
@@ -27,17 +27,13 @@ export const CheckoutPage = () => {
   const navigate = useNavigate();
   const removeFromCart = true;
 
-  const checkout = async () => {
+  const userCheckout = async () => {
     if (!user) {
       setFailedCheckout(true);
       return;
     }
-    const response = await fetch(checkoutURI, {
-      method: "POST",
-      body: JSON.stringify({ username: user.username, movie_ids: cart }),
-    });
-    if (response.ok) {
-      navigate(moviesPath);
+    const success = await checkout(user.username, cart);
+    if (success) {
       //   @TODO: is there better way to handle this
       if (!user?.checked_out) {
         user.checked_out = [];
@@ -49,6 +45,7 @@ export const CheckoutPage = () => {
       });
       user.cart = [];
       localStorage.setItem("user", JSON.stringify(user));
+      navigate(moviesPath);
     } else {
       setFailedCheckout(true);
     }
@@ -109,7 +106,7 @@ export const CheckoutPage = () => {
       </Table>
       <div className="checkout-container">
         <div className="center">
-          <Button onClick={checkout}>Checkout</Button>
+          <Button onClick={userCheckout}>Checkout</Button>
         </div>
       </div>
       {failedCheckout ? <ErrorMessage msg="Failed to checkout" /> : null}

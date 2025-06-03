@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { Member, Movie } from "../types/types";
-import { updateCart } from "../utils/utils";
+import { fetchMovie, fetchMovies, updateCart } from "../utils/utils";
 import { HeaderBanner } from "../components/headerBanner";
 import { MovieTable } from "../components/movieTable/movieTable";
 import { ErrorMessage } from "../components/errorMessage";
@@ -21,9 +21,8 @@ export const MoviesPage = () => {
 
   const getMovies = async (page: string = "A") => {
     page = page === "#123?!" ? "%23" : page;
-    const response = await fetch(`${moviesURI}?page=${page}`);
-    if (response.ok) {
-      const newMovies = await response.json();
+    const newMovies = await fetchMovies(page);
+    if (newMovies) {
       setMovies(newMovies);
       setMovieErr(false);
     } else {

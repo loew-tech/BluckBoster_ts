@@ -1,7 +1,9 @@
 import {
   cartRemoveURI,
   cartURI,
+  checkoutURI,
   memberLoginURI,
+  moviesURI,
   returnURI,
 } from "../constants/constants";
 import { Movie } from "../types/types";
@@ -18,6 +20,24 @@ export const login = async (username: string): Promise<boolean> => {
     localStorage.setItem("user", JSON.stringify(data));
   }
   return response.ok;
+};
+
+export const fetchMovie = async (movieID: string): Promise<Movie | null> => {
+  const response = await fetch(`${moviesURI}/${movieID}`);
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  }
+  return null;
+};
+
+export const fetchMovies = async (page: string): Promise<Movie[] | null> => {
+  const response = await fetch(`${moviesURI}?page=${page}`);
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  }
+  return null;
 };
 
 export const fetchCart = async (username: string): Promise<Movie[]> => {
@@ -95,4 +115,15 @@ export const getUser = async () => {
     localStorage.setItem("user", JSON.stringify(member));
     return member;
   }
+};
+
+export const checkout = async (
+  username: string,
+  movie_ids: string[]
+): Promise<boolean> => {
+  const response = await fetch(checkoutURI, {
+    method: "POST",
+    body: JSON.stringify({ username, movie_ids }),
+  });
+  return response.ok;
 };
