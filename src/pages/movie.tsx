@@ -10,6 +10,7 @@ import { MovieElementRow } from "../components/movieComponents/movieElementRow";
 import { ErrorMessage } from "../components/errorMessage";
 
 import "./movie.css";
+import { fetchMovie } from "../utils/utils";
 
 const WIKIPEDIA_URI = "https://en.wikipedia.org/wiki";
 
@@ -20,13 +21,12 @@ export const MoviePage = () => {
   const { movieID } = useParams();
 
   const getMovie = async () => {
-    const response = await fetch(`${moviesURI}/${movieID}`);
-    if (response.ok) {
-      const movie = await response.json();
-      setMovie(movie);
-    } else {
+    if (!movieID) {
       setMovie(null);
+      return;
     }
+    const movie = await fetchMovie(movieID);
+    setMovie(movie);
   };
 
   useEffect(() => {

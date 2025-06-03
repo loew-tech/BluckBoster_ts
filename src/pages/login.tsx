@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 import { FormField, Button, Form } from "semantic-ui-react";
 
-import { memberLoginURI, moviesPath } from "../constants/constants";
+import { moviesPath } from "../constants/constants";
 import { ErrorMessage } from "../components/errorMessage";
+import { login } from "../utils/utils";
 
 import "./login.css";
 
@@ -16,21 +17,13 @@ export const LoginPage = () => {
   const navigate = useNavigate();
   localStorage.removeItem("user");
 
-  const login = async () => {
-    const response = await fetch(memberLoginURI, {
-      method: "POST",
-      body: JSON.stringify({
-        username: username,
-      }),
-    });
-    if (response.ok) {
-      const data = await response.json();
-      localStorage.setItem("user", JSON.stringify(data));
+  const tryLogin = async () => {
+    const success = await login(username);
+    if (success) {
       navigate(moviesPath);
-    } else {
-      setFailedLogin(true);
-      setFailedUsername(username);
     }
+    setFailedUsername(username);
+    setFailedLogin(true);
   };
 
   return (
@@ -46,7 +39,7 @@ export const LoginPage = () => {
           />
         </FormField>
       </Form>
-      <Button type="submit" onClick={login}>
+      <Button type="submit" onClick={tryLogin}>
         Login
       </Button>
       <Button onClick={() => navigate(moviesPath)}>EXPLORE OUR MOVIES!</Button>
