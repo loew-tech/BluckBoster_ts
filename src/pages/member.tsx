@@ -7,16 +7,25 @@ import {
   TableHeaderCell,
   TableCell,
   TableBody,
+  ButtonGroup,
+  ButtonOr,
 } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 
 import { getUser, fetchCheckedoutMovies, returnRentals } from "../utils/utils";
 import { Member, Movie } from "../types/types";
 import { HeaderBanner } from "../components/headerBanner";
-import { loginPath, moviesPath, returnURI } from "../constants/constants";
+import { loginPath, moviesPath } from "../constants/constants";
 import { ErrorMessage } from "../components/errorMessage";
+import { useAppDispatch, useAppSelector } from "../store/hook";
+import { toggleToRest, toggleToGraphQL } from "../store/apiSlice";
+
+import "./member.css";
 
 export const MemberPage = () => {
+  const api = useAppSelector((state) => state.api.api);
+  const dispatch = useAppDispatch();
+
   const navigate = useNavigate();
 
   const [member, setMember] = useState<Member | null>(null);
@@ -24,6 +33,7 @@ export const MemberPage = () => {
   const [currentlyRented, setCurrentlyRented] = useState<number>(0);
   const [returnErr, setReturnErr] = useState<boolean>(false);
   const [fetchCheckedOutErr, setFetchCheckedOutErr] = useState<boolean>(false);
+  const [activeButton, setActiveButton] = useState<string>(api);
 
   useEffect(() => {
     getUser().then((user: Member) => {
@@ -48,6 +58,15 @@ export const MemberPage = () => {
     getCheckedoutMovies();
   }, [getCheckedoutMovies]);
 
+  const toggleActiveButton = (selection: string) => {
+    setActiveButton(selection);
+    if (selection === "rest") {
+      dispatch(toggleToRest());
+    } else if (selection === "graphQL") {
+      dispatch(toggleToGraphQL());
+    }
+  };
+
   const logout = async () => {
     localStorage.removeItem("user");
     navigate(loginPath);
@@ -68,8 +87,8 @@ export const MemberPage = () => {
         // @TODO: handle not getting user
         return;
       }
-      const user = JSON.parse(data) as Member;
       // @TODO: handle updating rentals
+      // const user = JSON.parse(data) as Member;
       // const index = (user?.checked_out || []).indexOf(movie_id);
       // if (-1 < index) {
       //   user.checked_out = (user?.checked_out || []).splice(index, 1);
@@ -80,13 +99,29 @@ export const MemberPage = () => {
       setReturnErr(true);
     }
   };
-
   return (
     <div>
       <HeaderBanner user={member} />
       <div>
-        <Button onClick={logout}>Logout</Button>
+        <ButtonGroup style={{ marginTop: "2rem" }}>
+          <Button
+            onClick={() => toggleActiveButton("rest")}
+            className={activeButton === "rest" ? "selected" : ""}
+          >
+            REST
+          </Button>
+          <ButtonOr />
+          <Button
+            onClick={() => toggleActiveButton("graphql")}
+            className={activeButton === "graphql" ? "selected" : ""}
+          >
+            GraphQL
+          </Button>
+        </ButtonGroup>
       </div>
+      <Button onClick={logout} style={{ marginTop: "2rem" }}>
+        Logout
+      </Button>
       {rentals.length ? (
         <Table striped>
           <TableHeader>
