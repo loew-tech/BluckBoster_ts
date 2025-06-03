@@ -9,6 +9,8 @@ import {
   TableBody,
   ButtonGroup,
   ButtonOr,
+  Label,
+  Icon,
 } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 
@@ -99,11 +101,16 @@ export const MemberPage = () => {
       setReturnErr(true);
     }
   };
+
   return (
     <div>
       <HeaderBanner user={member} />
+      <Label className="active-api-label">
+        <Icon name="database" />
+        Currently running on {activeButton}
+      </Label>
       <div>
-        <ButtonGroup style={{ marginTop: "2rem" }}>
+        <ButtonGroup style={{ marginTop: "1rem" }}>
           <Button
             onClick={() => toggleActiveButton("rest")}
             className={activeButton === "rest" ? "selected" : ""}
