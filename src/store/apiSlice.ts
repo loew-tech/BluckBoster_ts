@@ -5,7 +5,7 @@ interface APIChoiceState {
 }
 
 const initialState: APIChoiceState = {
-  api: "rest",
+  api: "REST",
 };
 
 const apiChoiceSlice = createSlice({
@@ -13,10 +13,10 @@ const apiChoiceSlice = createSlice({
   initialState,
   reducers: {
     toggleToRest(state) {
-      state.api = "rest";
+      state.api = "REST";
     },
     toggleToGraphQL(state) {
-      state.api = "graphQL";
+      state.api = "GraphQL";
     },
   },
 });

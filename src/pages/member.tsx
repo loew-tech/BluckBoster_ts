@@ -26,6 +26,7 @@ import "./member.css";
 
 export const MemberPage = () => {
   const api = useAppSelector((state) => state.api.api);
+  console.log("api", api);
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
@@ -62,9 +63,9 @@ export const MemberPage = () => {
 
   const toggleActiveButton = (selection: string) => {
     setActiveButton(selection);
-    if (selection === "rest") {
+    if (selection === "REST") {
       dispatch(toggleToRest());
-    } else if (selection === "graphQL") {
+    } else if (selection === "GraphQL") {
       dispatch(toggleToGraphQL());
     }
   };
@@ -112,15 +113,15 @@ export const MemberPage = () => {
       <div>
         <ButtonGroup style={{ marginTop: "1rem" }}>
           <Button
-            onClick={() => toggleActiveButton("rest")}
-            className={activeButton === "rest" ? "selected" : ""}
+            onClick={() => toggleActiveButton("REST")}
+            className={activeButton === "REST" ? "selected" : ""}
           >
             REST
           </Button>
           <ButtonOr />
           <Button
-            onClick={() => toggleActiveButton("graphql")}
-            className={activeButton === "graphql" ? "selected" : ""}
+            onClick={() => toggleActiveButton("GraphQL")}
+            className={activeButton === "GraphQL" ? "selected" : ""}
           >
             GraphQL
           </Button>
