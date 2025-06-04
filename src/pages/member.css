@@ -1,4 +1,12 @@
 .selected {
-  background-color: #90ee90 !important;
+  background-color: aqua !important;
   color: white;
+}
+.active-api-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem !important;
+  width: 15%;
+  background-color: aqua !important;
 }

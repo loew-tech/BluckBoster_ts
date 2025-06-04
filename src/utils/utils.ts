@@ -1,63 +1,64 @@
-import {
-  cartRemoveURI,
-  cartURI,
-  checkoutURI,
-  memberLoginURI,
-  moviesURI,
-  returnURI,
-} from "../constants/constants";
+import { store } from "../store/store";
 import { Movie } from "../types/types";
+import * as rest from "./rest_utils";
+import * as graphql from "./graphql_utils";
 
 export const login = async (username: string): Promise<boolean> => {
-  const response = await fetch(memberLoginURI, {
-    method: "POST",
-    body: JSON.stringify({
-      username: username,
-    }),
-  });
-  if (response.ok) {
-    const data = await response.json();
-    localStorage.setItem("user", JSON.stringify(data));
+  const api = store.getState().api.api;
+  console.log("API in login:", api);
+  switch (api) {
+    case "REST":
+      return await rest.login(username);
+    case "GraphQL":
+      return await graphql.login(username);
   }
-  return response.ok;
+  return false;
 };
 
 export const fetchMovie = async (movieID: string): Promise<Movie | null> => {
-  const response = await fetch(`${moviesURI}/${movieID}`);
-  if (response.ok) {
-    const data = await response.json();
-    return data;
+  const api = store.getState().api.api;
+  console.log("API in fetchMovie:", api);
+  switch (api) {
+    case "REST":
+      return rest.fetchMovie(movieID);
+    case "GraphQL":
+      return graphql.fetchMovie(movieID);
   }
   return null;
 };
 
 export const fetchMovies = async (page: string): Promise<Movie[] | null> => {
-  const response = await fetch(`${moviesURI}?page=${page}`);
-  if (response.ok) {
-    const data = await response.json();
-    return data;
+  const api = store.getState().api.api;
+  console.log("API in fetchMovies:", api);
+  switch (api) {
+    case "REST":
+      return rest.fetchMovies(page);
+    case "GraphQL":
+      return graphql.fetchMovies(page);
   }
   return null;
 };
 
 export const fetchCart = async (username: string): Promise<Movie[]> => {
-  const response = await fetch(
-    `http://127.0.0.1:8080/api/v1/members/${username}/cart`
-  );
-  if (response.ok) {
-    const existingCart = await response.json();
-    return existingCart;
+  const api = store.getState().api.api;
+  console.log("API in fetchCart:", api);
+  switch (api) {
+    case "REST":
+      return rest.fetchCart(username);
+    case "GraphQL":
+      return graphql.fetchCart(username);
   }
   return [];
 };
 
 export const fetchCheckedoutMovies = async (username: string) => {
-  const response = await fetch(
-    `http://127.0.0.1:8080/api/v1/members/${username}/checkedout`
-  );
-  if (response.ok) {
-    const data = await response.json();
-    return data;
+  const api = store.getState().api.api;
+  console.log("API in fetchCheckedoutMovies:", api);
+  switch (api) {
+    case "REST":
+      return rest.fetchCheckedoutMovies(username);
+    case "GraphQL":
+      return graphql.fetchCheckedoutMovies(username);
   }
   return [];
 };
@@ -66,14 +67,15 @@ export const returnRentals = async (
   username: string,
   movie_ids: string[]
 ): Promise<boolean> => {
-  const response = await fetch(returnURI, {
-    method: "POST",
-    body: JSON.stringify({
-      username,
-      movie_ids,
-    }),
-  });
-  return response.ok;
+  const api = store.getState().api.api;
+  console.log("API in returnRentals:", api);
+  switch (api) {
+    case "REST":
+      return rest.returnRentals(username, movie_ids);
+    case "GraphQL":
+      return graphql.returnRentals(username, movie_ids);
+  }
+  return false;
 };
 
 // @TODO: should user cart be set here?
@@ -82,48 +84,41 @@ export const updateCart = (
   movie_id: string,
   cart: string[],
   removeFromCart: boolean
-) => {
-  let newCart = [...cart];
-  if (!removeFromCart) {
-    newCart.unshift(movie_id);
-    fetch(cartURI, {
-      method: "put",
-      body: JSON.stringify({ username, movie_id }),
-    });
-  } else {
-    fetch(cartRemoveURI, {
-      method: "put",
-      body: JSON.stringify({ username, movie_id }),
-    });
-    const index = newCart.indexOf(movie_id);
-    newCart.splice(index, 1);
+): string[] => {
+  const api = store.getState().api.api;
+  console.log("API in updateCart:", api);
+  switch (api) {
+    case "REST":
+      return rest.updateCart(username, movie_id, cart, removeFromCart);
+    case "GraphQL":
+      return graphql.updateCart(username, movie_id, cart, removeFromCart);
   }
-  return newCart;
+  return [];
 };
 
 export const getUser = async () => {
-  const data = localStorage.getItem("user");
-  if (!data) {
-    return;
+  const api = store.getState().api.api;
+  console.log("API in getUser:", api);
+  switch (api) {
+    case "REST":
+      return rest.getUser();
+    case "GraphQL":
+      return graphql.getUser();
   }
-  const user = JSON.parse(data);
-  const response = await fetch(
-    `http://127.0.0.1:8080/api/v1/members/${user.username}`
-  );
-  if (response.ok) {
-    const member = response.json();
-    localStorage.setItem("user", JSON.stringify(member));
-    return member;
-  }
+  return null;
 };
 
 export const checkout = async (
   username: string,
   movie_ids: string[]
 ): Promise<boolean> => {
-  const response = await fetch(checkoutURI, {
-    method: "POST",
-    body: JSON.stringify({ username, movie_ids }),
-  });
-  return response.ok;
+  const api = store.getState().api.api;
+  console.log("API in checkout:", api);
+  switch (api) {
+    case "REST":
+      return rest.checkout(username, movie_ids);
+    case "GraphQL":
+      return graphql.checkout(username, movie_ids);
+  }
+  return false;
 };

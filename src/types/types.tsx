@@ -19,5 +19,5 @@ export type Member = {
   cart?: string[];
   checked_out?: string[];
   rented?: string[];
-  type: string;
+  type?: string;
 };
