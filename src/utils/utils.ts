@@ -8,9 +8,9 @@ export const login = async (username: string): Promise<boolean> => {
   console.log("API in login:", api);
   switch (api) {
     case "REST":
-      return rest.login(username);
+      return await rest.login(username);
     case "GraphQL":
-      return graphql.login(username);
+      return await graphql.login(username);
   }
   return false;
 };
