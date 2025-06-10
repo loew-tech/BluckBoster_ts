@@ -19,6 +19,7 @@ type MovieTableProps = {
   cart: string[];
   cartUpdate: (s: string, b: boolean) => void;
   updateMovies: (s: string) => void;
+  returnRental: (s: string) => void;
 };
 export const MovieTable = ({
   movies,
@@ -26,6 +27,7 @@ export const MovieTable = ({
   cart,
   cartUpdate,
   updateMovies,
+  returnRental,
 }: MovieTableProps) => {
   return (
     <div className="movie-table">
@@ -56,16 +58,27 @@ export const MovieTable = ({
                     <TableCell>{movie.inventory}</TableCell>
                     <TableCell>{movie.rented ? movie.rented : 0}</TableCell>
                     <TableCell>
-                      {movie.inventory && (
+                      {(user?.checked_out ?? []).includes(movie.id) ? (
                         <Button
+                          className="return-button"
                           onClick={() => {
-                            cartUpdate(movie.id, cart.includes(movie.id));
+                            returnRental(movie.id);
                           }}
                         >
-                          {cart.includes(movie.id)
-                            ? "Remove from cart"
-                            : "Add to cart"}
+                          Return movie
                         </Button>
+                      ) : (
+                        movie.inventory && (
+                          <Button
+                            onClick={() => {
+                              cartUpdate(movie.id, cart.includes(movie.id));
+                            }}
+                          >
+                            {cart.includes(movie.id)
+                              ? "Remove from cart"
+                              : "Add to cart"}
+                          </Button>
+                        )
                       )}
                     </TableCell>
                   </>

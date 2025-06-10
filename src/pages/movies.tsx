@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 
 import { Member, Movie } from "../types/types";
-import { fetchMovie, fetchMovies, updateCart } from "../utils/utils";
+import { fetchMovies, returnRentals, updateCart } from "../utils/utils";
 import { HeaderBanner } from "../components/headerBanner";
 import { MovieTable } from "../components/movieTable/movieTable";
 import { ErrorMessage } from "../components/errorMessage";
-import { moviesURI } from "../constants/constants";
 
 const errorMsg = "An unexpected error occurred fetching our movie catalog";
 
@@ -14,9 +13,8 @@ export const MoviesPage = () => {
   const user = data !== null ? (JSON.parse(data) as Member) : null;
 
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [cart, setCart] = useState<string[]>(
-    user && user.cart ? user.cart : []
-  );
+  const [cart, setCart] = useState<string[]>(user?.cart ?? []);
+  const [_, setCheckedOut] = useState(user?.checked_out ?? []);
   const [movieErr, setMovieErr] = useState<boolean>(false);
 
   const getMovies = async (page: string = "A") => {
@@ -41,15 +39,29 @@ export const MoviesPage = () => {
     return 1;
   });
 
-  const cartUpdate = (movie_id: string, removeFromCart: boolean) => {
+  const cartUpdate = (movieID: string, removeFromCart: boolean) => {
     if (!user) {
       return;
     }
-    setCart(updateCart(user.username, movie_id, cart, removeFromCart));
-    const index = user.cart ? user.cart.indexOf(movie_id) : -1;
+    setCart(updateCart(user.username, movieID, cart, removeFromCart));
+    const index = user.cart ? user.cart.indexOf(movieID) : -1;
     if (-1 < index) {
       user.cart?.splice(index, 1);
       localStorage.setItem("user", JSON.stringify(user));
+    }
+  };
+
+  const returnRental = (movieID: string) => {
+    if (!user) {
+      return;
+    }
+    returnRentals(user?.username, [movieID]);
+    const index = user?.checked_out ? user.checked_out.indexOf(movieID) : -1;
+    if (-1 < index) {
+      user?.checked_out?.splice(index, 1);
+      localStorage.setItem("user", JSON.stringify(user));
+      // @TODO: better way to trigger rerender?
+      setCheckedOut(user?.checked_out ?? []);
     }
   };
 
@@ -63,6 +75,7 @@ export const MoviesPage = () => {
           cart={cart}
           cartUpdate={cartUpdate}
           updateMovies={getMovies}
+          returnRental={returnRental}
         />
       ) : (
         <>
