@@ -14,7 +14,7 @@ export const MoviesPage = () => {
 
   const [movies, setMovies] = useState<Movie[]>([]);
   const [cart, setCart] = useState<string[]>(user?.cart ?? []);
-  const [checkedOut, setCheckedOut] = useState(user?.checked_out ?? []);
+  const [_, setCheckedOut] = useState(user?.checked_out ?? []);
   const [movieErr, setMovieErr] = useState<boolean>(false);
 
   const getMovies = async (page: string = "A") => {
