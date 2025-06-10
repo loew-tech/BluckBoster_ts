@@ -27,6 +27,7 @@ export const CheckoutPage = () => {
   const navigate = useNavigate();
   const removeFromCart = true;
 
+  // @TODO: handle checking out movie that's already in checkout
   const userCheckout = async () => {
     if (!user) {
       setFailedCheckout(true);
