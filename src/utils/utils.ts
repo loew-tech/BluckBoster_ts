@@ -51,7 +51,9 @@ export const fetchCart = async (username: string): Promise<Movie[]> => {
   return [];
 };
 
-export const fetchCheckedoutMovies = async (username: string) => {
+export const fetchCheckedoutMovies = async (
+  username: string
+): Promise<Movie[]> => {
   const api = store.getState().api.api;
   console.log("API in fetchCheckedoutMovies:", api);
   switch (api) {
@@ -65,15 +67,15 @@ export const fetchCheckedoutMovies = async (username: string) => {
 
 export const returnRentals = async (
   username: string,
-  movie_ids: string[]
+  movieIDs: string[]
 ): Promise<boolean> => {
   const api = store.getState().api.api;
   console.log("API in returnRentals:", api);
   switch (api) {
     case "REST":
-      return rest.returnRentals(username, movie_ids);
+      return rest.returnRentals(username, movieIDs);
     case "GraphQL":
-      return graphql.returnRentals(username, movie_ids);
+      return graphql.returnRentals(username, movieIDs);
   }
   return false;
 };
@@ -110,15 +112,15 @@ export const getUser = async () => {
 
 export const checkout = async (
   username: string,
-  movie_ids: string[]
+  movieIDs: string[]
 ): Promise<boolean> => {
   const api = store.getState().api.api;
   console.log("API in checkout:", api);
   switch (api) {
     case "REST":
-      return rest.checkout(username, movie_ids);
+      return rest.checkout(username, movieIDs);
     case "GraphQL":
-      return graphql.checkout(username, movie_ids);
+      return graphql.checkout(username, movieIDs);
   }
   return false;
 };
