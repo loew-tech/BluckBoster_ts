@@ -51,7 +51,7 @@ export const fetchCart = async (username: string): Promise<Movie[]> => {
   return [];
 };
 
-export const fetchCheckedoutMovies = async (username: string) => {
+export const fetchCheckedoutMovies = async (username: string): Promise<Movie[]> => {
   const response = await fetch(
     `http://127.0.0.1:8080/api/v1/members/${username}/checkedout`
   );
@@ -64,13 +64,13 @@ export const fetchCheckedoutMovies = async (username: string) => {
 
 export const returnRentals = async (
   username: string,
-  movie_ids: string[]
+  movieIDs: string[]
 ): Promise<boolean> => {
   const response = await fetch(returnURI, {
     method: "POST",
     body: JSON.stringify({
       username,
-      movie_ids,
+      movieIDs,
     }),
   });
   return response.ok;
@@ -119,11 +119,11 @@ export const getUser = async () => {
 
 export const checkout = async (
   username: string,
-  movie_ids: string[]
+  movieIDs: string[]
 ): Promise<boolean> => {
   const response = await fetch(checkoutURI, {
     method: "POST",
-    body: JSON.stringify({ username, movie_ids }),
+    body: JSON.stringify({ username, movieIDs }),
   });
   return response.ok;
 };

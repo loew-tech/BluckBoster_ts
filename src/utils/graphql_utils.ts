@@ -4,8 +4,17 @@ const graphqlPath = "http://127.0.0.1:8080/graphql/v1";
 
 export const login = async (username: string): Promise<boolean> => {
   const query = {
-    query:
-      "query GetMember($username: ID!) { GetMember(username: $username) { username first_name last_name cart checked_out } }",
+    query: `
+      query GetMember($username: ID!) {
+        GetMember(username: $username) {
+          username
+          first_name
+          last_name
+          cart
+          checked_out
+        }
+      }
+    `,
     variables: {
       username,
     },
@@ -24,8 +33,17 @@ export const login = async (username: string): Promise<boolean> => {
 
 export const fetchMovie = async (movieID: string): Promise<Movie | null> => {
   const query = {
-    query:
-      "query GetMovie($movieID: ID!) { GetMovie(movieID: $movieID) { id title review synopsis trivia} }",
+    query: `
+      query GetMovie($movieID: ID!) {
+        GetMovie(movieID: $movieID) {
+          id
+          title
+          review
+          synopsis
+          trivia
+        }
+      }
+    `,
     variables: {
       movieID,
     },
@@ -35,18 +53,29 @@ export const fetchMovie = async (movieID: string): Promise<Movie | null> => {
     method: "POST",
     body: JSON.stringify(query),
   });
-  if (response.ok) {
-    const data = await response.json();
-    console.log("data", data);
-    return data.data.GetMovie ?? null;
+  if (!response.ok) {
+    return null;
   }
-  return null;
+  const data = await response.json();
+  return data.data.GetMovie ?? null;
 };
 
 export const fetchMovies = async (page: string): Promise<Movie[] | null> => {
   const query = {
-    query:
-      "query GetMovies($page: String!) { GetMovies(page: $page) { id title rating year director cast rented inventory } }",
+    query: `
+      query GetMovies($page: String!) {
+        GetMovies(page: $page) {
+          id
+          title
+          rating
+          year
+          director
+          cast
+          rented
+          inventory
+        }
+      }
+    `,
     variables: {
       page,
     },
@@ -56,39 +85,121 @@ export const fetchMovies = async (page: string): Promise<Movie[] | null> => {
     method: "POST",
     body: JSON.stringify(query),
   });
-  if (response.ok) {
-    const data = await response.json();
-    return data.data.GetMovies ?? null;
+  if (!response.ok) {
+    return [];
   }
-  return null;
+  const data = await response.json();
+  return data.data.GetMovies ?? null;
 };
 
 export const fetchCart = async (username: string): Promise<Movie[]> => {
-  // stub
-  return Promise.resolve([]);
+  const query = {
+    query: `
+      query GetCart($username: ID!) {
+        GetCart(username: $username) {
+          id
+          title
+          inventory
+        }
+      }
+    `,
+    variables: {
+      username: username,
+    },
+  };
+
+  const response = await fetch(graphqlPath, {
+    method: "POST",
+    body: JSON.stringify(query),
+  });
+  if (!response.ok) {
+    return [];
+  }
+  const data = await response.json();
+  return data.data.GetCart ?? [];
 };
 
-export const fetchCheckedoutMovies = async (username: string) => {
-  // stub
-  return [];
+export const fetchCheckedoutMovies = async (
+  username: string
+): Promise<Movie[]> => {
+  const query = {
+    query: `
+      query GetCheckedout($username: ID!) {
+        GetCheckedout(username: $username) {
+          id
+          title
+        }
+      }
+    `,
+    variables: {
+      username,
+    },
+  };
+
+  const response = await fetch(graphqlPath, {
+    method: "POST",
+    body: JSON.stringify(query),
+  });
+  if (!response.ok) {
+    return [];
+  }
+  const data = await response.json();
+  return data.data.GetCheckedout ?? [];
 };
 
 export const returnRentals = async (
   username: string,
-  movie_ids: string[]
+  movieIDs: string[]
 ): Promise<boolean> => {
-  // stub
-  return false;
+  const mutation = {
+    query: `
+    mutation ReturnRentals($username: ID!, $movieIDs: [String]!) {
+      ReturnRentals(username: $username, movieIDs: $movieIDs)
+    }
+  `,
+    variables: {
+      username,
+      movieIDs,
+    },
+  };
+  const response = await fetch(graphqlPath, {
+    method: "POST",
+    body: JSON.stringify(mutation),
+  });
+  return response.ok;
 };
 
 export const updateCart = (
   username: string,
-  movie_id: string,
+  movieID: string,
   cart: string[],
   removeFromCart: boolean
 ): string[] => {
-  // stub
-  return [];
+  let newCart = [...cart];
+  if (removeFromCart) {
+    const index = newCart.indexOf(movieID);
+    newCart.splice(index, 1);
+  } else {
+    newCart.push(movieID);
+  }
+  const mutation = {
+    query: `
+    mutation UpdateCart($username: ID!, $movieID: String!, $removeFromCart: Boolean!) {
+      UpdateCart(username: $username, movieID: $movieID, removeFromCart: $removeFromCart)
+    }
+  `,
+    variables: {
+      username,
+      movieID,
+      removeFromCart,
+    },
+  };
+  fetch(graphqlPath, {
+    method: "post",
+    body: JSON.stringify(mutation),
+  });
+
+  return newCart;
 };
 
 export const getUser = async (): Promise<Member | null> => {
@@ -98,8 +209,17 @@ export const getUser = async (): Promise<Member | null> => {
   }
   const user = JSON.parse(localData);
   const query = {
-    query:
-      "query GetMember($username: ID!) { GetMember(username: $username) { username first_name last_name cart checked_out } }",
+    query: `
+      query GetMember($username: ID!) {
+        GetMember(username: $username) {
+          username
+          first_name
+          last_name
+          cart
+          checked_out
+        }
+      }
+    `,
     variables: {
       username: user.username,
     },
@@ -120,8 +240,24 @@ export const getUser = async (): Promise<Member | null> => {
 
 export const checkout = async (
   username: string,
-  movie_ids: string[]
+  movieIDs: string[]
 ): Promise<boolean> => {
-  // stub
-  return false;
+  console.log("checking out");
+  const mutation = {
+    query: `
+    mutation Checkout($username: ID!, $movieIDs: [String]!) {
+      Checkout(username: $username, movieIDs: $movieIDs)
+    }
+  `,
+    variables: {
+      username,
+      movieIDs,
+    },
+  };
+
+  const response = await fetch(graphqlPath, {
+    method: "POST",
+    body: JSON.stringify(mutation),
+  });
+  return response.ok;
 };

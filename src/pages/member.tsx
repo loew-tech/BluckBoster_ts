@@ -75,15 +75,15 @@ export const MemberPage = () => {
     navigate(loginPath);
   };
 
-  const rentalReturn = async (movie_ids: string[]) => {
+  const rentalReturn = async (movieIDs: string[]) => {
     if (!member) {
       setReturnErr(true);
       return;
     }
 
-    const success = await returnRentals(member.username, movie_ids);
+    const success = await returnRentals(member.username, movieIDs);
     if (success) {
-      setRentals(rentals.filter((m) => !movie_ids.includes(m.id)));
+      setRentals(rentals.filter((m) => !movieIDs.includes(m.id)));
       setCurrentlyRented(currentlyRented - 1);
       const data = localStorage.getItem("user");
       if (!data) {
