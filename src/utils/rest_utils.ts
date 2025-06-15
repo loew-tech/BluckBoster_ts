@@ -51,7 +51,9 @@ export const fetchCart = async (username: string): Promise<Movie[]> => {
   return [];
 };
 
-export const fetchCheckedoutMovies = async (username: string): Promise<Movie[]> => {
+export const fetchCheckedoutMovies = async (
+  username: string
+): Promise<Movie[]> => {
   const response = await fetch(
     `http://127.0.0.1:8080/api/v1/members/${username}/checkedout`
   );
@@ -70,7 +72,7 @@ export const returnRentals = async (
     method: "POST",
     body: JSON.stringify({
       username,
-      movieIDs,
+      movie_ids: movieIDs,
     }),
   });
   return response.ok;
@@ -79,23 +81,23 @@ export const returnRentals = async (
 // @TODO: should user cart be set here?
 export const updateCart = (
   username: string,
-  movie_id: string,
+  movieID: string,
   cart: string[],
   removeFromCart: boolean
 ): string[] => {
   let newCart = [...cart];
   if (!removeFromCart) {
-    newCart.unshift(movie_id);
+    newCart.unshift(movieID);
     fetch(cartURI, {
       method: "put",
-      body: JSON.stringify({ username, movie_id }),
+      body: JSON.stringify({ username, movie_id: movieID }),
     });
   } else {
     fetch(cartRemoveURI, {
       method: "put",
-      body: JSON.stringify({ username, movie_id }),
+      body: JSON.stringify({ username, movie_id: movieID }),
     });
-    const index = newCart.indexOf(movie_id);
+    const index = newCart.indexOf(movieID);
     newCart.splice(index, 1);
   }
   return newCart;
@@ -123,7 +125,7 @@ export const checkout = async (
 ): Promise<boolean> => {
   const response = await fetch(checkoutURI, {
     method: "POST",
-    body: JSON.stringify({ username, movieIDs }),
+    body: JSON.stringify({ username, movie_ids: movieIDs }),
   });
   return response.ok;
 };
