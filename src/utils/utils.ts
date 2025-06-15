@@ -1,7 +1,7 @@
 import { store } from "../store/store";
 import { Movie } from "../types/types";
-import * as rest from "./rest_utils";
-import * as graphql from "./graphql_utils";
+import * as rest from "./restUtils";
+import * as graphql from "./graphqlUtils";
 
 export const login = async (username: string): Promise<boolean> => {
   const api = store.getState().api.api;
