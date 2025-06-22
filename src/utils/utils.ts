@@ -124,3 +124,25 @@ export const checkout = async (
   }
   return false;
 };
+
+export const starredWith = async (star: string): Promise<string[]> => {
+  return graphql.starredWith(star);
+};
+
+export const starredIn = async (star: string): Promise<Movie[]> => {
+  // @TODO: implement this
+  // stub
+  return [];
+};
+
+export const directedActors = async (star: string): Promise<string[]> => {
+  // @TODO: implement this
+  // stub
+  return [];
+};
+
+export const directedMovies = async (star: string): Promise<Movie[]> => {
+  // @TODO: implement this
+  // stub
+  return [];
+};

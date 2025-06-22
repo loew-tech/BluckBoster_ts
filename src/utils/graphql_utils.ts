@@ -261,3 +261,24 @@ export const checkout = async (
   });
   return response.ok;
 };
+
+export const starredWith = async (star: string): Promise<string[]> => {
+  const query = {
+    query: `
+      query StarredWith($star: String!) {
+        StarredWith(star: $star) 
+      }
+    `,
+    variables: {
+      star,
+    },
+  };
+
+  const response = await fetch(graphqlPath, {
+    method: "POST",
+    body: JSON.stringify(query),
+  });
+  const data = await response.json();
+  console.log(data);
+  return data.data.StarredWith ?? null;
+};

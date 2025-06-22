@@ -51,7 +51,9 @@ export const fetchCart = async (username: string): Promise<Movie[]> => {
   return [];
 };
 
-export const fetchCheckedoutMovies = async (username: string): Promise<Movie[]> => {
+export const fetchCheckedoutMovies = async (
+  username: string
+): Promise<Movie[]> => {
   const response = await fetch(
     `http://127.0.0.1:8080/api/v1/members/${username}/checkedout`
   );
