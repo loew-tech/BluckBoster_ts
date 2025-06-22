@@ -1,39 +1,33 @@
 import { useState } from "react";
-import {
-  Button,
-  Container,
-  Dropdown,
-  DropdownProps,
-  Input,
-} from "semantic-ui-react";
+import { Button, Container, Dropdown, DropdownProps } from "semantic-ui-react";
 import { HeaderBanner } from "../components/headerBanner";
 import { Member, Movie } from "../types/types";
 import {
+  DIRECTOR,
   KEVIN_BACON,
   moviesPath,
-  STARRED_IN,
-  STARRED_WITH,
+  PERFORMER,
 } from "../constants/constants";
-import { starredWith, starredIn } from "../utils/utils";
+import {
+  starredWith,
+  starredIn,
+  directedActors,
+  directedMovies,
+} from "../utils/utils";
 
 const CREATOR_OPTIONS = [
   {
-    key: "director",
-    text: "director",
-    value: "director",
+    key: DIRECTOR,
+    text: DIRECTOR,
+    value: DIRECTOR,
   },
   {
-    key: "starredWith",
-    text: "starred with",
-    value: STARRED_WITH,
+    key: PERFORMER,
+    text: PERFORMER,
+    value: PERFORMER,
   },
   {
-    key: "starredIn",
-    text: "starred in",
-    value: STARRED_IN,
-  },
-  {
-    key: "kevinBacon",
+    key: KEVIN_BACON,
     text: "Kevin Bacon",
     value: KEVIN_BACON,
   },
@@ -62,11 +56,16 @@ export const KevinBacon = () => {
     let performers: string[] | null = null;
     let movies: Movie[] | null = null;
     switch (exploreType) {
-      case STARRED_WITH:
+      case PERFORMER:
         performers = await starredWith(creator);
-        break;
-      case STARRED_IN:
         movies = await starredIn(creator);
+        break;
+      case DIRECTOR:
+        performers = await directedActors(creator);
+        movies = await directedMovies(creator);
+        break;
+      case KEVIN_BACON:
+        // @TODO: implement case
         break;
       default:
         console.warn("Unknown explore request:", exploreType);
@@ -80,7 +79,6 @@ export const KevinBacon = () => {
     <>
       <HeaderBanner user={user} />
       <Container text className="movie-container">
-        <p>Hello Kevin Bacon</p>
         <div style={{ display: "flex" }}>
           <Dropdown
             placeholder="Select Search"
