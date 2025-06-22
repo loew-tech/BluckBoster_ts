@@ -282,3 +282,39 @@ export const starredWith = async (star: string): Promise<string[]> => {
   console.log(data);
   return data.data.StarredWith ?? null;
 };
+
+export const starredIn = async (star: string): Promise<Movie[]> => {
+  const query = {
+    query: `
+      query StarredIn($star: String!) {
+        StarredIn(star: $star) {
+          id
+          title
+        }
+      }
+    `,
+    variables: {
+      star,
+    },
+  };
+
+  const response = await fetch(graphqlPath, {
+    method: "POST",
+    body: JSON.stringify(query),
+  });
+  const data = await response.json();
+  console.log(data);
+  return data.data.StarredIn ?? null;
+};
+
+export const directedActors = async (director: string): Promise<string[]> => {
+  // @TODO: implement this
+  // stub
+  return [];
+};
+
+export const directedMovies = async (director: string): Promise<Movie[]> => {
+  // @TODO: implement this
+  // stub
+  return [];
+};

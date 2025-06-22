@@ -14,7 +14,7 @@ import {
   STARRED_IN,
   STARRED_WITH,
 } from "../constants/constants";
-import { starredWith } from "../utils/graphql_utils";
+import { starredWith, starredIn } from "../utils/utils";
 
 const CREATOR_OPTIONS = [
   {
@@ -65,6 +65,9 @@ export const KevinBacon = () => {
       case STARRED_WITH:
         performers = await starredWith(creator);
         break;
+      case STARRED_IN:
+        movies = await starredIn(creator);
+        break;
       default:
         console.warn("Unknown explore request:", exploreType);
     }
@@ -100,13 +103,23 @@ export const KevinBacon = () => {
       {performerData ? (
         // @TODO: style this properly
         <Container text className="movie-container">
-          <ul>{performerData.map((p) => <li>{p}</li>)}</ul>
+          <ul>
+            {performerData.map((p) => (
+              <li>{p}</li>
+            ))}
+          </ul>
         </Container>
       ) : null}
       {movieData ? (
         // @TODO: style this properly
         <Container text className="movie-container">
-          <ul>{movieData.map((m) => <li><a href={`${moviesPath}/${m.id}`}>{m.title}</a></li>)}</ul>
+          <ul>
+            {movieData.map((m) => (
+              <li>
+                <a href={`${moviesPath}/${m.id}`}>{m.title}</a>
+              </li>
+            ))}
+          </ul>
         </Container>
       ) : null}
     </>

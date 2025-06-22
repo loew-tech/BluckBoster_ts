@@ -130,19 +130,13 @@ export const starredWith = async (star: string): Promise<string[]> => {
 };
 
 export const starredIn = async (star: string): Promise<Movie[]> => {
-  // @TODO: implement this
-  // stub
-  return [];
+  return graphql.starredIn(star);
 };
 
-export const directedActors = async (star: string): Promise<string[]> => {
-  // @TODO: implement this
-  // stub
-  return [];
+export const directedActors = async (director: string): Promise<string[]> => {
+  return graphql.directedActors(director);
 };
 
-export const directedMovies = async (star: string): Promise<Movie[]> => {
-  // @TODO: implement this
-  // stub
-  return [];
+export const directedMovies = async (director: string): Promise<Movie[]> => {
+  return graphql.directedMovies(director);
 };
