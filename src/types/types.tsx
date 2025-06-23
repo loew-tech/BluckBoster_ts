@@ -21,3 +21,13 @@ export type Member = {
   rented?: string[];
   type?: string;
 };
+
+export type KevinBaconResponse = {
+  star?: string;
+  stars: string[];
+  total_stars: number;
+  movies: Movie[];
+  total_movies: number;
+  directors: string[];
+  total_directors: number;
+};

@@ -12,13 +12,14 @@ import {
   DIRECTOR,
   KEVIN_BACON,
   moviesPath,
-  PERFORMER,
+  STAR,
 } from "../constants/constants";
 import {
   starredWith,
   starredIn,
   directedActors,
   directedMovies,
+  kevinBacon,
 } from "../utils/utils";
 
 const CREATOR_OPTIONS = [
@@ -28,9 +29,9 @@ const CREATOR_OPTIONS = [
     value: DIRECTOR,
   },
   {
-    key: PERFORMER,
-    text: PERFORMER,
-    value: PERFORMER,
+    key: STAR,
+    text: STAR,
+    value: STAR,
   },
   {
     key: KEVIN_BACON,
@@ -45,40 +46,40 @@ export const KevinBacon = () => {
 
   const [creator, setCreator] = useState<string>("");
   const [exploreType, setExploreType] = useState<string>("");
-  const [performerData, setPerformerData] = useState<string[] | null>(null);
+  const [starData, setStarData] = useState<string[] | null>(null);
   const [movieData, setMovieData] = useState<Movie[] | null>(null);
+  const [directorData, setDirectorData] = useState<string[] | null>(null);
 
   const handleSelectionChange = async (
     _: React.SyntheticEvent<HTMLElement>,
     { value }: DropdownProps
   ) => {
-    console.log("Here", value);
     setExploreType(value as string);
-    console.log("creatorType is", exploreType);
   };
 
   const explore = async () => {
-    console.log("Go!", exploreType, creator);
-    let performers: string[] | null = null;
+    let stars: string[] | null = null;
     let movies: Movie[] | null = null;
     switch (exploreType) {
-      case PERFORMER:
-        performers = await starredWith(creator);
+      case STAR:
+        stars = await starredWith(creator);
         movies = await starredIn(creator);
         break;
       case DIRECTOR:
-        performers = await directedActors(creator);
+        stars = await directedActors(creator);
         movies = await directedMovies(creator);
         break;
       case KEVIN_BACON:
-        // @TODO: implement case
-        break;
+        const kb = await kevinBacon(creator);
+        setStarData(kb?.stars ?? null);
+        setMovieData(kb?.movies ?? null);
+        setDirectorData(kb?.directors ?? null);
+        return;
       default:
         console.warn("Unknown explore request:", exploreType);
     }
-    setPerformerData(performers);
+    setStarData(stars);
     setMovieData(movies);
-    console.log("KevinBacon", performers);
   };
 
   return (
@@ -104,14 +105,14 @@ export const KevinBacon = () => {
           <Button onClick={explore}>Go!</Button>
         </div>
       </Container>
-      {performerData ? (
+      {starData ? (
         // @TODO: style this properly
         <Container text className="movie-container">
           <Header as="h2" className="title-field">
             Co-Stars
           </Header>
           <ul>
-            {performerData.map((p) => (
+            {starData.map((p) => (
               <li>{p}</li>
             ))}
           </ul>
@@ -125,9 +126,22 @@ export const KevinBacon = () => {
           </Header>
           <ul>
             {movieData.map((m) => (
-              <li>
+              <li key={m.id}>
                 <a href={`${moviesPath}/${m.id}`}>{m.title}</a>
               </li>
+            ))}
+          </ul>
+        </Container>
+      ) : null}
+      {directorData ? (
+        // @TODO: style this properly
+        <Container text className="movie-container">
+          <Header as="h2" className="title-field">
+            Directors
+          </Header>
+          <ul>
+            {directorData.map((p) => (
+              <li key={p}>{p}</li>
             ))}
           </ul>
         </Container>

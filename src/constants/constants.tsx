@@ -12,5 +12,5 @@ export const cartURI = "http://127.0.0.1:8080/api/v1/members/cart";
 export const cartRemoveURI = "http://127.0.0.1:8080/api/v1/members/cart/remove";
 
 export const DIRECTOR = "director";
-export const PERFORMER = "performer";
+export const STAR = "star";
 export const KEVIN_BACON = "KevinBacon";

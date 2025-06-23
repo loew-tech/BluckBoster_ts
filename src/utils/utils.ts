@@ -1,5 +1,5 @@
 import { store } from "../store/store";
-import { Movie } from "../types/types";
+import { KevinBaconResponse, Movie } from "../types/types";
 import * as rest from "./rest_utils";
 import * as graphql from "./graphql_utils";
 
@@ -139,4 +139,13 @@ export const directedActors = async (director: string): Promise<string[]> => {
 
 export const directedMovies = async (director: string): Promise<Movie[]> => {
   return graphql.directedMovies(director);
+};
+
+export const kevinBacon = async (
+  star?: string,
+  movie?: string,
+  director?: string,
+  depth?: number
+): Promise<KevinBaconResponse | null> => {
+  return graphql.kevinBacon(star, movie, director, depth);
 };

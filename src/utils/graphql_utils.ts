@@ -1,4 +1,4 @@
-import { Member, Movie } from "../types/types";
+import { KevinBaconResponse, Member, Movie } from "../types/types";
 
 const graphqlPath = "http://127.0.0.1:8080/graphql/v1";
 
@@ -350,4 +350,49 @@ export const directedMovies = async (director: string): Promise<Movie[]> => {
   const data = await response.json();
   console.log(data);
   return data.data.DirectedMovies ?? null;
+};
+
+export const kevinBacon = async (
+  star?: string,
+  movie?: string,
+  director?: string,
+  depth?: number
+): Promise<KevinBaconResponse | null> => {
+  if (!star && !movie && !director) {
+    console.warn(
+      "the KevinBacon search requires at least one star, movie, or director"
+    );
+    return null;
+  }
+  const query = {
+    query: `
+      query KevinBacon($star: String!, $movie: String, $director: String, $depth: Int) {
+        KevinBacon(star: $star, movie: $movie, director: $director, depth: $depth) {
+          star
+          stars
+          movies {
+            id
+            title
+          }
+          total_movies
+          directors
+          total_directors
+        }
+      }
+    `,
+    variables: {
+      star,
+      movie,
+      director,
+      depth,
+    },
+  };
+
+  const response = await fetch(graphqlPath, {
+    method: "POST",
+    body: JSON.stringify(query),
+  });
+  const data = await response.json();
+  console.log(data);
+  return data.data.KevinBacon ?? null;
 };
