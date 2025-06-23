@@ -51,13 +51,19 @@ export const Explore = () => {
   const user = data ? (JSON.parse(data) as Member) : null;
 
   const [creator, setCreator] = useState<string>("");
+  const [starsPercentage, setStarsPercentage] = useState<number | null>(null);
   const [director, setDirector] = useState<string>("");
+  const [directorPercentage, setDirectorPercentage] = useState<number | null>(
+    null
+  );
   const [movieTitle, setMovieTitle] = useState("");
+  const [moviesPercentage, setMoviesPercentage] = useState<number | null>(null);
+  // @TODO: is this the right default?
   const [depth, setDepth] = useState<number>(1);
   const [exploreType, setExploreType] = useState<string>("");
-  const [starData, setStarData] = useState<string[] | null>(null);
-  const [movieData, setMovieData] = useState<Movie[] | null>(null);
-  const [directorData, setDirectorData] = useState<string[] | null>(null);
+  const [starData, setStarData] = useState<string[]>([]);
+  const [movieData, setMovieData] = useState<Movie[]>([]);
+  const [directorData, setDirectorData] = useState<string[]>([]);
 
   const handleSelectionChange = async (
     _: React.SyntheticEvent<HTMLElement>,
@@ -79,8 +85,8 @@ export const Explore = () => {
   // @TODO: add loader?
   const explore = async () => {
     console.log("exploreType=", exploreType);
-    let stars: string[] | null = null;
-    let movies: Movie[] | null = null;
+    let stars: string[] = [];
+    let movies: Movie[] = [];
     switch (exploreType) {
       case STAR:
         stars = await starredWith(creator);
@@ -92,9 +98,26 @@ export const Explore = () => {
         break;
       case KEVIN_BACON:
         const kb = await kevinBacon(creator, movieTitle, director, depth);
-        setStarData(kb?.stars ?? null);
-        setMovieData(kb?.movies ?? null);
-        setDirectorData(kb?.directors ?? null);
+        console.log(
+          "totals",
+          kb?.total_stars,
+          kb?.total_movies,
+          kb?.total_directors
+        );
+        setStarData(kb?.stars ?? []);
+        setStarsPercentage(
+          kb?.stars ? (kb.stars.length / kb.total_stars) * 100 : null
+        );
+        setMovieData(kb?.movies ?? []);
+        setMoviesPercentage(
+          kb?.movies ? (kb.movies.length / kb.total_movies) * 100 : null
+        );
+        setDirectorData(kb?.directors ?? []);
+        setDirectorPercentage(
+          kb?.directors
+            ? (kb.directors.length / kb.total_directors) * 100
+            : null
+        );
         return;
       default:
         console.warn("Unknown explore request:", exploreType);
@@ -102,6 +125,8 @@ export const Explore = () => {
     setStarData(stars);
     setMovieData(movies);
   };
+
+  console.log(starsPercentage, moviesPercentage, directorPercentage);
 
   return (
     <>
@@ -130,7 +155,7 @@ export const Explore = () => {
               Star:
               <input
                 type="text"
-                placeholder="Enter STAR Name"
+                placeholder="Enter Star Name"
                 value={creator}
                 onChange={(e) => setCreator(e.target.value)}
               />
@@ -153,8 +178,9 @@ export const Explore = () => {
                 onChange={(e) => setDirector(e.target.value)}
               />
             </div>
+            {/* @TODO: change this to number select */}
             <Dropdown
-              placeholder="Select SEarch Depth"
+              placeholder="Select Search Depth"
               fluid
               selection
               options={DEPTH_OPTIONS}
@@ -164,7 +190,26 @@ export const Explore = () => {
         )}
         <Button onClick={explore}>Go!</Button>
       </Container>
-      {starData ? (
+      {starsPercentage ? (
+        <Container text className="movie-container">
+          <h2>SUMMARY</h2>
+          <div>
+            Stars Explored: {starData.length}; {starsPercentage.toFixed(2)}% of
+            total
+          </div>
+          <div>
+            Movies Explored: {movieData.length}; {moviesPercentage?.toFixed(2)}%
+            of total
+          </div>
+          <div>
+            Directors Explored: {directorData.length};{" "}
+            {directorPercentage?.toFixed(2)}% of total
+          </div>
+        </Container>
+      ) : (
+        <p>huh?</p>
+      )}
+      {starData.length ? (
         // @TODO: style this properly
         <Container text className="movie-container">
           <Header as="h2" className="title-field">
@@ -177,7 +222,7 @@ export const Explore = () => {
           </ul>
         </Container>
       ) : null}
-      {movieData ? (
+      {movieData.length ? (
         // @TODO: style this properly
         <Container text className="movie-container">
           <Header as="h2" className="title-field">
@@ -192,7 +237,7 @@ export const Explore = () => {
           </ul>
         </Container>
       ) : null}
-      {directorData ? (
+      {directorData.length ? (
         // @TODO: style this properly
         <Container text className="movie-container">
           <Header as="h2" className="title-field">
