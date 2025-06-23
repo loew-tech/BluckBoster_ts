@@ -54,13 +54,14 @@ export const fetchMovie = async (movieID: string): Promise<Movie | null> => {
     body: JSON.stringify(query),
   });
   if (!response.ok) {
+    console.warn("Failure to fetch movie");
     return null;
   }
   const data = await response.json();
-  return data.data.GetMovie ?? null;
+  return data.data.GetMovie ?? [];
 };
 
-export const fetchMovies = async (page: string): Promise<Movie[] | null> => {
+export const fetchMovies = async (page: string): Promise<Movie[]> => {
   const query = {
     query: `
       query GetMovies($page: String!) {
@@ -89,7 +90,7 @@ export const fetchMovies = async (page: string): Promise<Movie[] | null> => {
     return [];
   }
   const data = await response.json();
-  return data.data.GetMovies ?? null;
+  return data.data.GetMovies ?? [];
 };
 
 export const fetchCart = async (username: string): Promise<Movie[]> => {

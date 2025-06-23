@@ -7,12 +7,12 @@ import { MemberPage } from "./member";
 import { MoviePage } from "./movie";
 import {
   checkoutPath,
-  kevinBaconPath,
+  ExplorePath,
   loginPath,
   memberPath,
   moviesPath,
 } from "../constants/constants";
-import { KevinBacon } from "./kevinBacon";
+import { Explore } from "./explore";
 
 export const Main = () => {
   return (
@@ -24,7 +24,7 @@ export const Main = () => {
         <Route path={`${moviesPath}/:movieID`} element={<MoviePage />} />
         <Route path={checkoutPath} element={<CheckoutPage />} />
         <Route path={memberPath} element={<MemberPage />} />
-        <Route path={kevinBaconPath} element={<KevinBacon />} />
+        <Route path={ExplorePath} element={<Explore />} />
       </Routes>
     </BrowserRouter>
   );

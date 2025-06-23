@@ -40,7 +40,7 @@ const CREATOR_OPTIONS = [
   },
 ];
 
-export const KevinBacon = () => {
+export const Explore = () => {
   const data = localStorage.getItem("user");
   const user = data ? (JSON.parse(data) as Member) : null;
 
@@ -57,6 +57,7 @@ export const KevinBacon = () => {
     setExploreType(value as string);
   };
 
+  // @TODO: add loader?
   const explore = async () => {
     let stars: string[] | null = null;
     let movies: Movie[] | null = null;
@@ -112,8 +113,8 @@ export const KevinBacon = () => {
             Co-Stars
           </Header>
           <ul>
-            {starData.map((p) => (
-              <li>{p}</li>
+            {starData.map((s) => (
+              <li key={s}>{s}</li>
             ))}
           </ul>
         </Container>
@@ -140,8 +141,8 @@ export const KevinBacon = () => {
             Directors
           </Header>
           <ul>
-            {directorData.map((p) => (
-              <li key={p}>{p}</li>
+            {directorData.map((d) => (
+              <li key={d}>{d}</li>
             ))}
           </ul>
         </Container>

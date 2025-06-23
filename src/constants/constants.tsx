@@ -2,7 +2,7 @@ export const checkoutPath = "/checkout";
 export const moviesPath = "/movies";
 export const memberPath = "/member";
 export const loginPath = "/login";
-export const kevinBaconPath = "/kevin_bacon";
+export const ExplorePath = "/explore";
 
 export const memberLoginURI = "http://127.0.0.1:8080/api/v1/members/login";
 export const moviesURI = "http://127.0.0.1:8080/api/v1/movies";

@@ -6,7 +6,7 @@ import {
   moviesURI,
   returnURI,
 } from "../constants/constants";
-import { Movie } from "../types/types";
+import { Member, Movie } from "../types/types";
 
 export const login = async (username: string): Promise<boolean> => {
   const response = await fetch(memberLoginURI, {
@@ -31,13 +31,13 @@ export const fetchMovie = async (movieID: string): Promise<Movie | null> => {
   return null;
 };
 
-export const fetchMovies = async (page: string): Promise<Movie[] | null> => {
+export const fetchMovies = async (page: string): Promise<Movie[]> => {
   const response = await fetch(`${moviesURI}?page=${page}`);
   if (response.ok) {
     const data = await response.json();
     return data;
   }
-  return null;
+  return [];
 };
 
 export const fetchCart = async (username: string): Promise<Movie[]> => {
@@ -103,20 +103,21 @@ export const updateCart = (
   return newCart;
 };
 
-export const getUser = async () => {
+export const getUser = async (): Promise<Member | null> => {
   const data = localStorage.getItem("user");
   if (!data) {
-    return;
+    return null;
   }
   const user = JSON.parse(data);
   const response = await fetch(
     `http://127.0.0.1:8080/api/v1/members/${user.username}`
   );
   if (response.ok) {
-    const member = response.json();
+    const member = await response.json();
     localStorage.setItem("user", JSON.stringify(member));
     return member;
   }
+  return null;
 };
 
 export const checkout = async (
