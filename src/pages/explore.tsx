@@ -69,9 +69,17 @@ export const Explore = () => {
     _: React.SyntheticEvent<HTMLElement>,
     { value }: DropdownProps
   ) => {
-    if (value === KEVIN_BACON) {
-      setCreator("");
-    }
+    setCreator("");
+    setStarData([]);
+    setStarsPercentage(null);
+    setMovieData([]);
+    setMovieTitle("");
+    setMoviesPercentage(null);
+    setMovieData([]);
+    setDirector("");
+    setDirectorData([]);
+    setDirectorPercentage(null);
+
     setExploreType(value as string);
   };
 
