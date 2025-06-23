@@ -5,7 +5,6 @@ import { Container, Grid, Header } from "semantic-ui-react";
 import { Member, Movie } from "../types/types";
 import { HeaderBanner } from "../components/headerBanner";
 import { TriviaContainer } from "../components/movieComponents/triviaContainer";
-import { moviesURI } from "../constants/constants";
 import { MovieElementRow } from "../components/movieComponents/movieElementRow";
 import { ErrorMessage } from "../components/errorMessage";
 

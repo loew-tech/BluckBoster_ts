@@ -39,7 +39,7 @@ export const MemberPage = () => {
   const [activeButton, setActiveButton] = useState<string>(api);
 
   useEffect(() => {
-    getUser().then((user: Member) => {
+    getUser().then((user: Member | null) => {
       setMember(user);
       setCurrentlyRented(user?.checked_out ? user.checked_out.length : 0);
     });

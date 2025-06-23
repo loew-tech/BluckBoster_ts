@@ -1,4 +1,4 @@
-import { Member, Movie } from "../types/types";
+import { KevinBaconResponse, Member, Movie } from "../types/types";
 
 const graphqlPath = "http://127.0.0.1:8080/graphql/v1";
 
@@ -54,13 +54,14 @@ export const fetchMovie = async (movieID: string): Promise<Movie | null> => {
     body: JSON.stringify(query),
   });
   if (!response.ok) {
+    console.warn("Failure to fetch movie");
     return null;
   }
   const data = await response.json();
-  return data.data.GetMovie ?? null;
+  return data.data.GetMovie ?? [];
 };
 
-export const fetchMovies = async (page: string): Promise<Movie[] | null> => {
+export const fetchMovies = async (page: string): Promise<Movie[]> => {
   const query = {
     query: `
       query GetMovies($page: String!) {
@@ -89,7 +90,7 @@ export const fetchMovies = async (page: string): Promise<Movie[] | null> => {
     return [];
   }
   const data = await response.json();
-  return data.data.GetMovies ?? null;
+  return data.data.GetMovies ?? [];
 };
 
 export const fetchCart = async (username: string): Promise<Movie[]> => {
@@ -260,4 +261,139 @@ export const checkout = async (
     body: JSON.stringify(mutation),
   });
   return response.ok;
+};
+
+export const starredWith = async (star: string): Promise<string[]> => {
+  const query = {
+    query: `
+      query StarredWith($star: String!) {
+        StarredWith(star: $star) 
+      }
+    `,
+    variables: {
+      star,
+    },
+  };
+
+  const response = await fetch(graphqlPath, {
+    method: "POST",
+    body: JSON.stringify(query),
+  });
+  const data = await response.json();
+  console.log(data);
+  return data.data.StarredWith ?? null;
+};
+
+export const starredIn = async (star: string): Promise<Movie[]> => {
+  const query = {
+    query: `
+      query StarredIn($star: String!) {
+        StarredIn(star: $star) {
+          id
+          title
+        }
+      }
+    `,
+    variables: {
+      star,
+    },
+  };
+
+  const response = await fetch(graphqlPath, {
+    method: "POST",
+    body: JSON.stringify(query),
+  });
+  const data = await response.json();
+  console.log(data);
+  return data.data.StarredIn ?? null;
+};
+
+export const directedActors = async (director: string): Promise<string[]> => {
+  const query = {
+    query: `
+      query DirectedPerformers($director: String!) {
+        DirectedPerformers(director: $director) 
+      }
+    `,
+    variables: {
+      director,
+    },
+  };
+
+  const response = await fetch(graphqlPath, {
+    method: "POST",
+    body: JSON.stringify(query),
+  });
+  const data = await response.json();
+  console.log(data);
+  return data.data.DirectedPerformers ?? null;
+};
+
+export const directedMovies = async (director: string): Promise<Movie[]> => {
+  const query = {
+    query: `
+      query DirectedMovies($director: String!) {
+        DirectedMovies(director: $director) {
+          id
+          title
+        }
+      }
+    `,
+    variables: {
+      director,
+    },
+  };
+
+  const response = await fetch(graphqlPath, {
+    method: "POST",
+    body: JSON.stringify(query),
+  });
+  const data = await response.json();
+  console.log(data);
+  return data.data.DirectedMovies ?? null;
+};
+
+export const kevinBacon = async (
+  star?: string,
+  movie?: string,
+  director?: string,
+  depth?: number
+): Promise<KevinBaconResponse | null> => {
+  if (!star && !movie && !director) {
+    console.warn(
+      "the KevinBacon search requires at least one star, movie, or director"
+    );
+    return null;
+  }
+  const query = {
+    query: `
+      query KevinBacon($star: String!, $movie: String, $director: String, $depth: Int) {
+        KevinBacon(star: $star, movie: $movie, director: $director, depth: $depth) {
+          star
+          stars
+          movies {
+            id
+            title
+          }
+          total_movies
+          directors
+          total_directors
+        }
+      }
+    `,
+    variables: {
+      star,
+      movie,
+      director,
+      depth,
+    },
+  };
+
+  const response = await fetch(graphqlPath, {
+    method: "POST",
+    body: JSON.stringify(query),
+  });
+  const data = await response.json();
+  console.log(data);
+  return data.data.KevinBacon ?? null;
 };

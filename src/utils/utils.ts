@@ -1,5 +1,5 @@
 import { store } from "../store/store";
-import { Movie } from "../types/types";
+import { KevinBaconResponse, Member, Movie } from "../types/types";
 import * as rest from "./rest_utils";
 import * as graphql from "./graphql_utils";
 
@@ -27,7 +27,7 @@ export const fetchMovie = async (movieID: string): Promise<Movie | null> => {
   return null;
 };
 
-export const fetchMovies = async (page: string): Promise<Movie[] | null> => {
+export const fetchMovies = async (page: string): Promise<Movie[]> => {
   const api = store.getState().api.api;
   console.log("API in fetchMovies:", api);
   switch (api) {
@@ -36,7 +36,7 @@ export const fetchMovies = async (page: string): Promise<Movie[] | null> => {
     case "GraphQL":
       return graphql.fetchMovies(page);
   }
-  return null;
+  return [];
 };
 
 export const fetchCart = async (username: string): Promise<Movie[]> => {
@@ -98,7 +98,7 @@ export const updateCart = (
   return [];
 };
 
-export const getUser = async () => {
+export const getUser = async (): Promise<Member | null> => {
   const api = store.getState().api.api;
   console.log("API in getUser:", api);
   switch (api) {
@@ -123,4 +123,29 @@ export const checkout = async (
       return graphql.checkout(username, movieIDs);
   }
   return false;
+};
+
+export const starredWith = async (star: string): Promise<string[]> => {
+  return graphql.starredWith(star);
+};
+
+export const starredIn = async (star: string): Promise<Movie[]> => {
+  return graphql.starredIn(star);
+};
+
+export const directedActors = async (director: string): Promise<string[]> => {
+  return graphql.directedActors(director);
+};
+
+export const directedMovies = async (director: string): Promise<Movie[]> => {
+  return graphql.directedMovies(director);
+};
+
+export const kevinBacon = async (
+  star?: string,
+  movie?: string,
+  director?: string,
+  depth?: number
+): Promise<KevinBaconResponse | null> => {
+  return graphql.kevinBacon(star, movie, director, depth);
 };
