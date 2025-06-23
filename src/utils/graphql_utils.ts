@@ -308,13 +308,46 @@ export const starredIn = async (star: string): Promise<Movie[]> => {
 };
 
 export const directedActors = async (director: string): Promise<string[]> => {
-  // @TODO: implement this
-  // stub
-  return [];
+  const query = {
+    query: `
+      query DirectedPerformers($director: String!) {
+        DirectedPerformers(director: $director) 
+      }
+    `,
+    variables: {
+      director,
+    },
+  };
+
+  const response = await fetch(graphqlPath, {
+    method: "POST",
+    body: JSON.stringify(query),
+  });
+  const data = await response.json();
+  console.log(data);
+  return data.data.DirectedPerformers ?? null;
 };
 
 export const directedMovies = async (director: string): Promise<Movie[]> => {
-  // @TODO: implement this
-  // stub
-  return [];
+  const query = {
+    query: `
+      query DirectedMovies($director: String!) {
+        DirectedMovies(director: $director) {
+          id
+          title
+        }
+      }
+    `,
+    variables: {
+      director,
+    },
+  };
+
+  const response = await fetch(graphqlPath, {
+    method: "POST",
+    body: JSON.stringify(query),
+  });
+  const data = await response.json();
+  console.log(data);
+  return data.data.DirectedMovies ?? null;
 };

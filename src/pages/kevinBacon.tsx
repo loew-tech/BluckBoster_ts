@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Button, Container, Dropdown, DropdownProps } from "semantic-ui-react";
+import {
+  Button,
+  Container,
+  Dropdown,
+  DropdownProps,
+  Header,
+} from "semantic-ui-react";
 import { HeaderBanner } from "../components/headerBanner";
 import { Member, Movie } from "../types/types";
 import {
@@ -101,6 +107,9 @@ export const KevinBacon = () => {
       {performerData ? (
         // @TODO: style this properly
         <Container text className="movie-container">
+          <Header as="h2" className="title-field">
+            Co-Stars
+          </Header>
           <ul>
             {performerData.map((p) => (
               <li>{p}</li>
@@ -111,6 +120,9 @@ export const KevinBacon = () => {
       {movieData ? (
         // @TODO: style this properly
         <Container text className="movie-container">
+          <Header as="h2" className="title-field">
+            Movies
+          </Header>
           <ul>
             {movieData.map((m) => (
               <li>
