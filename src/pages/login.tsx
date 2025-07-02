@@ -28,20 +28,21 @@ export const LoginPage = () => {
 
   return (
     <div className="bluck-buster-login">
-      <Form>
+      <Form onSubmit={tryLogin}>
         <FormField>
-          <label>username </label>
+          <label htmlFor="username">Username</label>
           <input
-            className="login-input"
-            placeholder="Enter username"
+            id="username"
+            name="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            className="login-input"
+            placeholder="Enter username"
+            autoFocus
           />
         </FormField>
       </Form>
-      <Button type="submit" onClick={tryLogin}>
-        Login
-      </Button>
+      <Button type="submit">Login</Button>
       <Button onClick={() => navigate(moviesPath)}>EXPLORE OUR MOVIES!</Button>
       {failedLogin ? (
         <ErrorMessage msg={`failed to login with username ${failedUsername}`} />
