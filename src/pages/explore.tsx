@@ -40,7 +40,7 @@ export const Explore = () => {
   const [movieData, setMovieData] = useState<Movie[]>([]);
   const [directorData, setDirectorData] = useState<string[]>([]);
 
-  const explore = async () => {
+  const handleExplore = async () => {
     setStarData([]);
     setMovieData([]);
     setDirectorData([]);
@@ -105,7 +105,7 @@ export const Explore = () => {
           director={director}
           setDirector={setDirector}
         />
-        <Button onClick={explore}>Go!</Button>
+        <Button onClick={handleExplore}>Go!</Button>
       </Container>
 
       {starsPercentage !== null && (

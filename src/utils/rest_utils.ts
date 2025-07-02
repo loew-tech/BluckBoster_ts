@@ -72,7 +72,7 @@ export const returnRentals = async (
     method: "POST",
     body: JSON.stringify({
       username,
-      movieIDs,
+      movie_ids: movieIDs,
     }),
   });
   return response.ok;
@@ -124,9 +124,10 @@ export const checkout = async (
   username: string,
   movieIDs: string[]
 ): Promise<boolean> => {
+  console.log("movieIDs", movieIDs);
   const response = await fetch(checkoutURI, {
     method: "POST",
-    body: JSON.stringify({ username, movieIDs }),
+    body: JSON.stringify({ username, movie_ids: movieIDs }),
   });
   return response.ok;
 };

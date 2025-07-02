@@ -1,4 +1,61 @@
+/* 🎬 Checkout Styles - Blockbuster-Inspired Theme */
+
 .checkout-container {
-  height: 200px;
-  position: relative;
+  background-color: #0047bb;
+  color: white;
+  font-family: "Arial Black", sans-serif;
+  padding: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+}
+
+.checkout-container h1,
+.checkout-container h2 {
+  color: #fddb3a;
+  text-shadow: 1px 1px #000;
+}
+
+.button {
+  background-color: #fddb3a;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #ffe760;
+}
+
+input,
+select {
+  font-family: "Arial Black", sans-serif;
+  padding: 0.4rem;
+  border: 2px solid #fddb3a;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+table {
+  width: 100%;
+  background-color: #e3efff;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+a {
+  color: #fddb3a;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }

@@ -1,12 +1,104 @@
-.selected {
-  background-color: aqua !important;
+/* 🎬 Member Styles - Blockbuster-Inspired Theme */
+
+.member-container {
+  background-color: #0047bb;
   color: white;
+  font-family: "Arial Black", sans-serif;
+  padding: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
 }
+
+.member-container h1,
+.member-container h2 {
+  color: #fddb3a;
+  text-shadow: 1px 1px #000;
+}
+
+.button {
+  background-color: #fddb3a;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #ffe760;
+}
+
+input,
+select {
+  font-family: "Arial Black", sans-serif;
+  padding: 0.4rem;
+  border: 2px solid #fddb3a;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+table {
+  width: 100%;
+  background-color: #e3efff;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+a {
+  color: #fddb3a;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* 🎬 Active API Label - Bold Blockbuster Button Style */
+
 .active-api-label {
-  display: flex;
-  flex-direction: column;
+  display: inline-flex;
   align-items: center;
-  margin-top: 1rem !important;
-  width: 15%;
-  background-color: aqua !important;
+  gap: 0.5rem;
+  background-color: #fddb3a; /* Blockbuster yellow */
+  color: #000 !important; /* High contrast text */
+  font-weight: bold;
+  font-family: "Arial Black", sans-serif;
+  padding: 0.75rem 1.2rem;
+  margin-top: 1rem;
+  border: 3px solid #000;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Enhance the database icon */
+.active-api-label .icon {
+  font-size: 1.5rem;
+  color: #000;
+  filter: drop-shadow(1px 1px 0px #0047bb);
+}
+
+/* Optional hover effect for interactivity */
+.active-api-label:hover {
+  background-color: #fddb3a;
+  color: #0047bb;
+}
+
+.selected {
+  background-color: #fddb3a !important; /* Bold Blockbuster yellow */
+  color: #000 !important;
+  font-weight: bold;
+  border: 2px solid #000;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
 }
