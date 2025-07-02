@@ -1,20 +1,71 @@
+/* 🎬 BluckBuster-Inspired Login Styles (Enhanced) */
+
 label {
   font-size: x-large !important;
-  color: blue !important;
+  color: #00296b !important; /* Deep blockbuster blue */
+  font-weight: bold;
+  text-shadow: 1px 1px 2px gold;
+  margin-bottom: 10px;
+  display: inline-block;
 }
 
 .bluck-buster-login {
   background-color: gold;
-  /* @TODO: better way to center element? */
   padding: 25px;
   position: absolute;
   top: 50%;
   left: 50%;
   width: 100%;
+  max-width: 500px;
   transform: translate(-50%, -50%);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  border: 4px solid #00296b;
+  border-radius: 10px;
+  text-align: center;
 }
 
 .login-input {
   text-align: center;
   width: 50% !important;
+  padding: 10px;
+  font-size: 1rem;
+  border: 2px solid #00296b;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: #0047bb;
+  box-shadow: 0 0 8px #0047bb;
+}
+
+.button {
+  background-color: #00296b;
+  color: gold;
+  font-weight: bold;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #0047bb;
+  color: white;
+}
+
+a {
+  color: #00296b;
+  text-decoration: none;
+  font-weight: bold;
+  margin-top: 1rem;
+  display: inline-block;
+}
+
+a:hover {
+  text-decoration: underline;
 }
