@@ -1,18 +1,12 @@
 import { useState } from "react";
-import {
-  Button,
-  Container,
-  Dropdown,
-  DropdownProps,
-  Header,
-} from "semantic-ui-react";
+import { Button, Container } from "semantic-ui-react";
 import { HeaderBanner } from "../components/headerBanner";
 import { Member, Movie } from "../types/types";
 import {
   DIRECTOR,
   KEVIN_BACON,
-  moviesPath,
   STAR,
+  moviesPath,
 } from "../constants/constants";
 import {
   starredWith,
@@ -21,30 +15,12 @@ import {
   directedMovies,
   kevinBacon,
 } from "../utils/utils";
+import { SearchSelector } from "../components/explore/SearchSelector";
+import { CreatorInputs } from "../components/explore/CreatorInputs";
+import { ExploreSummary } from "../components/explore/ExploreSummary";
+import { ResultList } from "../components/explore/ResultList";
 
-const CREATOR_OPTIONS = [
-  {
-    key: DIRECTOR,
-    text: DIRECTOR,
-    value: DIRECTOR,
-  },
-  {
-    key: STAR,
-    text: STAR,
-    value: STAR,
-  },
-  {
-    key: KEVIN_BACON,
-    text: "Kevin Bacon",
-    value: KEVIN_BACON,
-  },
-];
-
-const DEPTH_OPTIONS = Array.from({ length: 10 }, (_, i) => ({
-  key: i + 1,
-  text: `${i + 1}`,
-  value: i + 1,
-}));
+import "./explore.css";
 
 export const Explore = () => {
   const data = localStorage.getItem("user");
@@ -58,60 +34,38 @@ export const Explore = () => {
   );
   const [movieTitle, setMovieTitle] = useState("");
   const [moviesPercentage, setMoviesPercentage] = useState<number | null>(null);
-  // @TODO: is this the right default?
   const [depth, setDepth] = useState<number>(1);
   const [exploreType, setExploreType] = useState<string>("");
   const [starData, setStarData] = useState<string[]>([]);
   const [movieData, setMovieData] = useState<Movie[]>([]);
   const [directorData, setDirectorData] = useState<string[]>([]);
 
-  const handleSelectionChange = async (
-    _: React.SyntheticEvent<HTMLElement>,
-    { value }: DropdownProps
-  ) => {
-    setCreator("");
+  const explore = async () => {
     setStarData([]);
-    setStarsPercentage(null);
     setMovieData([]);
-    setMovieTitle("");
-    setMoviesPercentage(null);
-    setMovieData([]);
-    setDirector("");
     setDirectorData([]);
+    setStarsPercentage(null);
+    setMoviesPercentage(null);
     setDirectorPercentage(null);
 
-    setExploreType(value as string);
-  };
-
-  const handleDepthSelectionChange = async (
-    _: React.SyntheticEvent<HTMLElement>,
-    { value }: DropdownProps
-  ) => {
-    setDepth(value as number);
-  };
-
-  // @TODO: add loader?
-  const explore = async () => {
-    console.log("exploreType=", exploreType);
     let stars: string[] = [];
     let movies: Movie[] = [];
+
     switch (exploreType) {
       case STAR:
         stars = await starredWith(creator);
         movies = await starredIn(creator);
+        setStarData(stars);
+        setMovieData(movies);
         break;
       case DIRECTOR:
         stars = await directedActors(creator);
         movies = await directedMovies(creator);
+        setStarData(stars);
+        setMovieData(movies);
         break;
       case KEVIN_BACON:
         const kb = await kevinBacon(creator, movieTitle, director, depth);
-        console.log(
-          "totals",
-          kb?.total_stars,
-          kb?.total_movies,
-          kb?.total_directors
-        );
         setStarData(kb?.stars ?? []);
         setStarsPercentage(
           kb?.stars ? (kb.stars.length / kb.total_stars) * 100 : null
@@ -126,138 +80,60 @@ export const Explore = () => {
             ? (kb.directors.length / kb.total_directors) * 100
             : null
         );
-        return;
+        break;
       default:
         console.warn("Unknown explore request:", exploreType);
     }
-    setStarData(stars);
-    setMovieData(movies);
   };
-
-  console.log(starsPercentage, moviesPercentage, directorPercentage);
 
   return (
     <>
       <HeaderBanner user={user} />
       <Container text className="movie-container">
-        <Dropdown
-          placeholder="Select Search"
-          fluid
-          selection
-          options={CREATOR_OPTIONS}
-          onChange={handleSelectionChange}
+        <SearchSelector
+          exploreType={exploreType}
+          setExploreType={setExploreType}
+          depth={depth}
+          setDepth={setDepth}
         />
-        {exploreType !== KEVIN_BACON ? (
-          // @TODO: add css for this file
-          <div className="ui focus input">
-            <input
-              type="text"
-              placeholder="Enter Creator Name"
-              value={creator}
-              onChange={(e) => setCreator(e.target.value)}
-            />
-          </div>
-        ) : (
-          <div>
-            <div className="ui focus input">
-              Star:
-              <input
-                type="text"
-                placeholder="Enter Star Name"
-                value={creator}
-                onChange={(e) => setCreator(e.target.value)}
-              />
-            </div>
-            <div className="ui focus input">
-              Movie
-              <input
-                type="text"
-                placeholder="Enter Movie Title"
-                value={movieTitle}
-                onChange={(e) => setMovieTitle(e.target.value)}
-              />
-            </div>
-            <div className="ui focus input">
-              DIRECTOR:
-              <input
-                type="text"
-                placeholder="Enter Director Name"
-                value={director}
-                onChange={(e) => setDirector(e.target.value)}
-              />
-            </div>
-            {/* @TODO: change this to number select */}
-            <Dropdown
-              placeholder="Select Search Depth"
-              fluid
-              selection
-              options={DEPTH_OPTIONS}
-              onChange={handleDepthSelectionChange}
-            />
-          </div>
-        )}
+        <CreatorInputs
+          exploreType={exploreType}
+          creator={creator}
+          setCreator={setCreator}
+          movieTitle={movieTitle}
+          setMovieTitle={setMovieTitle}
+          director={director}
+          setDirector={setDirector}
+        />
         <Button onClick={explore}>Go!</Button>
       </Container>
-      {starsPercentage ? (
-        <Container text className="movie-container">
-          <h2>SUMMARY</h2>
-          <div>
-            Stars Explored: {starData.length}; {starsPercentage.toFixed(2)}% of
-            total
-          </div>
-          <div>
-            Movies Explored: {movieData.length}; {moviesPercentage?.toFixed(2)}%
-            of total
-          </div>
-          <div>
-            Directors Explored: {directorData.length};{" "}
-            {directorPercentage?.toFixed(2)}% of total
-          </div>
-        </Container>
-      ) : (
-        <p>huh?</p>
+
+      {starsPercentage !== null && (
+        <ExploreSummary
+          starData={starData}
+          starsPercentage={starsPercentage}
+          movieData={movieData}
+          moviesPercentage={moviesPercentage}
+          directorData={directorData}
+          directorPercentage={directorPercentage}
+        />
       )}
-      {starData.length ? (
-        // @TODO: style this properly
-        <Container text className="movie-container">
-          <Header as="h2" className="title-field">
-            Co-Stars
-          </Header>
-          <ul>
-            {starData.map((s) => (
-              <li key={s}>{s}</li>
-            ))}
-          </ul>
-        </Container>
-      ) : null}
-      {movieData.length ? (
-        // @TODO: style this properly
-        <Container text className="movie-container">
-          <Header as="h2" className="title-field">
-            Movies
-          </Header>
-          <ul>
-            {movieData.map((m) => (
-              <li key={m.id}>
-                <a href={`${moviesPath}/${m.id}`}>{m.title}</a>
-              </li>
-            ))}
-          </ul>
-        </Container>
-      ) : null}
-      {directorData.length ? (
-        // @TODO: style this properly
-        <Container text className="movie-container">
-          <Header as="h2" className="title-field">
-            Directors
-          </Header>
-          <ul>
-            {directorData.map((d) => (
-              <li key={d}>{d}</li>
-            ))}
-          </ul>
-        </Container>
-      ) : null}
+
+      {starData.length > 0 && <ResultList title="Co-Stars" items={starData} />}
+
+      {movieData.length > 0 && (
+        <ResultList
+          title="Movies"
+          items={movieData.map((m) => ({
+            label: m.title,
+            link: `${moviesPath}/${m.id}`,
+          }))}
+        />
+      )}
+
+      {directorData.length > 0 && (
+        <ResultList title="Directors" items={directorData} />
+      )}
     </>
   );
 };
