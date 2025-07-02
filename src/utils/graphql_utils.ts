@@ -371,6 +371,7 @@ export const kevinBacon = async (
         KevinBacon(star: $star, movie: $movie, director: $director, depth: $depth) {
           star
           stars
+          total_stars
           movies {
             id
             title
