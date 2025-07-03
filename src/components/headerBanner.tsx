@@ -1,5 +1,10 @@
 import { Grid, GridColumn } from "semantic-ui-react";
-import { loginPath, memberPath, moviesPath } from "../constants/constants";
+import {
+  ExplorePath,
+  loginPath,
+  memberPath,
+  moviesPath,
+} from "../constants/constants";
 import { Member } from "../types/types";
 
 import "./headerBanner.css";
@@ -15,6 +20,8 @@ export const HeaderBanner = ({ user }: HeaderBannerProps) => {
       <Grid>
         <GridColumn width={8}>
           <a href={moviesPath}>Movies</a>
+          <br />
+          <a href={ExplorePath}>Explore</a>
           <br />
           <a href={loginPath}>{user ? "Sign Out" : "Login"}</a>
         </GridColumn>

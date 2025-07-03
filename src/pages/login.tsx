@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { FormField, Button, Form } from "semantic-ui-react";
 
-import { moviesPath } from "../constants/constants";
+import { ExplorePath, moviesPath } from "../constants/constants";
 import { ErrorMessage } from "../components/errorMessage";
 import { login } from "../utils/utils";
 
@@ -59,6 +59,9 @@ export const LoginPage = () => {
         <Button type="submit">Login</Button>
       </Form>
       <Button onClick={() => navigate(moviesPath)}>EXPLORE OUR MOVIES!</Button>
+      <Button onClick={() => navigate(ExplorePath)}>
+        Explore Kevin Bacon!
+      </Button>
       {failedLogin ? (
         <ErrorMessage msg={`failed to login with username ${failedUsername}`} />
       ) : null}
