@@ -399,3 +399,28 @@ export const kevinBacon = async (
   console.log(data);
   return data.data.KevinBacon ?? null;
 };
+
+export const setAPIChoice = (api: "REST" | "GraphQL"): Promise<boolean> => {
+  const user = getUserFromCookie();
+  if (!user) {
+    console.warn("No user found in cookie. Cannot set API choice.");
+    return Promise.resolve(false);
+  }
+
+  const mutation = {
+    query: `
+      mutation SetAPIChoice($username: ID!, $apiChoice: String!) {
+        SetAPIChoice(username: $username, apiChoice: $apiChoice)
+      }
+    `,
+    variables: {
+      username: user.username,
+      apiChoice: api,
+    },
+  };
+
+  return fetch(graphqlPath, {
+    method: "POST",
+    body: JSON.stringify(mutation),
+  }).then((response) => response.ok);
+};

@@ -1,10 +1,15 @@
-import { store } from "../store/store";
 import { KevinBaconResponse, Member, Movie } from "../types/types";
 import * as rest from "./rest_utils";
 import * as graphql from "./graphql_utils";
+import {
+  getAPIChoiceFromCookie,
+  getUserFromCookie,
+  setCookie,
+} from "./cookieUtils";
+import { GRAPHQL_API, REST_API } from "../constants/constants";
 
 export const login = async (username: string): Promise<Member | null> => {
-  const api = store.getState().api.api;
+  const api = getAPIChoiceFromCookie();
   console.log("API in login:", api);
   switch (api) {
     case "REST":
@@ -12,11 +17,10 @@ export const login = async (username: string): Promise<Member | null> => {
     case "GraphQL":
       return await graphql.login(username);
   }
-  return null;
 };
 
 export const fetchMovie = async (movieID: string): Promise<Movie | null> => {
-  const api = store.getState().api.api;
+  const api = getAPIChoiceFromCookie();
   console.log("API in fetchMovie:", api);
   switch (api) {
     case "REST":
@@ -24,11 +28,10 @@ export const fetchMovie = async (movieID: string): Promise<Movie | null> => {
     case "GraphQL":
       return graphql.fetchMovie(movieID);
   }
-  return null;
 };
 
 export const fetchMovies = async (page: string): Promise<Movie[]> => {
-  const api = store.getState().api.api;
+  const api = getAPIChoiceFromCookie();
   console.log("API in fetchMovies:", api);
   switch (api) {
     case "REST":
@@ -36,11 +39,10 @@ export const fetchMovies = async (page: string): Promise<Movie[]> => {
     case "GraphQL":
       return graphql.fetchMovies(page);
   }
-  return [];
 };
 
 export const fetchCart = async (username: string): Promise<Movie[]> => {
-  const api = store.getState().api.api;
+  const api = getAPIChoiceFromCookie();
   console.log("API in fetchCart:", api);
   switch (api) {
     case "REST":
@@ -48,13 +50,12 @@ export const fetchCart = async (username: string): Promise<Movie[]> => {
     case "GraphQL":
       return graphql.fetchCart(username);
   }
-  return [];
 };
 
 export const fetchCheckedoutMovies = async (
   username: string
 ): Promise<Movie[]> => {
-  const api = store.getState().api.api;
+  const api = getAPIChoiceFromCookie();
   console.log("API in fetchCheckedoutMovies:", api);
   switch (api) {
     case "REST":
@@ -62,14 +63,13 @@ export const fetchCheckedoutMovies = async (
     case "GraphQL":
       return graphql.fetchCheckedoutMovies(username);
   }
-  return [];
 };
 
 export const returnRentals = async (
   username: string,
   movieIDs: string[]
 ): Promise<boolean> => {
-  const api = store.getState().api.api;
+  const api = getAPIChoiceFromCookie();
   console.log("API in returnRentals:", api);
   switch (api) {
     case "REST":
@@ -77,17 +77,15 @@ export const returnRentals = async (
     case "GraphQL":
       return graphql.returnRentals(username, movieIDs);
   }
-  return false;
 };
 
-// @TODO: should user cart be set here?
 export const updateCart = (
   username: string,
   movie_id: string,
   cart: string[],
   removeFromCart: boolean
 ): string[] => {
-  const api = store.getState().api.api;
+  const api = getAPIChoiceFromCookie();
   console.log("API in updateCart:", api);
   switch (api) {
     case "REST":
@@ -95,11 +93,10 @@ export const updateCart = (
     case "GraphQL":
       return graphql.updateCart(username, movie_id, cart, removeFromCart);
   }
-  return [];
 };
 
 export const getUser = async (): Promise<Member | null> => {
-  const api = store.getState().api.api;
+  const api = getAPIChoiceFromCookie();
   console.log("API in getUser:", api);
   switch (api) {
     case "REST":
@@ -107,14 +104,13 @@ export const getUser = async (): Promise<Member | null> => {
     case "GraphQL":
       return graphql.getUser();
   }
-  return null;
 };
 
 export const checkout = async (
   username: string,
   movieIDs: string[]
 ): Promise<boolean> => {
-  const api = store.getState().api.api;
+  const api = getAPIChoiceFromCookie();
   console.log("API in checkout:", api);
   switch (api) {
     case "REST":
@@ -122,7 +118,28 @@ export const checkout = async (
     case "GraphQL":
       return graphql.checkout(username, movieIDs);
   }
-  return false;
+};
+
+export const setAPIChoice = async (
+  api: "REST" | "GraphQL"
+): Promise<boolean> => {
+  const user = getUserFromCookie();
+  if (!user) {
+    console.error("No user found in cookie, cannot set API choice.");
+    return Promise.resolve(false);
+  }
+  let ret = false;
+  switch (user.api_choice ?? REST_API) {
+    case REST_API:
+      ret = await rest.setAPIChoice(api);
+      break;
+    case GRAPHQL_API:
+      ret = await graphql.setAPIChoice(api);
+      break;
+  }
+  user.api_choice = api;
+  setCookie("user", JSON.stringify(user));
+  return Promise.resolve(ret);
 };
 
 export const starredWith = async (star: string): Promise<string[]> => {

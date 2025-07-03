@@ -3,6 +3,7 @@ import {
   cartURI,
   checkoutURI,
   memberLoginURI,
+  memberURI,
   moviesURI,
   returnURI,
 } from "../constants/constants";
@@ -79,27 +80,25 @@ export const returnRentals = async (
   return response.ok;
 };
 
-// @TODO: should user cart be set here?
 export const updateCart = (
   username: string,
   movie_id: string,
   cart: string[],
   removeFromCart: boolean
 ): string[] => {
-  let newCart = [...cart];
-  if (!removeFromCart) {
-    newCart.unshift(movie_id);
-    fetch(cartURI, {
-      method: "put",
+  let newCart: string[];
+  if (removeFromCart) {
+    newCart = cart.filter((id) => id !== movie_id);
+    fetch(cartRemoveURI, {
+      method: "PUT",
       body: JSON.stringify({ username, movie_id }),
     });
   } else {
-    fetch(cartRemoveURI, {
-      method: "put",
+    newCart = cart.includes(movie_id) ? [...cart] : [movie_id, ...cart];
+    fetch(cartURI, {
+      method: "PUT",
       body: JSON.stringify({ username, movie_id }),
     });
-    const index = newCart.indexOf(movie_id);
-    newCart.splice(index, 1);
   }
   return newCart;
 };
@@ -130,5 +129,21 @@ export const checkout = async (
     method: "POST",
     body: JSON.stringify({ username, movie_ids: movieIDs }),
   });
+  return response.ok;
+};
+
+export const setAPIChoice = async (
+  api: "REST" | "GraphQL"
+): Promise<boolean> => {
+  const user = getUserFromCookie();
+  if (!user) {
+    console.warn("No user found to set API choice");
+    return Promise.resolve(false);
+  }
+  user.api_choice = api;
+  setCookie("user", JSON.stringify(user));
+  const response = await fetch(
+    `${memberURI}/${user.username}?api_choice=${api}`
+  );
   return response.ok;
 };
