@@ -1,49 +1,122 @@
-.App {
-  text-align: center;
-  width: 100%;
-  background-color: darkblue;
-  height: 100%;
+/* Reset and base layout */
+* {
+  box-sizing: border-box;
   margin: 0;
-  left: 0;
-  top: 0;
-  position: fixed;
-  /* @TODO: is this the right place to add this to make table scroll able? */
-  overflow-y: scroll;
+  padding: 0;
 }
 
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: "Courier New", Courier, monospace;
+  background-color: navy;
+  color: white;
+  overflow: hidden;
+}
+
+/* Main app container */
+.App {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  background-color: navy;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Scrollable content wrapper */
+.scroll-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+/* Title styling */
 .title-field {
-  font-family: "Eras ITC", "Eras Light ITC", sans-serif;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 2rem;
   text-align: center;
+  color: gold;
+  margin: 1rem 0;
+  text-shadow: 1px 1px 0 black;
 }
 
+/* Table styling */
 .ui.table {
   width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  background-color: lightcyan;
+  font-family: "Courier New", Courier, monospace;
+  border: 2px solid gold;
 }
 
 .ui.table thead tr:first-child > th {
   background-color: gold;
+  color: black;
+  font-weight: bold;
+  position: sticky;
   top: 0;
-}
-
-ul {
-  display: inline;
-  list-style-type: none;
-}
-
-ul#MemberBanner li {
-  display: inline;
-}
-
-table {
-  table-layout: fixed;
+  z-index: 2;
+  border-bottom: 2px solid black;
 }
 
 .ui.table tr {
   background-color: lightblue;
+  border-bottom: 1px solid navy;
 }
 
+.ui.table td,
+.ui.table th {
+  padding: 0.75rem;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* MemberBanner UL styles */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul#MemberBanner li {
+  display: inline-block;
+  margin-right: 1rem;
+}
+
+/* Anchored elements (e.g., Return/Logout button) */
 .anchor-left {
-  /* @TODO: better way to do this? Is this mobile friendly? scroll friendly? */
   position: fixed;
-  margin-left: 0%;
+  left: 1rem;
+  top: 1rem;
+  z-index: 1000;
+  background-color: gold;
+  color: black;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  border: 2px solid black;
+  cursor: pointer;
+}
+
+/* Mobile-friendly tweaks */
+@media (max-width: 768px) {
+  .ui.table td,
+  .ui.table th {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+  }
+
+  .anchor-left {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .title-field {
+    font-size: 1.5rem;
+  }
 }

@@ -30,7 +30,7 @@ export const MovieTable = ({
   returnRental,
 }: MovieTableProps) => {
   return (
-    <div className="movie-table">
+    <div className="movie-table scroll-container">
       <PagePicker updateMovies={updateMovies} />
       <Table striped>
         <MovieTableHeader user={user} cart={cart} />

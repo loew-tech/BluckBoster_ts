@@ -1,9 +1,38 @@
 .movie-table {
   background-color: lightblue;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 
   p {
     font-weight: bold;
   }
+}
+
+.ui.table {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  border-spacing: 0 !important;
+}
+
+.ui.table thead th {
+  position: sticky !important;
+  top: 0 !important;
+  background-color: gold;
+  z-index: 10;
+}
+
+.movie-table.scroll-container {
+  overflow-y: auto; /* or scroll */
+}
+
+.movie-table .ui.table td,
+.movie-table .ui.table th {
+  padding: 0.75rem;
+  text-align: left;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+  vertical-align: top;
 }
 
 .title-cell {

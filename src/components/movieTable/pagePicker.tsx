@@ -20,7 +20,7 @@ export const PagePicker = ({ activePage, updateMovies }: PagePickerProps) => {
   };
 
   return (
-    <div>
+    <div className="page-picker">
       <ul>
         {PAGES.map((page) => {
           return (

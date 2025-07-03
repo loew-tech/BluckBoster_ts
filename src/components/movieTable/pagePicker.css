@@ -1,3 +1,14 @@
+.page-picker {
+  position: sticky;
+  top: 0; /* or bottom: 0 if you want it to stick to the bottom */
+  z-index: 3;
+  background-color: #6495ed; /* same as page background to avoid flicker */
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  /* padding: 0.5rem; */
+  border-bottom: 2px solid gold;
+}
+
 ul {
   cursor: pointer;
   list-style: georgian outside;
