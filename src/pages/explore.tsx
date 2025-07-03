@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Container } from "semantic-ui-react";
 import { HeaderBanner } from "../components/headerBanner";
-import { Member, Movie } from "../types/types";
+import { Movie } from "../types/types";
 import {
   DIRECTOR,
   KEVIN_BACON,
@@ -21,10 +21,10 @@ import { ExploreSummary } from "../components/explore/ExploreSummary";
 import { ResultList } from "../components/explore/ResultList";
 
 import "./explore.css";
+import { getUserFromCookie } from "../utils/cookieUtils";
 
 export const Explore = () => {
-  const data = localStorage.getItem("user");
-  const user = data ? (JSON.parse(data) as Member) : null;
+  const user = getUserFromCookie();
 
   const [creator, setCreator] = useState<string>("");
   const [starsPercentage, setStarsPercentage] = useState<number | null>(null);
@@ -107,7 +107,6 @@ export const Explore = () => {
         />
         <Button onClick={handleExplore}>Go!</Button>
       </Container>
-
       {starsPercentage !== null && (
         <ExploreSummary
           starData={starData}
@@ -118,9 +117,7 @@ export const Explore = () => {
           directorPercentage={directorPercentage}
         />
       )}
-
       {starData.length > 0 && <ResultList title="Co-Stars" items={starData} />}
-
       {movieData.length > 0 && (
         <ResultList
           title="Movies"

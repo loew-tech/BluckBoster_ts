@@ -4,6 +4,7 @@ import { testMember, testMovies } from "../../../test/test-data";
 import { MemberPage } from "../member";
 import { getUser } from "../../utils/utils";
 import userEvent from "@testing-library/user-event";
+import { deleteCookie, setCookie } from "../../utils/cookieUtils";
 
 const fetchSpy = jest.spyOn(window, "fetch");
 jest.mock("../../utils/utils");
@@ -20,11 +21,11 @@ describe("member page", () => {
       } as Response;
     });
     (getUser as jest.Mock).mockResolvedValue(testMember);
-    localStorage.setItem("user", JSON.stringify(testMember));
+    setCookie("user", JSON.stringify(testMember));
   });
 
   afterEach(() => {
-    localStorage.removeItem("user");
+    deleteCookie("user");
   });
 
   it("should render header banner", async () => {

@@ -5,12 +5,10 @@ import { MoviesPage } from "../movies";
 import { testMovies, testMember, testMovieIDs } from "../../../test/test-data";
 import { renderWithNav } from "../../../test/renderHelpers";
 import { updateCart } from "../../utils/utils";
+import { deleteCookie, setCookie } from "../../utils/cookieUtils";
 
 const fetchSpy = jest.spyOn(window, "fetch");
 jest.mock("../../utils/utils");
-
-// @TODO: look into helpful console warning/err lib
-// https://www.npmjs.com/package/jest-fail-on-console
 
 describe("movies page", () => {
   beforeEach(() => {
@@ -22,15 +20,15 @@ describe("movies page", () => {
       } as Response;
     });
     // @TODO: don't like this
-    localStorage.setItem("user", JSON.stringify(testMember));
+    setCookie("user", JSON.stringify(testMember));
   });
 
   afterEach(() => {
-    localStorage.removeItem("user");
+    deleteCookie("user");
   });
 
   it("should render children", async () => {
-    localStorage.removeItem("user");
+    deleteCookie("user");
     renderWithNav(<MoviesPage />);
     expect(screen.getByText("Movies")).toBeTruthy();
     expect(screen.getByText("Title")).toBeTruthy();

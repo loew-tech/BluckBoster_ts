@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { FormField, Button, Form } from "semantic-ui-react";
@@ -8,6 +8,7 @@ import { ErrorMessage } from "../components/errorMessage";
 import { login } from "../utils/utils";
 
 import "./login.css";
+import { deleteCookie, setCookie } from "../utils/cookieUtils";
 
 export const LoginPage = () => {
   const [username, setUsername] = useState<string>("");
@@ -15,11 +16,15 @@ export const LoginPage = () => {
   const [failedUsername, setFailedUsername] = useState<string>("");
 
   const navigate = useNavigate();
-  localStorage.removeItem("user");
+
+  useEffect(() => {
+    deleteCookie("user");
+  }, []);
 
   const tryLogin = async () => {
-    const success = await login(username);
-    if (success) {
+    const user = await login(username);
+    if (user) {
+      setCookie("user", JSON.stringify(user));
       navigate(moviesPath);
     }
     setFailedUsername(username);
@@ -41,8 +46,8 @@ export const LoginPage = () => {
             autoFocus
           />
         </FormField>
+        <Button type="submit">Login</Button>
       </Form>
-      <Button type="submit">Login</Button>
       <Button onClick={() => navigate(moviesPath)}>EXPLORE OUR MOVIES!</Button>
       {failedLogin ? (
         <ErrorMessage msg={`failed to login with username ${failedUsername}`} />

@@ -7,8 +7,9 @@ import {
   returnURI,
 } from "../constants/constants";
 import { Member, Movie } from "../types/types";
+import { getUserFromCookie, setCookie } from "./cookieUtils";
 
-export const login = async (username: string): Promise<boolean> => {
+export const login = async (username: string): Promise<Member | null> => {
   const response = await fetch(memberLoginURI, {
     method: "POST",
     body: JSON.stringify({
@@ -16,10 +17,10 @@ export const login = async (username: string): Promise<boolean> => {
     }),
   });
   if (response.ok) {
-    const data = await response.json();
-    localStorage.setItem("user", JSON.stringify(data));
+    const user = (await response.json()) as Member;
+    return user;
   }
-  return response.ok;
+  return null;
 };
 
 export const fetchMovie = async (movieID: string): Promise<Movie | null> => {
@@ -104,17 +105,17 @@ export const updateCart = (
 };
 
 export const getUser = async (): Promise<Member | null> => {
-  const data = localStorage.getItem("user");
-  if (!data) {
+  const user = getUserFromCookie();
+  if (!user) {
+    console.warn("Failed to retrieve user from cookie. Functionality affected");
     return null;
   }
-  const user = JSON.parse(data);
   const response = await fetch(
     `http://127.0.0.1:8080/api/v1/members/${user.username}`
   );
   if (response.ok) {
     const member = await response.json();
-    localStorage.setItem("user", JSON.stringify(member));
+    setCookie("user", JSON.stringify(member));
     return member;
   }
   return null;
