@@ -72,6 +72,7 @@ export const MoviePage = () => {
           </Grid>
         </Container>
       ) : (
+        // @TODO: Add loading spinner; currently just shows error message
         <ErrorMessage msg="Failed to retrieve movies from cloud"></ErrorMessage>
       )}
     </>

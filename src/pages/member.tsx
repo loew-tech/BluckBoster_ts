@@ -14,15 +14,14 @@ import {
 } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 
-import { getUser, fetchCheckedoutMovies, returnRentals } from "../utils/utils";
+import { getUser, fetchCheckedoutMovies, returnRentals, setAPIChoice } from "../utils/utils";
 import { Member, Movie } from "../types/types";
 import { HeaderBanner } from "../components/headerBanner";
 import { loginPath, moviesPath } from "../constants/constants";
 import { ErrorMessage } from "../components/errorMessage";
-import { useAppDispatch, useAppSelector } from "../store/hook";
-import { toggleToRest, toggleToGraphQL } from "../store/apiSlice";
 import {
   setCookie,
+  getAPIChoiceFromCookie,
   getUserFromCookie,
   deleteCookie,
 } from "../utils/cookieUtils";
@@ -30,9 +29,8 @@ import {
 import "./member.css";
 
 export const MemberPage = () => {
-  const api = useAppSelector((state) => state.api.api);
+  const api = getAPIChoiceFromCookie();
   console.log("api", api);
-  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
 
@@ -68,10 +66,8 @@ export const MemberPage = () => {
 
   const toggleActiveButton = (selection: string) => {
     setActiveButton(selection);
-    if (selection === "REST") {
-      dispatch(toggleToRest());
-    } else if (selection === "GraphQL") {
-      dispatch(toggleToGraphQL());
+    if (selection !== api && (selection === "REST" || selection === "GraphQL")) {
+      setAPIChoice(selection)
     }
   };
 

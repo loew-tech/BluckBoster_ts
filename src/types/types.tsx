@@ -20,6 +20,7 @@ export type Member = {
   checked_out?: string[];
   rented?: string[];
   type?: string;
+  api_choice?: "REST" | "GraphQL";
 };
 
 export type KevinBaconResponse = {

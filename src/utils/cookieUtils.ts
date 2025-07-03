@@ -1,3 +1,4 @@
+import { REST_API } from "../constants/constants";
 import { Member } from "../types/types";
 
 // src/utils/cookieUtils.ts
@@ -29,3 +30,7 @@ export const getUserFromCookie = (): Member | null => {
 export const hasCookieConsent = () => {
   return localStorage.getItem("cookie_consent") === "true";
 };
+
+export const getAPIChoiceFromCookie = (): "REST" | "GraphQL" => {
+  return getUserFromCookie()?.api_choice ?? REST_API;
+}
