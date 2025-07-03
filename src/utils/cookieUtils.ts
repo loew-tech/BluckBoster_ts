@@ -25,3 +25,7 @@ export const getUserFromCookie = (): Member | null => {
     return null;
   }
 };
+
+export const hasCookieConsent = () => {
+  return localStorage.getItem("cookie_consent") === "true";
+};
