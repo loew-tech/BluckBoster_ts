@@ -20,7 +20,6 @@ export const TriviaContainer = ({ trivia }: TriviaComponentProps) => {
       {trivias.map((q: TriviaQ, i: number) => {
         return (
           <div key={i}>
-            <p>{q.question}</p>
             <div className="trivia-container">
               <p className="trivia-question">{q.question}</p>
               <div className="trivia-reveal">
