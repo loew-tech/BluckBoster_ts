@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 
-import { Member, Movie } from "../types/types";
+import { Movie } from "../types/types";
 import { fetchMovies, returnRentals, updateCart } from "../utils/utils";
 import { HeaderBanner } from "../components/headerBanner";
 import { MovieTable } from "../components/movieTable/movieTable";
 import { ErrorMessage } from "../components/errorMessage";
+import { getUserFromCookie, setCookie } from "../utils/cookieUtils";
 
 const errorMsg = "An unexpected error occurred fetching our movie catalog";
 
 export const MoviesPage = () => {
-  const data = localStorage.getItem("user");
-  const user = data !== null ? (JSON.parse(data) as Member) : null;
+  const user = getUserFromCookie();
 
   const [movies, setMovies] = useState<Movie[]>([]);
   const [cart, setCart] = useState<string[]>(user?.cart ?? []);
@@ -47,22 +47,23 @@ export const MoviesPage = () => {
     const index = user.cart ? user.cart.indexOf(movieID) : -1;
     if (-1 < index) {
       user.cart?.splice(index, 1);
-      localStorage.setItem("user", JSON.stringify(user));
+      setCookie("user", JSON.stringify(user));
     }
   };
 
-  const returnRental = (movieID: string) => {
-    if (!user) {
+  const returnRental = async (movieID: string) => {
+    if (!user) return;
+    const success = await returnRentals(user.username, [movieID]);
+    if (!success) {
+      console.error("Failed to return rental");
       return;
     }
-    returnRentals(user?.username, [movieID]);
-    const index = user?.checked_out ? user.checked_out.indexOf(movieID) : -1;
-    if (-1 < index) {
-      user?.checked_out?.splice(index, 1);
-      localStorage.setItem("user", JSON.stringify(user));
-      // @TODO: better way to trigger rerender?
-      setCheckedOut(user?.checked_out ?? []);
-    }
+    const updatedCheckedOut = (user.checked_out ?? []).filter(
+      (id) => id !== movieID
+    );
+    const updatedUser = { ...user, checked_out: updatedCheckedOut };
+    setCookie("user", JSON.stringify(updatedUser));
+    setCheckedOut(updatedCheckedOut);
   };
 
   return (

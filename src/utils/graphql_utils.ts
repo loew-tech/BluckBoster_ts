@@ -1,8 +1,9 @@
 import { KevinBaconResponse, Member, Movie } from "../types/types";
+import { getUserFromCookie } from "./cookieUtils";
 
 const graphqlPath = "http://127.0.0.1:8080/graphql/v1";
 
-export const login = async (username: string): Promise<boolean> => {
+export const login = async (username: string): Promise<Member | null> => {
   const query = {
     query: `
       query GetMember($username: ID!) {
@@ -25,10 +26,10 @@ export const login = async (username: string): Promise<boolean> => {
     body: JSON.stringify(query),
   });
   if (response.ok) {
-    const data = await response.json();
-    localStorage.setItem("user", JSON.stringify(data.data.GetMember));
+    const user = (await response.json()) as Member;
+    return user;
   }
-  return response.ok;
+  return null;
 };
 
 export const fetchMovie = async (movieID: string): Promise<Movie | null> => {
@@ -204,11 +205,11 @@ export const updateCart = (
 };
 
 export const getUser = async (): Promise<Member | null> => {
-  const localData = localStorage.getItem("user");
-  if (!localData) {
+  const user = getUserFromCookie();
+  if (!user) {
+    console.warn("Failed to retrieve user from cookie. Functionality affected");
     return null;
   }
-  const user = JSON.parse(localData);
   const query = {
     query: `
       query GetMember($username: ID!) {

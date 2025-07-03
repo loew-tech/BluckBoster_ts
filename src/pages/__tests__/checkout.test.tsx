@@ -4,6 +4,7 @@ import { CheckoutPage } from "../checkout";
 import { renderWithNav } from "../../../test/renderHelpers";
 import { testMember, testMovies } from "../../../test/test-data";
 import userEvent from "@testing-library/user-event";
+import { deleteCookie, setCookie } from "../../utils/cookieUtils";
 
 const fetchSpy = jest.spyOn(window, "fetch");
 
@@ -16,10 +17,10 @@ describe("checkout", () => {
         json: async () => testMovies,
       } as Response;
     });
-    localStorage.setItem("user", JSON.stringify(testMember));
+    setCookie("user", JSON.stringify(testMember));
   });
   afterEach(() => {
-    localStorage.removeItem("user");
+    deleteCookie("user");
   });
 
   it("should render checkout", async () => {
@@ -35,7 +36,7 @@ describe("checkout", () => {
     });
   });
   it("should render error message on failed checkout", async () => {
-    localStorage.removeItem("user");
+    deleteCookie("user");
     renderWithNav(<CheckoutPage />);
     await userEvent.click(screen.getByText(/Checkout/));
     await waitFor(() => {

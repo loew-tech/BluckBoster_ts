@@ -9,17 +9,17 @@ import {
   TableRow,
 } from "semantic-ui-react";
 
-import { Member, Movie } from "../types/types";
+import { Movie } from "../types/types";
 import { checkout, fetchCart, updateCart } from "../utils/utils";
 import { HeaderBanner } from "../components/headerBanner";
 import { moviesPath } from "../constants/constants";
 import { ErrorMessage } from "../components/errorMessage";
+import { getUserFromCookie, setCookie } from "../utils/cookieUtils";
 
 import "./checkout.css";
 
 export const CheckoutPage = () => {
-  const member = localStorage.getItem("user");
-  const user = member !== null ? (JSON.parse(member) as Member) : null;
+  const user = getUserFromCookie();
   const [cart, setCart] = useState<string[]>([]);
   const [movies, setMovies] = useState<Movie[]>([]);
   const [failedCheckout, setFailedCheckout] = useState<boolean>(false);
@@ -35,17 +35,14 @@ export const CheckoutPage = () => {
     }
     const success = await checkout(user.username, cart);
     if (success) {
-      //   @TODO: is there better way to handle this
-      if (!user?.checked_out) {
-        user.checked_out = [];
-      }
+      user.checked_out = user.checked_out ?? [];
       cart.forEach((moive_id) => {
         if (user?.checked_out) {
           user.checked_out.push(moive_id);
         }
       });
       user.cart = [];
-      localStorage.setItem("user", JSON.stringify(user));
+      setCookie("user", JSON.stringify(user));
       navigate(moviesPath);
     } else {
       setFailedCheckout(true);
@@ -59,7 +56,7 @@ export const CheckoutPage = () => {
     const newCart = updateCart(user.username, movie.id, cart, removeFromCart);
     setCart(newCart);
     user.cart = newCart;
-    localStorage.setItem("user", JSON.stringify(user));
+    setCookie("user", JSON.stringify(user));
     setMovies(movies.filter((m) => m.id !== movie.id));
   };
 
@@ -70,7 +67,7 @@ export const CheckoutPage = () => {
         setCart(movies.map((movie) => movie.id));
         // @TODO: better way to handle cart syncing issue?
         user.cart = movies.map((movie) => movie.id);
-        localStorage.setItem("user", JSON.stringify(user));
+        setCookie("user", JSON.stringify(user));
       });
     } else {
       setMovies([]);

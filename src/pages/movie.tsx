@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Container, Grid, Header } from "semantic-ui-react";
 
-import { Member, Movie } from "../types/types";
+import { Movie } from "../types/types";
 import { HeaderBanner } from "../components/headerBanner";
 import { TriviaContainer } from "../components/movieComponents/triviaContainer";
 import { MovieElementRow } from "../components/movieComponents/movieElementRow";
@@ -10,12 +10,13 @@ import { ErrorMessage } from "../components/errorMessage";
 
 import "./movie.css";
 import { fetchMovie } from "../utils/utils";
+import { getUserFromCookie } from "../utils/cookieUtils";
 
 const WIKIPEDIA_URI = "https://en.wikipedia.org/wiki";
 
 export const MoviePage = () => {
-  const data = localStorage.getItem("user");
-  const user = data ? (JSON.parse(data) as Member) : null;
+  const user = getUserFromCookie();
+
   const [movie, setMovie] = useState<Movie | null>(null);
   const { movieID } = useParams();
 

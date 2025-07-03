@@ -3,7 +3,7 @@ import { KevinBaconResponse, Member, Movie } from "../types/types";
 import * as rest from "./rest_utils";
 import * as graphql from "./graphql_utils";
 
-export const login = async (username: string): Promise<boolean> => {
+export const login = async (username: string): Promise<Member | null> => {
   const api = store.getState().api.api;
   console.log("API in login:", api);
   switch (api) {
@@ -12,7 +12,7 @@ export const login = async (username: string): Promise<boolean> => {
     case "GraphQL":
       return await graphql.login(username);
   }
-  return false;
+  return null;
 };
 
 export const fetchMovie = async (movieID: string): Promise<Movie | null> => {

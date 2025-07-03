@@ -21,6 +21,11 @@ import { loginPath, moviesPath } from "../constants/constants";
 import { ErrorMessage } from "../components/errorMessage";
 import { useAppDispatch, useAppSelector } from "../store/hook";
 import { toggleToRest, toggleToGraphQL } from "../store/apiSlice";
+import {
+  setCookie,
+  getUserFromCookie,
+  deleteCookie,
+} from "../utils/cookieUtils";
 
 import "./member.css";
 
@@ -71,7 +76,7 @@ export const MemberPage = () => {
   };
 
   const logout = async () => {
-    localStorage.removeItem("user");
+    deleteCookie("user");
     navigate(loginPath);
   };
 
@@ -85,18 +90,16 @@ export const MemberPage = () => {
     if (success) {
       setRentals(rentals.filter((m) => !movieIDs.includes(m.id)));
       setCurrentlyRented(currentlyRented - 1);
-      const data = localStorage.getItem("user");
-      if (!data) {
-        // @TODO: handle not getting user
+      const user = getUserFromCookie();
+      if (!user) {
+        console.warn("user cookie not found. Functionality may be affected");
         return;
       }
-      // @TODO: handle updating rentals
-      // const user = JSON.parse(data) as Member;
-      // const index = (user?.checked_out || []).indexOf(movie_id);
-      // if (-1 < index) {
-      //   user.checked_out = (user?.checked_out || []).splice(index, 1);
-      //   localStorage.setItem("user", JSON.stringify(user));
-      // }
+      user.checked_out = (user.checked_out ?? []).filter(
+        (id) => !movieIDs.includes(id)
+      );
+      setCookie("user", JSON.stringify(user));
+      setMember(user);
       setReturnErr(false);
     } else {
       setReturnErr(true);
