@@ -19,7 +19,6 @@ describe("movies page", () => {
         json: async () => testMovies,
       } as Response;
     });
-    // @TODO: don't like this
     setCookie("user", JSON.stringify(testMember));
   });
 

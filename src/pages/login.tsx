@@ -8,11 +8,16 @@ import { ErrorMessage } from "../components/errorMessage";
 import { login } from "../utils/utils";
 
 import "./login.css";
-import { deleteCookie, setCookie } from "../utils/cookieUtils";
+import {
+  deleteCookie,
+  hasCookieConsent,
+  setCookie,
+} from "../utils/cookieUtils";
 
 export const LoginPage = () => {
   const [username, setUsername] = useState<string>("");
   const [failedLogin, setFailedLogin] = useState<boolean>(false);
+  const [cookieErr, setCookieErr] = useState<boolean>(false);
   const [failedUsername, setFailedUsername] = useState<string>("");
 
   const navigate = useNavigate();
@@ -22,6 +27,11 @@ export const LoginPage = () => {
   }, []);
 
   const tryLogin = async () => {
+    if (!hasCookieConsent()) {
+      console.warn("Cannot login without accepting cookies");
+      setCookieErr(true);
+      return;
+    }
     const user = await login(username);
     if (user) {
       setCookie("user", JSON.stringify(user));
@@ -51,6 +61,11 @@ export const LoginPage = () => {
       <Button onClick={() => navigate(moviesPath)}>EXPLORE OUR MOVIES!</Button>
       {failedLogin ? (
         <ErrorMessage msg={`failed to login with username ${failedUsername}`} />
+      ) : null}
+      {cookieErr ? (
+        <ErrorMessage
+          msg={`cannot login without accepting cookie use. Sorry we're monsters 😉`}
+        />
       ) : null}
     </div>
   );
