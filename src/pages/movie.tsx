@@ -7,37 +7,43 @@ import { HeaderBanner } from "../components/headerBanner";
 import { TriviaContainer } from "../components/movieComponents/triviaContainer";
 import { MovieElementRow } from "../components/movieComponents/movieElementRow";
 import { ErrorMessage } from "../components/errorMessage";
-
-import "./movie.css";
+import { Spinner } from "../components/Spinner";
 import { fetchMovie } from "../utils/utils";
 import { getUserFromCookie } from "../utils/cookieUtils";
+
+import "./movie.css";
 
 const WIKIPEDIA_URI = "https://en.wikipedia.org/wiki";
 
 export const MoviePage = () => {
   const user = getUserFromCookie();
-
   const [movie, setMovie] = useState<Movie | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { movieID } = useParams();
 
-  const getMovie = async () => {
-    if (!movieID) {
-      setMovie(null);
-      return;
-    }
-    const movie = await fetchMovie(movieID);
-    setMovie(movie);
-  };
-
   useEffect(() => {
+    const getMovie = async () => {
+      if (!movieID) {
+        setIsLoading(false);
+        setMovie(null);
+        return;
+      }
+      const movie = await fetchMovie(movieID);
+      setMovie(movie);
+      setIsLoading(false);
+    };
     getMovie();
-  }, []);
+  }, [movieID]);
 
   const getWikiID = (movieID: string) => {
     let ret = movieID.split("_");
     ret.splice(ret.length - 1, 1);
     return ret.join("_");
   };
+
+  if (isLoading) {
+    return <Spinner message="Loading movie data..." />;
+  }
 
   return (
     <>
@@ -72,8 +78,7 @@ export const MoviePage = () => {
           </Grid>
         </Container>
       ) : (
-        // @TODO: Add loading spinner; currently just shows error message
-        <ErrorMessage msg="Failed to retrieve movies from cloud"></ErrorMessage>
+        <ErrorMessage msg="Failed to retrieve movies from cloud" />
       )}
     </>
   );

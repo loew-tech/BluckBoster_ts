@@ -58,7 +58,7 @@ export const LoginPage = () => {
         </FormField>
         <Button type="submit">Login</Button>
       </Form>
-      <Button onClick={() => navigate(moviesPath)}>EXPLORE OUR MOVIES!</Button>
+      <Button onClick={() => navigate(moviesPath)}>VIEW OUR MOVIES!</Button>
       <Button onClick={() => navigate(ExplorePath)}>
         Explore Kevin Bacon!
       </Button>

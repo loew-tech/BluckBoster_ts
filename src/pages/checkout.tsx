@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -17,17 +17,19 @@ import { ErrorMessage } from "../components/errorMessage";
 import { getUserFromCookie, setCookie } from "../utils/cookieUtils";
 
 import "./checkout.css";
+import { Spinner } from "../components/Spinner";
 
 export const CheckoutPage = () => {
-  const user = getUserFromCookie();
+  const userRef = useRef(getUserFromCookie()); // ✅ stable user
+  const user = userRef.current;
   const [cart, setCart] = useState<string[]>([]);
   const [movies, setMovies] = useState<Movie[]>([]);
   const [failedCheckout, setFailedCheckout] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const removeFromCart = true;
 
-  // @TODO: handle checking out movie that's already in checkout
   const userCheckout = async () => {
     if (!user) {
       setFailedCheckout(true);
@@ -35,14 +37,12 @@ export const CheckoutPage = () => {
     }
     const success = await checkout(user.username, cart);
     if (success) {
-      user.checked_out = user.checked_out ?? [];
-      cart.forEach((moive_id) => {
-        if (user?.checked_out) {
-          user.checked_out.push(moive_id);
-        }
-      });
-      user.cart = [];
-      setCookie("user", JSON.stringify(user));
+      const updatedUser = {
+        ...user,
+        checked_out: [...(user.checked_out ?? []), ...cart],
+        cart: [],
+      };
+      setCookie("user", JSON.stringify(updatedUser));
       navigate(moviesPath);
     } else {
       setFailedCheckout(true);
@@ -50,56 +50,62 @@ export const CheckoutPage = () => {
   };
 
   const cartRemove = (movie: Movie) => {
-    if (!user) {
-      return;
-    }
+    if (!user) return;
+
     const newCart = updateCart(user.username, movie.id, cart, removeFromCart);
+    const updatedUser = { ...user, cart: newCart };
+
     setCart(newCart);
-    user.cart = newCart;
-    setCookie("user", JSON.stringify(user));
     setMovies(movies.filter((m) => m.id !== movie.id));
+    setCookie("user", JSON.stringify(updatedUser));
   };
 
-  useEffect(() => {
-    if (user) {
-      fetchCart(user.username).then((movies: Movie[]) => {
-        setMovies(movies);
-        setCart(movies.map((movie) => movie.id));
-        // @TODO: better way to handle cart syncing issue?
-        user.cart = movies.map((movie) => movie.id);
-        setCookie("user", JSON.stringify(user));
-      });
-    } else {
-      setMovies([]);
-      setCart([]);
-    }
-  }, []);
+  useEffect(
+    () => {
+      const loadCart = async () => {
+        setIsLoading(true);
+
+        if (user) {
+          const movies = await fetchCart(user.username);
+          const cartIds = movies.map((movie) => movie.id);
+
+          setMovies(movies);
+          setCart(cartIds);
+
+          const updatedUser = { ...user, cart: cartIds };
+          setCookie("user", JSON.stringify(updatedUser));
+        } else {
+          setMovies([]);
+          setCart([]);
+        }
+        setIsLoading(false);
+      };
+      loadCart();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  ); // ✅ user is stable from useRef, no need to include it here
 
   return (
     <div>
       <HeaderBanner user={user} />
+      {isLoading && <Spinner message="🔄 Loading your cart..." />}
       <Table striped>
         <TableBody>
-          {movies.map((movie) => {
-            return (
-              <TableRow key={movie.id}>
-                <TableCell className="title-cell">{movie.title}</TableCell>
-                <TableCell>
-                  {movie.inventory ? (
-                    <Button
-                      onClick={() => {
-                        cartRemove(movie);
-                      }}
-                    >
-                      Remove From Cart
-                    </Button>
-                  ) : (
-                    <Button disabled={true}>Out of Stock</Button>
-                  )}
-                </TableCell>
-              </TableRow>
-            );
-          })}
+          {movies.map((movie) => (
+            <TableRow key={movie.id}>
+              <TableCell className="title-cell">{movie.title}</TableCell>
+              <TableCell>
+                {movie.inventory ? (
+                  <Button onClick={() => cartRemove(movie)}>
+                    Remove From Cart
+                  </Button>
+                ) : (
+                  <Button disabled>Out of Stock</Button>
+                )}
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
       <div className="checkout-container">
@@ -107,7 +113,7 @@ export const CheckoutPage = () => {
           <Button onClick={userCheckout}>Checkout</Button>
         </div>
       </div>
-      {failedCheckout ? <ErrorMessage msg="Failed to checkout" /> : null}
+      {failedCheckout && <ErrorMessage msg="Failed to checkout" />}
     </div>
   );
 };

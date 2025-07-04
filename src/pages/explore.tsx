@@ -22,6 +22,7 @@ import { ResultList } from "../components/explore/ResultList";
 
 import "./explore.css";
 import { getUserFromCookie } from "../utils/cookieUtils";
+import { Spinner } from "../components/Spinner";
 
 export const Explore = () => {
   const user = getUserFromCookie();
@@ -39,6 +40,7 @@ export const Explore = () => {
   const [starData, setStarData] = useState<string[]>([]);
   const [movieData, setMovieData] = useState<Movie[]>([]);
   const [directorData, setDirectorData] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleExplore = async () => {
     setStarData([]);
@@ -47,6 +49,7 @@ export const Explore = () => {
     setStarsPercentage(null);
     setMoviesPercentage(null);
     setDirectorPercentage(null);
+    setIsLoading(true);
 
     let stars: string[] = [];
     let movies: Movie[] = [];
@@ -84,12 +87,14 @@ export const Explore = () => {
       default:
         console.warn("Unknown explore request:", exploreType);
     }
+    setIsLoading(false);
   };
 
   return (
     <>
       <HeaderBanner user={user} />
       <Container text className="movie-container">
+        {isLoading && <Spinner message="🔎 Searching the movies archives..." />}
         <SearchSelector
           exploreType={exploreType}
           setExploreType={setExploreType}
