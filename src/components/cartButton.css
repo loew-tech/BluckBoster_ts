@@ -1,0 +1,33 @@
+.cart-button {
+  background-color: #ffd700;
+  color: #000080 !important;
+  font-weight: bold;
+  font-family: Verdana, sans-serif;
+  border: 2px solid #000080 !important;
+  border-radius: 10px !important;
+  margin-top: 0.5em !important;
+}
+.cart-button:hover {
+  background-color: #000080 !important;
+  color: darkblue !important;
+  border: 2px solid #ffd700 !important;
+}
+.cart-button:disabled {
+  background-color: #d3d3d3 !important;
+  color: #808080 !important;
+  border: 2px solid #808080 !important;
+  cursor: not-allowed !important;
+}
+.cart-button:disabled:hover {
+  background-color: #d3d3d3 !important;
+  color: #808080 !important;
+  border: 2px solid #808080 !important;
+}
+.cart-button .icon {
+  margin-right: 0.5em !important;
+}
+.cart-button .icon:before {
+  content: "\f07a"; /* FontAwesome shopping cart icon */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}

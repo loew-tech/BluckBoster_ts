@@ -12,30 +12,28 @@ import { moviesPath } from "../../constants/constants";
 import { PagePicker } from "./pagePicker";
 
 import "./movieTable.css";
+import { useCart } from "../../context/CartContext";
 
 type MovieTableProps = {
   movies: Movie[];
   user: Member | null;
-  cart: string[];
-  cartUpdate: (s: string, b: boolean) => void;
   updateMovies: (s: string) => void;
   returnRental: (s: string) => void;
 };
 export const MovieTable = ({
   movies,
   user,
-  cart,
-  cartUpdate,
   updateMovies,
   returnRental,
 }: MovieTableProps) => {
+  const { addToCart, removeFromCart, isInCart } = useCart();
   return (
     <div className="movie-table">
       <PagePicker updateMovies={updateMovies} />
       <Table striped>
-        <MovieTableHeader user={user} cart={cart} />
+        <MovieTableHeader user={user} />
         <TableBody>
-          {movies.map((movie, i) => {
+          {movies.map((movie) => {
             return (
               <TableRow key={`${movie.id}`}>
                 <TableCell className="title-cell">
@@ -71,10 +69,12 @@ export const MovieTable = ({
                         movie.inventory && (
                           <Button
                             onClick={() => {
-                              cartUpdate(movie.id, cart.includes(movie.id));
+                              isInCart(movie.id)
+                                ? removeFromCart(movie.id)
+                                : addToCart(movie.id);
                             }}
                           >
-                            {cart.includes(movie.id)
+                            {isInCart(movie.id)
                               ? "Remove from cart"
                               : "Add to cart"}
                           </Button>

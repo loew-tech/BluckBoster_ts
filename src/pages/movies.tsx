@@ -74,8 +74,6 @@ export const MoviesPage = () => {
       <MovieTable
         movies={movies}
         user={user}
-        cart={cart}
-        cartUpdate={cartUpdate}
         updateMovies={getMovies}
         returnRental={returnRental}
       />

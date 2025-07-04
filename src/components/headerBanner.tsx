@@ -8,12 +8,11 @@ import {
 import { Member } from "../types/types";
 
 import "./headerBanner.css";
+import { CartButton } from "./CartButton";
 
 type HeaderBannerProps = {
   user: Member | null;
 };
-
-// @TODO: move cart in here
 export const HeaderBanner = ({ user }: HeaderBannerProps) => {
   return (
     <div className="member-banner">
@@ -35,6 +34,8 @@ export const HeaderBanner = ({ user }: HeaderBannerProps) => {
               Currently Rented:{" "}
               {user?.checked_out ? user.checked_out.length : 0}
             </a>
+            <br />
+            <CartButton />
           </GridColumn>
         ) : null}
       </Grid>

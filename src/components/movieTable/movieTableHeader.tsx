@@ -1,21 +1,11 @@
-import { useNavigate } from "react-router-dom";
-import {
-  Button,
-  TableRow,
-  TableHeader,
-  TableHeaderCell,
-} from "semantic-ui-react";
+import { TableRow, TableHeader, TableHeaderCell } from "semantic-ui-react";
 
 import { Member } from "../../types/types";
-import { checkoutPath } from "../../constants/constants";
 
 type MovieTableHeaderProps = {
   user: Member | null;
-  cart: string[];
 };
-export const MovieTableHeader = ({ user, cart }: MovieTableHeaderProps) => {
-  const navigate = useNavigate();
-
+export const MovieTableHeader = ({ user }: MovieTableHeaderProps) => {
   return (
     <TableHeader>
       <TableRow>
@@ -27,15 +17,7 @@ export const MovieTableHeader = ({ user, cart }: MovieTableHeaderProps) => {
           <>
             <TableHeaderCell>Available</TableHeaderCell>
             <TableHeaderCell>Rented</TableHeaderCell>
-            <TableHeaderCell>
-              {/* @TODO: move this into headerBanner.tsx ?*/}
-              <Button
-                disabled={!cart.length}
-                onClick={() => navigate(checkoutPath)}
-              >
-                Cart: ({cart.length})
-              </Button>
-            </TableHeaderCell>
+            <TableHeaderCell></TableHeaderCell>
           </>
         ) : null}
       </TableRow>
