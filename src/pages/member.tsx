@@ -14,7 +14,12 @@ import {
 } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 
-import { getUser, fetchCheckedoutMovies, returnRentals, setAPIChoice } from "../utils/utils";
+import {
+  getUser,
+  fetchCheckedoutMovies,
+  returnRentals,
+  setAPIChoice,
+} from "../utils/utils";
 import { Member, Movie } from "../types/types";
 import { HeaderBanner } from "../components/headerBanner";
 import { loginPath, moviesPath } from "../constants/constants";
@@ -27,6 +32,7 @@ import {
 } from "../utils/cookieUtils";
 
 import "./member.css";
+import { Spinner } from "../components/Spinner";
 
 export const MemberPage = () => {
   const api = getAPIChoiceFromCookie();
@@ -40,6 +46,7 @@ export const MemberPage = () => {
   const [returnErr, setReturnErr] = useState<boolean>(false);
   const [fetchCheckedOutErr, setFetchCheckedOutErr] = useState<boolean>(false);
   const [activeButton, setActiveButton] = useState<string>(api);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     getUser().then((user: Member | null) => {
@@ -49,6 +56,7 @@ export const MemberPage = () => {
   }, []);
 
   const getCheckedoutMovies = useCallback(async () => {
+    setIsLoading(true);
     if (member) {
       const movies = await fetchCheckedoutMovies(member.username);
       if (movies) {
@@ -58,6 +66,7 @@ export const MemberPage = () => {
         setFetchCheckedOutErr(true);
       }
     }
+    setIsLoading(false);
   }, [member]);
 
   useEffect(() => {
@@ -66,8 +75,11 @@ export const MemberPage = () => {
 
   const toggleActiveButton = (selection: string) => {
     setActiveButton(selection);
-    if (selection !== api && (selection === "REST" || selection === "GraphQL")) {
-      setAPIChoice(selection)
+    if (
+      selection !== api &&
+      (selection === "REST" || selection === "GraphQL")
+    ) {
+      setAPIChoice(selection);
     }
   };
 
@@ -105,6 +117,7 @@ export const MemberPage = () => {
   return (
     <div>
       <HeaderBanner user={member} />
+      {isLoading && <Spinner message="🔄 Loading your profile..." />}
       <Label className="active-api-label">
         <Icon name="database" />
         Currently running on {activeButton}

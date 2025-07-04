@@ -16,7 +16,6 @@ type MovieTableHeaderProps = {
 export const MovieTableHeader = ({ user, cart }: MovieTableHeaderProps) => {
   const navigate = useNavigate();
 
-  // @TODO: fix headers moving depending on which page is loaded
   return (
     <TableHeader>
       <TableRow>

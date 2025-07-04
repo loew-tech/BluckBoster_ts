@@ -7,6 +7,7 @@ import { HeaderBanner } from "../components/headerBanner";
 import { TriviaContainer } from "../components/movieComponents/triviaContainer";
 import { MovieElementRow } from "../components/movieComponents/movieElementRow";
 import { ErrorMessage } from "../components/errorMessage";
+import { Spinner } from "../components/Spinner";
 import { fetchMovie } from "../utils/utils";
 import { getUserFromCookie } from "../utils/cookieUtils";
 
@@ -20,20 +21,19 @@ export const MoviePage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { movieID } = useParams();
 
-  const getMovie = async () => {
-    if (!movieID) {
-      setIsLoading(false);
-      setMovie(null);
-      return;
-    }
-    const movie = await fetchMovie(movieID);
-    setMovie(movie);
-    setIsLoading(false);
-  };
-
   useEffect(() => {
+    const getMovie = async () => {
+      if (!movieID) {
+        setIsLoading(false);
+        setMovie(null);
+        return;
+      }
+      const movie = await fetchMovie(movieID);
+      setMovie(movie);
+      setIsLoading(false);
+    };
     getMovie();
-  }, []);
+  }, [movieID]);
 
   const getWikiID = (movieID: string) => {
     let ret = movieID.split("_");
@@ -42,7 +42,7 @@ export const MoviePage = () => {
   };
 
   if (isLoading) {
-    return <div className="spinner">Loading movie data...</div>;
+    return <Spinner message="Loading movie data..." />;
   }
 
   return (

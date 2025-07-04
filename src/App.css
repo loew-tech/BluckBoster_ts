@@ -7,7 +7,6 @@
   left: 0;
   top: 0;
   position: fixed;
-  /* @TODO: is this the right place to add this to make table scroll able? */
   overflow-y: scroll;
 }
 
@@ -43,7 +42,6 @@ table {
 }
 
 .anchor-left {
-  /* @TODO: better way to do this? Is this mobile friendly? scroll friendly? */
   position: fixed;
   margin-left: 0%;
 }

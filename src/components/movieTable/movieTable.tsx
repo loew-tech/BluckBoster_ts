@@ -50,7 +50,7 @@ export const MovieTable = ({
                   </div>
                   <div>
                     <p>Starring:</p>
-                    {movie.cast.join(", ")}
+                    {(movie.cast ?? []).join(", ")}
                   </div>
                 </TableCell>
                 {user ? (
