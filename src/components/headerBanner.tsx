@@ -12,8 +12,6 @@ import { useUser } from "../context/UserContext";
 
 export const HeaderBanner = () => {
   const { user } = useUser();
-  // @TODO: Remove console.log in production
-  console.log("HeaderBanner user:", user);
   return (
     <div className="member-banner">
       <Grid>
