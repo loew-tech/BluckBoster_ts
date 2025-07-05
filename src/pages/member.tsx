@@ -27,17 +27,17 @@ import { ErrorMessage } from "../components/errorMessage";
 import {
   setCookie,
   getAPIChoiceFromCookie,
-  getUserFromCookie,
   deleteCookie,
+  getUserFromCookie,
 } from "../utils/cookieUtils";
 
 import "./member.css";
 import { Spinner } from "../components/Spinner";
+import { useUser } from "../context/UserContext";
 
 export const MemberPage = () => {
   const api = getAPIChoiceFromCookie();
-  console.log("api", api);
-
+  const { setUser } = useUser();
   const navigate = useNavigate();
 
   const [member, setMember] = useState<Member | null>(null);
@@ -49,11 +49,16 @@ export const MemberPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    getUser().then((user: Member | null) => {
-      setMember(user);
-      setCurrentlyRented(user?.checked_out ? user.checked_out.length : 0);
+    getUser().then((member: Member | null) => {
+      if (!member) {
+        navigate(loginPath);
+      }
+      setMember(member);
+      setUser(member);
+      setCurrentlyRented(member?.checked_out ? member.checked_out.length : 0);
     });
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate]);
 
   const getCheckedoutMovies = useCallback(async () => {
     setIsLoading(true);
@@ -85,6 +90,7 @@ export const MemberPage = () => {
 
   const logout = async () => {
     deleteCookie("user");
+    setUser(null);
     navigate(loginPath);
   };
 
@@ -116,7 +122,7 @@ export const MemberPage = () => {
 
   return (
     <div>
-      <HeaderBanner user={member} />
+      <HeaderBanner />
       {isLoading && <Spinner message="🔄 Loading your profile..." />}
       <Label className="active-api-label">
         <Icon name="database" />

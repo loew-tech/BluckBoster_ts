@@ -13,19 +13,22 @@ import {
   moviesPath,
 } from "../constants/constants";
 import { Explore } from "./explore";
+import { UserProvider } from "../context/UserContext";
 
 export const Main = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path={loginPath} element={<LoginPage />} />
-        <Route path={moviesPath} element={<MoviesPage />} />
-        <Route path={`${moviesPath}/:movieID`} element={<MoviePage />} />
-        <Route path={checkoutPath} element={<CheckoutPage />} />
-        <Route path={memberPath} element={<MemberPage />} />
-        <Route path={ExplorePath} element={<Explore />} />
-      </Routes>
+      <UserProvider>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path={loginPath} element={<LoginPage />} />
+          <Route path={moviesPath} element={<MoviesPage />} />
+          <Route path={`${moviesPath}/:movieID`} element={<MoviePage />} />
+          <Route path={checkoutPath} element={<CheckoutPage />} />
+          <Route path={memberPath} element={<MemberPage />} />
+          <Route path={ExplorePath} element={<Explore />} />
+        </Routes>
+      </UserProvider>
     </BrowserRouter>
   );
 };

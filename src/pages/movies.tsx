@@ -1,20 +1,19 @@
 import { useEffect, useState } from "react";
 
 import { Movie } from "../types/types";
-import { fetchMovies, returnRentals, updateCart } from "../utils/utils";
+import { fetchMovies, returnRentals } from "../utils/utils";
 import { HeaderBanner } from "../components/headerBanner";
 import { MovieTable } from "../components/movieTable/movieTable";
 import { ErrorMessage } from "../components/errorMessage";
 import { Spinner } from "../components/Spinner";
-import { getUserFromCookie, setCookie } from "../utils/cookieUtils";
+import { useUser } from "../context/UserContext";
 
 const errorMsg = "An unexpected error occurred fetching our movie catalog";
 
 export const MoviesPage = () => {
-  const user = getUserFromCookie();
+  const { user, setUser } = useUser();
 
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [cart, setCart] = useState<string[]>(user?.cart ?? []);
   const [, setCheckedOut] = useState<string[]>(user?.checked_out ?? []);
   const [movieErr, setMovieErr] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -38,16 +37,6 @@ export const MoviesPage = () => {
 
   movies.sort((a: Movie, b: Movie) => (a.title < b.title ? -1 : 1));
 
-  const cartUpdate = (movieID: string, removeFromCart: boolean) => {
-    if (!user) return;
-    setCart(updateCart(user.username, movieID, cart, removeFromCart));
-
-    if (user.cart) {
-      user.cart = user.cart.filter((id) => id !== movieID); // ✅ Replaces splice
-      setCookie("user", JSON.stringify(user));
-    }
-  };
-
   const returnRental = async (movieID: string) => {
     if (!user) return;
     const success = await returnRentals(user.username, [movieID]);
@@ -59,7 +48,7 @@ export const MoviesPage = () => {
       (id) => id !== movieID
     );
     const updatedUser = { ...user, checked_out: updatedCheckedOut };
-    setCookie("user", JSON.stringify(updatedUser));
+    setUser(updatedUser);
     setCheckedOut(updatedCheckedOut);
   };
 
@@ -73,9 +62,6 @@ export const MoviesPage = () => {
     return (
       <MovieTable
         movies={movies}
-        user={user}
-        cart={cart}
-        cartUpdate={cartUpdate}
         updateMovies={getMovies}
         returnRental={returnRental}
       />
@@ -84,7 +70,7 @@ export const MoviesPage = () => {
 
   return (
     <>
-      <HeaderBanner user={user} />
+      <HeaderBanner />
       {renderContent()}
     </>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -14,14 +14,14 @@ import { checkout, fetchCart, updateCart } from "../utils/utils";
 import { HeaderBanner } from "../components/headerBanner";
 import { moviesPath } from "../constants/constants";
 import { ErrorMessage } from "../components/errorMessage";
-import { getUserFromCookie, setCookie } from "../utils/cookieUtils";
+
+import { Spinner } from "../components/Spinner";
+import { useUser } from "../context/UserContext";
 
 import "./checkout.css";
-import { Spinner } from "../components/Spinner";
 
 export const CheckoutPage = () => {
-  const userRef = useRef(getUserFromCookie()); // ✅ stable user
-  const user = userRef.current;
+  const { user, setUser } = useUser();
   const [cart, setCart] = useState<string[]>([]);
   const [movies, setMovies] = useState<Movie[]>([]);
   const [failedCheckout, setFailedCheckout] = useState<boolean>(false);
@@ -42,7 +42,7 @@ export const CheckoutPage = () => {
         checked_out: [...(user.checked_out ?? []), ...cart],
         cart: [],
       };
-      setCookie("user", JSON.stringify(updatedUser));
+      setUser(updatedUser);
       navigate(moviesPath);
     } else {
       setFailedCheckout(true);
@@ -57,7 +57,7 @@ export const CheckoutPage = () => {
 
     setCart(newCart);
     setMovies(movies.filter((m) => m.id !== movie.id));
-    setCookie("user", JSON.stringify(updatedUser));
+    setUser(updatedUser);
   };
 
   useEffect(
@@ -73,7 +73,7 @@ export const CheckoutPage = () => {
           setCart(cartIds);
 
           const updatedUser = { ...user, cart: cartIds };
-          setCookie("user", JSON.stringify(updatedUser));
+          setUser(updatedUser);
         } else {
           setMovies([]);
           setCart([]);
@@ -84,11 +84,11 @@ export const CheckoutPage = () => {
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
-  ); // ✅ user is stable from useRef, no need to include it here
+  );
 
   return (
     <div>
-      <HeaderBanner user={user} />
+      <HeaderBanner />
       {isLoading && <Spinner message="🔄 Loading your cart..." />}
       <Table striped>
         <TableBody>

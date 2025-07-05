@@ -5,16 +5,13 @@ import {
   memberPath,
   moviesPath,
 } from "../constants/constants";
-import { Member } from "../types/types";
 
 import "./headerBanner.css";
+import { CartButton } from "./CartButton";
+import { useUser } from "../context/UserContext";
 
-type HeaderBannerProps = {
-  user: Member | null;
-};
-
-// @TODO: move cart in here
-export const HeaderBanner = ({ user }: HeaderBannerProps) => {
+export const HeaderBanner = () => {
+  const { user } = useUser();
   return (
     <div className="member-banner">
       <Grid>
@@ -35,6 +32,8 @@ export const HeaderBanner = ({ user }: HeaderBannerProps) => {
               Currently Rented:{" "}
               {user?.checked_out ? user.checked_out.length : 0}
             </a>
+            <br />
+            <CartButton />
           </GridColumn>
         ) : null}
       </Grid>

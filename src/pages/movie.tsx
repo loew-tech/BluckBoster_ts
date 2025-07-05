@@ -9,14 +9,12 @@ import { MovieElementRow } from "../components/movieComponents/movieElementRow";
 import { ErrorMessage } from "../components/errorMessage";
 import { Spinner } from "../components/Spinner";
 import { fetchMovie } from "../utils/utils";
-import { getUserFromCookie } from "../utils/cookieUtils";
 
 import "./movie.css";
 
 const WIKIPEDIA_URI = "https://en.wikipedia.org/wiki";
 
 export const MoviePage = () => {
-  const user = getUserFromCookie();
   const [movie, setMovie] = useState<Movie | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { movieID } = useParams();
@@ -47,7 +45,7 @@ export const MoviePage = () => {
 
   return (
     <>
-      <HeaderBanner user={user} />
+      <HeaderBanner />
       {movie ? (
         <Container text className="movie-container">
           <Header as="h2" className="title-field">
