@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react";
 import { render } from "@testing-library/react";
 
-import { PagePicker } from "../pagePicker";
+import { PagePicker } from "../pagePicker/pagePicker";
 import userEvent from "@testing-library/user-event";
 
 const updateMoviesSpy = jest.fn();

@@ -39,6 +39,40 @@ export const MoviePage = () => {
     return ret.join("_");
   };
 
+  const getMovieRows = (): JSX.Element[] => {
+    if (!movie) {
+      return [];
+    }
+    let contents = [
+      {
+        sectionTitle: "Review:",
+        content: <p>{movie.review}</p>,
+      },
+      {
+        sectionTitle: "Synopsis:",
+        content: (
+          <p>
+            {movie.synopsis}
+            <a href={`${WIKIPEDIA_URI}/${getWikiID(movie.id)}`}>[More]</a>
+          </p>
+        ),
+      },
+    ];
+    if (movie.trivia && movie.trivia.trim()) {
+      contents.push({
+        sectionTitle: "Trivia:",
+        content: <TriviaContainer trivia={movie.trivia} />,
+      });
+    }
+    return contents.map((item, i) => (
+      <MovieElementRow
+        key={`${i}-${item.sectionTitle}`}
+        sectionTitle={item.sectionTitle}
+        content={item.content}
+      />
+    ));
+  };
+
   if (isLoading) {
     return <Spinner message="Loading movie data..." />;
   }
@@ -52,27 +86,7 @@ export const MoviePage = () => {
             {movie.title}
           </Header>
           <Grid columns={2} divided>
-            {movie.review && movie.review.trim() ? (
-              <MovieElementRow
-                sectionTitle="Review:"
-                content={<p>{movie.review}</p>}
-              />
-            ) : null}
-            <MovieElementRow
-              sectionTitle="Synopsis:"
-              content={
-                <p>
-                  {movie.synopsis}
-                  <a href={`${WIKIPEDIA_URI}/${getWikiID(movie.id)}`}>[More]</a>
-                </p>
-              }
-            />
-            {movie.trivia ? (
-              <MovieElementRow
-                sectionTitle="Trivia:"
-                content={<TriviaContainer trivia={movie.trivia} />}
-              />
-            ) : null}
+            {getMovieRows()}
           </Grid>
         </Container>
       ) : (

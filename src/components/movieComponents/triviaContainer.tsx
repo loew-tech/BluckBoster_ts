@@ -9,10 +9,15 @@ type TriviaComponentProps = {
   trivia: string;
 };
 export const TriviaContainer = ({ trivia }: TriviaComponentProps) => {
+  // @TODO: some trivia is formatted wrong -> (ex: ikiru_1952 -> ":    Question:....")
+  // @TODO: need to clean db
+
   const triviaQuestions = trivia.split("&:&");
   const trivias = triviaQuestions.map((e: string) => {
     const question = e.split(":");
-    return { question: question[1], answer: question[2] };
+    return question[1].trim() === "Question"
+      ? { question: question[2], answer: question[3] }
+      : { question: question[1], answer: question[2] };
   });
 
   return (
