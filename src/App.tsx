@@ -1,5 +1,5 @@
 import "./App.css";
-import { CookieConsent } from "./components/CookieConsent";
+import { CookieConsent } from "./components/login/CookieConsent";
 import { Main } from "./pages/main";
 
 function App() {
