@@ -4,11 +4,11 @@ import {
   loginPath,
   memberPath,
   moviesPath,
-} from "../constants/constants";
+} from "../../constants/constants";
 
 import "./headerBanner.css";
 import { CartButton } from "./CartButton";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../../context/UserContext";
 
 export const HeaderBanner = () => {
   const { user } = useUser();
@@ -29,8 +29,7 @@ export const HeaderBanner = () => {
             </a>
             <br />
             <a href={memberPath}>
-              Currently Rented:{" "}
-                {user?.checked_out?.length ?? 0}
+              Currently Rented: {user?.checked_out?.length ?? 0}
             </a>
             <br />
             <CartButton />

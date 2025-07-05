@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { FormField, Button, Form } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 
 import { ExplorePath, moviesPath, USER } from "../constants/constants";
 import { ErrorMessage } from "../components/errorMessage";
+import { useUser } from "../context/UserContext";
+import { LoginForm } from "../components/login/LoginForm";
 import { login } from "../utils/utils";
+import { deleteCookie, hasCookieConsent } from "../utils/cookieUtils";
 
 import "./login.css";
-import { deleteCookie, hasCookieConsent } from "../utils/cookieUtils";
-import { useUser } from "../context/UserContext";
 
 export const LoginPage = () => {
   const { setUser } = useUser();
@@ -49,35 +49,23 @@ export const LoginPage = () => {
 
   return (
     <div className="bluck-buster-login">
-      <Form onSubmit={tryLogin}>
-        <FormField>
-          <label htmlFor="username">Username</label>
-          <input
-            id="username"
-            name="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="login-input"
-            placeholder="Enter username"
-            autoFocus
-          />
-        </FormField>
-        <Button type="submit" disabled={!username.trim()}>
-          Login
-        </Button>
-      </Form>
+      <LoginForm
+        tryLogin={tryLogin}
+        setUsername={setUsername}
+        username={username}
+      />
       <Button onClick={() => navigate(moviesPath)}>VIEW OUR MOVIES!</Button>
       <Button onClick={() => navigate(ExplorePath)}>
         Explore Kevin Bacon!
       </Button>
-      {failedLogin ? (
+      {failedLogin && (
         <ErrorMessage msg={`failed to login with username ${failedUsername}`} />
-      ) : null}
-      {cookieErr ? (
+      )}
+      {cookieErr && (
         <ErrorMessage
           msg={`cannot login without accepting cookie use. Sorry we're monsters 😉`}
         />
-      ) : null}
+      )}
     </div>
   );
 };

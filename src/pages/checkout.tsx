@@ -1,20 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import {
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-} from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 
 import { Movie } from "../types/types";
 import { checkout, fetchCart, updateCart } from "../utils/utils";
-import { HeaderBanner } from "../components/headerBanner";
-import { moviesPath } from "../constants/constants";
+import { HeaderBanner } from "../components/headerBanner/headerBanner";
+import {
+  loginPath,
+  moviesPath,
+  REMOVE_FROM_CART,
+} from "../constants/constants";
 import { ErrorMessage } from "../components/errorMessage";
-
+import { CheckoutTable } from "../components/checkoutComponents/CheckoutTable";
 import { Spinner } from "../components/Spinner";
 import { useUser } from "../context/UserContext";
 
@@ -22,13 +19,17 @@ import "./checkout.css";
 
 export const CheckoutPage = () => {
   const { user, setUser } = useUser();
+  const navigate = useNavigate();
+
   const [cart, setCart] = useState<string[]>([]);
   const [movies, setMovies] = useState<Movie[]>([]);
   const [failedCheckout, setFailedCheckout] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const navigate = useNavigate();
-  const removeFromCart = true;
+  if (!user) {
+    console.warn("User is not defined in CheckoutPage; redirecting to login.");
+    navigate(loginPath);
+  }
 
   const userCheckout = async () => {
     if (!user) {
@@ -49,14 +50,14 @@ export const CheckoutPage = () => {
     }
   };
 
-  const cartRemove = (movie: Movie) => {
+  const cartRemove = (movieID: string) => {
     if (!user) return;
 
-    const newCart = updateCart(user.username, movie.id, cart, removeFromCart);
+    const newCart = updateCart(user.username, movieID, cart, REMOVE_FROM_CART);
     const updatedUser = { ...user, cart: newCart };
 
     setCart(newCart);
-    setMovies(movies.filter((m) => m.id !== movie.id));
+    setMovies(movies.filter((m) => m.id !== movieID));
     setUser(updatedUser);
   };
 
@@ -90,24 +91,7 @@ export const CheckoutPage = () => {
     <div>
       <HeaderBanner />
       {isLoading && <Spinner message="🔄 Loading your cart..." />}
-      <Table striped>
-        <TableBody>
-          {movies.map((movie) => (
-            <TableRow key={movie.id}>
-              <TableCell className="title-cell">{movie.title}</TableCell>
-              <TableCell>
-                {movie.inventory ? (
-                  <Button onClick={() => cartRemove(movie)}>
-                    Remove From Cart
-                  </Button>
-                ) : (
-                  <Button disabled>Out of Stock</Button>
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <CheckoutTable movies={movies} cartRemove={cartRemove} />
       <div className="checkout-container">
         <div className="center">
           <Button onClick={userCheckout}>Checkout</Button>
