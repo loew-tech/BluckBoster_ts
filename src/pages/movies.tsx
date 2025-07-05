@@ -17,6 +17,7 @@ export const MoviesPage = () => {
   const [, setCheckedOut] = useState<string[]>(user?.checked_out ?? []);
   const [movieErr, setMovieErr] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [activePage, setActivePage] = useState<string>("A");
 
   const getMovies = async (page: string = "A") => {
     page = page === "#123?!" ? "%23" : page;
@@ -29,6 +30,7 @@ export const MoviesPage = () => {
       setMovieErr(true);
     }
     setIsLoading(false);
+    setActivePage(page);
   };
 
   useEffect(() => {
@@ -64,6 +66,7 @@ export const MoviesPage = () => {
         movies={movies}
         updateMovies={getMovies}
         returnRental={returnRental}
+        activePage={activePage}
       />
     );
   };
