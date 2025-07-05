@@ -27,8 +27,8 @@ import { ErrorMessage } from "../components/errorMessage";
 import {
   setCookie,
   getAPIChoiceFromCookie,
-  getUserFromCookie,
   deleteCookie,
+  getUserFromCookie,
 } from "../utils/cookieUtils";
 
 import "./member.css";
@@ -36,8 +36,6 @@ import { Spinner } from "../components/Spinner";
 
 export const MemberPage = () => {
   const api = getAPIChoiceFromCookie();
-  console.log("api", api);
-
   const navigate = useNavigate();
 
   const [member, setMember] = useState<Member | null>(null);
@@ -116,7 +114,7 @@ export const MemberPage = () => {
 
   return (
     <div>
-      <HeaderBanner user={member} />
+      <HeaderBanner />
       {isLoading && <Spinner message="🔄 Loading your profile..." />}
       <Label className="active-api-label">
         <Icon name="database" />

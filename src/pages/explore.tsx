@@ -21,12 +21,9 @@ import { ExploreSummary } from "../components/explore/ExploreSummary";
 import { ResultList } from "../components/explore/ResultList";
 
 import "./explore.css";
-import { getUserFromCookie } from "../utils/cookieUtils";
 import { Spinner } from "../components/Spinner";
 
 export const Explore = () => {
-  const user = getUserFromCookie();
-
   const [creator, setCreator] = useState<string>("");
   const [starsPercentage, setStarsPercentage] = useState<number | null>(null);
   const [director, setDirector] = useState<string>("");
@@ -92,7 +89,7 @@ export const Explore = () => {
 
   return (
     <>
-      <HeaderBanner user={user} />
+      <HeaderBanner />
       <Container text className="movie-container">
         {isLoading && <Spinner message="🔎 Searching the movies archives..." />}
         <SearchSelector

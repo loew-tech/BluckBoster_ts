@@ -3,18 +3,17 @@ import { useNavigate } from "react-router-dom";
 
 import { FormField, Button, Form } from "semantic-ui-react";
 
-import { ExplorePath, moviesPath } from "../constants/constants";
+import { ExplorePath, moviesPath, USER } from "../constants/constants";
 import { ErrorMessage } from "../components/errorMessage";
 import { login } from "../utils/utils";
 
 import "./login.css";
-import {
-  deleteCookie,
-  hasCookieConsent,
-  setCookie,
-} from "../utils/cookieUtils";
+import { deleteCookie, hasCookieConsent } from "../utils/cookieUtils";
+import { useUser } from "../context/UserContext";
 
 export const LoginPage = () => {
+  const { setUser } = useUser();
+
   const [username, setUsername] = useState<string>("");
   const [failedLogin, setFailedLogin] = useState<boolean>(false);
   const [cookieErr, setCookieErr] = useState<boolean>(false);
@@ -23,18 +22,20 @@ export const LoginPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    deleteCookie("user");
+    deleteCookie(USER);
   }, []);
 
   const tryLogin = async () => {
     if (!hasCookieConsent()) {
       console.warn("Cannot login without accepting cookies");
       setCookieErr(true);
+      setFailedLogin(false);
       return;
     }
+    setCookieErr(false);
     const user = await login(username);
     if (user) {
-      setCookie("user", JSON.stringify(user));
+      setUser(user);
       navigate(moviesPath);
     }
     setFailedUsername(username);
@@ -56,7 +57,9 @@ export const LoginPage = () => {
             autoFocus
           />
         </FormField>
-        <Button type="submit">Login</Button>
+        <Button type="submit" disabled={!username.trim()}>
+          Login
+        </Button>
       </Form>
       <Button onClick={() => navigate(moviesPath)}>VIEW OUR MOVIES!</Button>
       <Button onClick={() => navigate(ExplorePath)}>

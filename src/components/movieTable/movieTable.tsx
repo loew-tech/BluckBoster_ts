@@ -6,32 +6,32 @@ import {
   TableRow,
 } from "semantic-ui-react";
 
-import { Member, Movie } from "../../types/types";
+import { Movie } from "../../types/types";
 import { MovieTableHeader } from "./movieTableHeader";
 import { moviesPath } from "../../constants/constants";
 import { PagePicker } from "./pagePicker";
 
 import "./movieTable.css";
 import { useCart } from "../../context/CartContext";
+import { useUser } from "../../context/UserContext";
 
 type MovieTableProps = {
   movies: Movie[];
-  user: Member | null;
   updateMovies: (s: string) => void;
   returnRental: (s: string) => void;
 };
 export const MovieTable = ({
   movies,
-  user,
   updateMovies,
   returnRental,
 }: MovieTableProps) => {
+  const { user } = useUser();
   const { addToCart, removeFromCart, isInCart } = useCart();
   return (
     <div className="movie-table">
       <PagePicker updateMovies={updateMovies} />
       <Table striped>
-        <MovieTableHeader user={user} />
+        <MovieTableHeader />
         <TableBody>
           {movies.map((movie) => {
             return (

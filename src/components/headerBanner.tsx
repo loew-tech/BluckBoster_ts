@@ -5,15 +5,15 @@ import {
   memberPath,
   moviesPath,
 } from "../constants/constants";
-import { Member } from "../types/types";
 
 import "./headerBanner.css";
 import { CartButton } from "./CartButton";
+import { useUser } from "../context/UserContext";
 
-type HeaderBannerProps = {
-  user: Member | null;
-};
-export const HeaderBanner = ({ user }: HeaderBannerProps) => {
+export const HeaderBanner = () => {
+  const { user } = useUser();
+  // @TODO: Remove console.log in production
+  console.log("HeaderBanner user:", user);
   return (
     <div className="member-banner">
       <Grid>

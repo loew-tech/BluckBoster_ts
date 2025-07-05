@@ -4,10 +4,12 @@ import {
   ReactNode,
   useState,
   useEffect,
-  useRef,
 } from "react";
+
 import { fetchCart, updateCart } from "../utils/utils";
-import { getUserFromCookie } from "../utils/cookieUtils";
+import { getCookie, setCookie, deleteCookie } from "../utils/cookieUtils";
+import { CART, COOKIE_EXPIRY_DAYS } from "../constants/constants";
+import { useUser } from "./UserContext";
 
 type CartContextType = {
   cart: string[];
@@ -22,21 +24,39 @@ export const CartContext = createContext<CartContextType | undefined>(
 );
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const userRef = useRef(getUserFromCookie());
-  const user = userRef.current;
+  const { user } = useUser();
   const [cart, setCart] = useState<string[]>([]);
 
   useEffect(() => {
     const loadCart = async () => {
+      const savedCart = getCookie(CART);
+
+      if (savedCart) {
+        try {
+          const parsed = JSON.parse(savedCart);
+          if (Array.isArray(parsed)) {
+            setCart(parsed);
+            return;
+          }
+        } catch (err) {
+          console.warn("Failed to parse cart cookie", err);
+        }
+      }
+
       if (user) {
         const movies = await fetchCart(user.username);
         const cartIds = movies.map((movie) => movie.id);
         setCart(cartIds);
       }
     };
+
     loadCart();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    setCookie(CART, JSON.stringify(cart), COOKIE_EXPIRY_DAYS);
+  }, [cart]);
 
   const addToCart = (movieID: string) => {
     if (!user) return;
@@ -52,6 +72,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const clearCart = () => {
     setCart([]);
+    deleteCookie(CART);
   };
 
   return (

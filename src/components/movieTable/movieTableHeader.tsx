@@ -1,11 +1,9 @@
 import { TableRow, TableHeader, TableHeaderCell } from "semantic-ui-react";
 
-import { Member } from "../../types/types";
+import { useUser } from "../../context/UserContext";
 
-type MovieTableHeaderProps = {
-  user: Member | null;
-};
-export const MovieTableHeader = ({ user }: MovieTableHeaderProps) => {
+export const MovieTableHeader = () => {
+  const { user } = useUser();
   return (
     <TableHeader>
       <TableRow>
