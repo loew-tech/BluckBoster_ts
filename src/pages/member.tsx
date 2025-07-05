@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 
-import { HeaderBanner } from "../components/headerBanner";
+import { HeaderBanner } from "../components/headerBanner/headerBanner";
 import { loginPath } from "../constants/constants";
 import { Spinner } from "../components/Spinner";
 import { ApiSelectionBtnGroup } from "../components/memberComponents/ApiSelectionBtnGroup";

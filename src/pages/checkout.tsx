@@ -4,7 +4,7 @@ import { Button } from "semantic-ui-react";
 
 import { Movie } from "../types/types";
 import { checkout, fetchCart, updateCart } from "../utils/utils";
-import { HeaderBanner } from "../components/headerBanner";
+import { HeaderBanner } from "../components/headerBanner/headerBanner";
 import {
   loginPath,
   moviesPath,

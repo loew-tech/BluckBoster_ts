@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Container } from "semantic-ui-react";
-import { HeaderBanner } from "../components/headerBanner";
+import { HeaderBanner } from "../components/headerBanner/headerBanner";
 import { Movie } from "../types/types";
 import {
   DIRECTOR,

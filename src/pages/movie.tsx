@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Container, Grid, Header } from "semantic-ui-react";
 
 import { Movie } from "../types/types";
-import { HeaderBanner } from "../components/headerBanner";
+import { HeaderBanner } from "../components/headerBanner/headerBanner";
 import { TriviaContainer } from "../components/movieComponents/triviaContainer";
 import { MovieElementRow } from "../components/movieComponents/movieElementRow";
 import { ErrorMessage } from "../components/errorMessage";

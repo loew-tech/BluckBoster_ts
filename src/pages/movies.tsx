@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Movie } from "../types/types";
 import { fetchMovies, returnRentals } from "../utils/utils";
-import { HeaderBanner } from "../components/headerBanner";
+import { HeaderBanner } from "../components/headerBanner/headerBanner";
 import { MovieTable } from "../components/movieTable/movieTable";
 import { ErrorMessage } from "../components/errorMessage";
 import { Spinner } from "../components/Spinner";

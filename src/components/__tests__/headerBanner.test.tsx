@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 
-import { HeaderBanner } from "../headerBanner";
+import { HeaderBanner } from "../headerBanner/headerBanner";
 import { testMember } from "../../../test/test-data";
 
 describe("header bannder", () => {
