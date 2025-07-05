@@ -1,11 +1,12 @@
 import { Button, Icon } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 import { checkoutPath } from "../constants/constants";
-import { useCart } from "../context/CartContext";
+import { useUser } from "../context/UserContext";
 
 export const CartButton = () => {
   const navigate = useNavigate();
-  const { cart } = useCart();
+  const { getCart } = useUser();
+  const cart = getCart();
 
   return (
     <Button

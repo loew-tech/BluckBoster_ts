@@ -12,7 +12,6 @@ import { moviesPath } from "../../constants/constants";
 import { PagePicker } from "./pagePicker";
 
 import "./movieTable.css";
-import { useCart } from "../../context/CartContext";
 import { useUser } from "../../context/UserContext";
 
 type MovieTableProps = {
@@ -25,8 +24,7 @@ export const MovieTable = ({
   updateMovies,
   returnRental,
 }: MovieTableProps) => {
-  const { user } = useUser();
-  const { addToCart, removeFromCart, isInCart } = useCart();
+  const { user, addToCart, removeFromCart, isInCart } = useUser();
   return (
     <div className="movie-table">
       <PagePicker updateMovies={updateMovies} />

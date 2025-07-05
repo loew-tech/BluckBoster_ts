@@ -12,10 +12,16 @@ import {
   deleteCookie,
 } from "../utils/cookieUtils";
 import { CART, COOKIE_EXPIRY_DAYS, USER } from "../constants/constants";
+import { updateCart } from "../utils/utils";
 
 type UserContextType = {
   user: Member | null;
   setUser: (user: Member | null) => void;
+  getCart: () => string[];
+  setCart: (cart: string[]) => void;
+  addToCart: (movieID: string) => void;
+  removeFromCart: (movieID: string) => void;
+  isInCart: (movieID: string) => boolean;
   logout: () => void;
 };
 
@@ -34,6 +40,31 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [user]);
 
+  const getCart = (): string[] => {
+    return user?.cart || [];
+  };
+
+  const setCart = (cart: string[]) => {
+    if (user) {
+      const updatedUser = { ...user, cart };
+      setUser(updatedUser);
+    }
+  };
+
+  const addToCart = (movieID: string) => {
+    if (!user || !user.cart) return;
+    setCart(updateCart(user.username, movieID, user.cart, false));
+  };
+
+  const removeFromCart = (movieID: string) => {
+    if (!user || !user.cart) return;
+    setCart(updateCart(user.username, movieID, user.cart, true));
+  };
+
+  const isInCart = (movieID: string) => {
+    return user?.cart?.includes(movieID) ?? false;
+  };
+
   const logout = () => {
     deleteCookie(USER);
     deleteCookie(CART);
@@ -41,7 +72,18 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user: user, setUser, logout }}>
+    <UserContext.Provider
+      value={{
+        user: user,
+        setUser,
+        getCart,
+        setCart,
+        addToCart,
+        removeFromCart,
+        isInCart,
+        logout,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
