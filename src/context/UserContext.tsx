@@ -11,7 +11,13 @@ import {
   setCookie,
   deleteCookie,
 } from "../utils/cookieUtils";
-import { CART, COOKIE_EXPIRY_DAYS, USER } from "../constants/constants";
+import {
+  ADD_TO_CART,
+  CART,
+  COOKIE_EXPIRY_DAYS,
+  REMOVE_FROM_CART,
+  USER,
+} from "../constants/constants";
 import { updateCart } from "../utils/utils";
 
 type UserContextType = {
@@ -52,17 +58,17 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const addToCart = (movieID: string) => {
-    if (!user || !user.cart) return;
-    setCart(updateCart(user.username, movieID, user.cart, false));
+    if (!user) return;
+    setCart(updateCart(user.username, movieID, getCart(), ADD_TO_CART));
   };
 
   const removeFromCart = (movieID: string) => {
-    if (!user || !user.cart) return;
-    setCart(updateCart(user.username, movieID, user.cart, true));
+    if (!user) return;
+    setCart(updateCart(user.username, movieID, getCart(), REMOVE_FROM_CART));
   };
 
   const isInCart = (movieID: string) => {
-    return user?.cart?.includes(movieID) ?? false;
+    return getCart().includes(movieID);
   };
 
   const logout = () => {

@@ -179,8 +179,7 @@ export const updateCart = (
 ): string[] => {
   let newCart = [...cart];
   if (removeFromCart) {
-    const index = newCart.indexOf(movieID);
-    newCart.splice(index, 1);
+    newCart = newCart.filter((id) => id !== movieID);
   } else {
     newCart.push(movieID);
   }
@@ -200,7 +199,6 @@ export const updateCart = (
     method: "post",
     body: JSON.stringify(mutation),
   });
-
   return newCart;
 };
 

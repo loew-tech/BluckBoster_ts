@@ -21,9 +21,14 @@ export const LoginPage = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    deleteCookie(USER);
-  }, []);
+  useEffect(
+    () => {
+      deleteCookie(USER);
+      setUser(null);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   const tryLogin = async () => {
     if (!hasCookieConsent()) {

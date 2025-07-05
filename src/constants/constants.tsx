@@ -28,3 +28,5 @@ export const USER = "user";
 export const CART = "cart";
 export const COOKIE_CONSENT = "cookie_consent";
 export const COOKIE_EXPIRY_DAYS = 7;
+export const ADD_TO_CART = false;
+export const REMOVE_FROM_CART = true;
