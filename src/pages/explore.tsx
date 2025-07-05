@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button, Container } from "semantic-ui-react";
+
 import { HeaderBanner } from "../components/headerBanner/headerBanner";
 import { Movie } from "../types/types";
 import {
@@ -19,9 +20,9 @@ import { SearchSelector } from "../components/explore/SearchSelector";
 import { CreatorInputs } from "../components/explore/CreatorInputs";
 import { ExploreSummary } from "../components/explore/ExploreSummary";
 import { ResultList } from "../components/explore/ResultList";
+import { Spinner } from "../components/Spinner";
 
 import "./explore.css";
-import { Spinner } from "../components/Spinner";
 
 export const Explore = () => {
   const [creator, setCreator] = useState<string>("");
