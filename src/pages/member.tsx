@@ -109,9 +109,11 @@ export const MemberPage = () => {
         console.warn("user cookie not found. Functionality may be affected");
         return;
       }
-      user.checked_out = (user.checked_out ?? []).filter(
+      const updatedCheckedOut = (user.checked_out ?? []).filter(
         (id) => !movieIDs.includes(id)
       );
+      const updatedUser = { ...user, checked_out: updatedCheckedOut };
+      setUser(updatedUser);
       setCookie("user", JSON.stringify(user));
       setMember(user);
       setReturnErr(false);
