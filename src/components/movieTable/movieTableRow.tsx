@@ -7,12 +7,11 @@ import { moviesPath } from "../../constants/constants";
 type MovieTableRowProps = {
   movie: Movie;
   returnRental: (s: string) => void;
-  key: string;
 };
-export const MovieTableRow = ({ movie, returnRental, key }: MovieTableRowProps) => {
+export const MovieTableRow = ({ movie, returnRental }: MovieTableRowProps) => {
   const { user, addToCart, removeFromCart, isInCart } = useUser();
   return (
-    <TableRow key={key}>
+    <TableRow>
       <TableCell className="title-cell">
         <a href={`${moviesPath}/${movie.id}`}>{movie.title}</a>
       </TableCell>

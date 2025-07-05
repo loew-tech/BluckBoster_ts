@@ -27,6 +27,7 @@ type UserContextType = {
   setCart: (cart: string[]) => void;
   addToCart: (movieID: string) => void;
   removeFromCart: (movieID: string) => void;
+  getCartLength: () => number;
   isInCart: (movieID: string) => boolean;
   logout: () => void;
 };
@@ -67,6 +68,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     setCart(updateCart(user.username, movieID, getCart(), REMOVE_FROM_CART));
   };
 
+  const getCartLength = () => {
+    return getCart().length;
+  };
+
   const isInCart = (movieID: string) => {
     return getCart().includes(movieID);
   };
@@ -86,6 +91,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         setCart,
         addToCart,
         removeFromCart,
+        getCartLength,
         isInCart,
         logout,
       }}

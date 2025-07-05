@@ -30,7 +30,7 @@ export const HeaderBanner = () => {
             <br />
             <a href={memberPath}>
               Currently Rented:{" "}
-              {user?.checked_out ? user.checked_out.length : 0}
+                {user?.checked_out?.length ?? 0}
             </a>
             <br />
             <CartButton />

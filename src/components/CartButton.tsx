@@ -5,8 +5,8 @@ import { useUser } from "../context/UserContext";
 
 export const CartButton = () => {
   const navigate = useNavigate();
-  const { getCart } = useUser();
-  const cart = getCart();
+  const { getCartLength } = useUser();
+  const cartLength = getCartLength();
 
   return (
     <Button
@@ -15,7 +15,7 @@ export const CartButton = () => {
       icon
       labelPosition="left"
     >
-      <Icon name="shopping cart" />({cart.length})
+      <Icon name="shopping cart" />({cartLength})
     </Button>
   );
 };
