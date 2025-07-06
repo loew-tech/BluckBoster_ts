@@ -17,8 +17,8 @@ export const testMovies: Movie[] = [
     cast: ["Humphrey Bogart", "Ingrid Bergman", "Paul Henreid", "Claude Rains"],
     director: "Michael Curtiz",
     id: "casablanca_1942",
-    inventory: 4,
-    rented: 0,
+    inventory: 0,
+    rented: 4,
     rating: "99%",
     review:
       " An undisputed masterpiece and perhaps Hollywood's quintessential statement on love and romance, ",
