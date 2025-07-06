@@ -1,6 +1,6 @@
 /* 🎬 Error Message - Blockbuster Style */
 
-.error-text {
+.error-message {
   background-color: #0047bb; /* Blockbuster blue */
   color: #fddb3a; /* Blockbuster gold */
   font-family: "Arial Black", sans-serif;
@@ -11,19 +11,19 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
-.error-text .icon {
+.error-message .icon {
   color: #000 !important; /* Frowny face icon is now black */
   font-size: 1.5rem;
 }
 
-.error-text .header {
+.error-message .header {
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
   color: #ff4c4c; /* Bright red header */
   text-shadow: 1px 1px #000;
 }
 
-.error-text p {
+.error-text {
   margin-top: 0.25rem;
   font-size: 1rem;
 }
