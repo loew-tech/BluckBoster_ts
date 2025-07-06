@@ -63,15 +63,15 @@ export const testMember: Member = {
   checked_out: [testMovieIDs[0]],
 };
 
-export const TestKevinBaconResponse: KevinBaconResponse = {
-  stars: ["Kevin Bacon"],
+export const testKevinBaconResponse: KevinBaconResponse = {
+  stars: ["Chris Evans"],
   total_stars: 1,
   movies: [
     {
       title: "Footloose",
       year: "1984",
       id: "footloose_1984",
-      cast: ["Kevin Bacon", "Lori Singer"],
+      cast: ["Chris Evans", "Lori Singer"],
       director: "Herbert Ross",
       inventory: 2,
       rented: 0,
