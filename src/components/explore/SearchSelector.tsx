@@ -19,13 +19,23 @@ interface Props {
   depth: number;
   setDepth: (value: number) => void;
 }
-
-export const SearchSelector = ({ exploreType, setExploreType, depth, setDepth }: Props) => {
-  const handleSelectionChange = (_: React.SyntheticEvent<HTMLElement>, { value }: DropdownProps) => {
+export const SearchSelector = ({
+  exploreType,
+  setExploreType,
+  depth,
+  setDepth,
+}: Props) => {
+  const handleSelectionChange = (
+    _: React.SyntheticEvent<HTMLElement>,
+    { value }: DropdownProps
+  ) => {
     setExploreType(value as string);
   };
 
-  const handleDepthChange = (_: React.SyntheticEvent<HTMLElement>, { value }: DropdownProps) => {
+  const handleDepthChange = (
+    _: React.SyntheticEvent<HTMLElement>,
+    { value }: DropdownProps
+  ) => {
     setDepth(value as number);
   };
 
