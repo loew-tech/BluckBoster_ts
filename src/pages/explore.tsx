@@ -120,7 +120,7 @@ export const Explore = () => {
           directorPercentage={directorPercentage}
         />
       )}
-      {starData.length > 0 && <ResultList title="Co-Stars" items={starData} />}
+      {starData.length > 0 && <ResultList title="Stars" items={starData} />}
       {movieData.length > 0 && (
         <ResultList
           title="Movies"
