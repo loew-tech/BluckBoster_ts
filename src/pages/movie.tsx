@@ -64,9 +64,8 @@ export const MoviePage = () => {
         content: <TriviaContainer trivia={movie.trivia} />,
       });
     }
-    return contents.map((item, i) => (
+    return contents.map((item) => (
       <MovieElementRow
-        key={`${i}-${item.sectionTitle}`}
         sectionTitle={item.sectionTitle}
         content={item.content}
       />
