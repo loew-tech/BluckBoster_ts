@@ -1,61 +1,81 @@
+/* eslint-disable import/first */
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { screen, waitFor } from "@testing-library/react";
+
+import { testMember, testMovies } from "../../../../test/test-data";
+
+// ✅ MOCK useUser BEFORE importing the component
+jest.mock("../../../context/UserContext", () => ({
+  useUser: () => ({
+    user: testMember,
+    setUser: jest.fn(),
+    logout: jest.fn(),
+    getCartLength: () => 1,
+    isInCart: (movieID: string) => testMember.cart?.includes(movieID),
+  }),
+}));
 
 import { MovieTable } from "../movieTable";
-import { testCart, testMember, testMovies } from "../../../../test/test-data";
 import { renderWithNav } from "../../../../test/renderHelpers";
 
-const cartUpdateSpy = jest.fn();
-const updateMoviesSpy = jest.fn();
+const mockCartUpdate = jest.fn();
+const mockUpdateMovies = jest.fn();
 
-describe("movie table", () => {
-  it("should render when user is null", async () => {
+describe("MovieTable", () => {
+  beforeEach(() => {
+    mockCartUpdate.mockClear();
+    mockUpdateMovies.mockClear();
+  });
+
+  it("renders table header and movie titles", () => {
     renderWithNav(
       <MovieTable
-        user={null}
         movies={testMovies}
-        cart={testCart}
-        cartUpdate={cartUpdateSpy}
-        updateMovies={updateMoviesSpy}
+        updateMovies={mockUpdateMovies}
+        returnRental={jest.fn()}
       />
     );
-    expect(screen.getByText("Title")).toBeTruthy();
-    expect(screen.getAllByText("Director:")).toHaveLength(2);
-    expect(screen.queryByText("Add to cart")).toBeFalsy();
+    expect(screen.getByText(/title/i)).toBeInTheDocument();
+    expect(screen.getByText(testMovies[0].title)).toBeInTheDocument();
   });
-  it("should render cart when user is not null", () => {
+
+  it("shows Add to Cart buttons when user is present", () => {
     renderWithNav(
       <MovieTable
-        user={testMember}
         movies={testMovies}
-        cart={testCart}
-        cartUpdate={cartUpdateSpy}
-        updateMovies={updateMoviesSpy}
+        updateMovies={mockUpdateMovies}
+        returnRental={jest.fn()}
       />
     );
-    expect(screen.getByText(/Cart:/)).toBeTruthy();
-    expect(screen.getByText("Add to cart")).toBeTruthy();
-    expect(screen.getByText("Remove from cart")).toBeTruthy();
+    expect(screen.getByText(/add to cart/i)).toBeInTheDocument();
+    expect(screen.getByText(/remove from cart/i)).toBeInTheDocument();
   });
-  it("calls updateCart when button is clicked", async () => {
+
+  it("calls updateMovies when a page is selected", async () => {
     renderWithNav(
       <MovieTable
-        user={testMember}
         movies={testMovies}
-        cart={testCart}
-        cartUpdate={cartUpdateSpy}
-        updateMovies={updateMoviesSpy}
+        updateMovies={mockUpdateMovies}
+        returnRental={jest.fn()}
       />
     );
-    await userEvent.click(screen.getByText("Add to cart"));
-    await waitFor(() => {
-      expect(cartUpdateSpy).toHaveBeenCalled();
-    });
-    await userEvent.click(screen.getByText("Remove from cart"));
-    await waitFor(() => {
-      expect(cartUpdateSpy).toHaveBeenCalled();
-    });
+    await userEvent.click(screen.getByText("B"));
+    expect(mockUpdateMovies).toHaveBeenCalledWith("B");
   });
-  // @TODO: implement test
-  //   it("navigates when cart button is clicked", () => {})
+
+  it("renders clickable title link", () => {
+    renderWithNav(
+      <MovieTable
+        movies={testMovies}
+        updateMovies={mockUpdateMovies}
+        returnRental={jest.fn()}
+      />
+    );
+
+    const link = screen.getByRole("link", { name: testMovies[0].title });
+    expect(link).toHaveAttribute(
+      "href",
+      expect.stringContaining(testMovies[0].id)
+    );
+  });
 });

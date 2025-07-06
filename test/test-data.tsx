@@ -27,6 +27,24 @@ export const testMovies: Movie[] = [
     title: "Casablanca",
     year: "1942",
   },
+  {
+    cast: [
+      "Toshiro Mifune",
+      "Takashi Shimura",
+      "Yoshio Inaba",
+      "Seiji Miyaguchi",
+    ],
+    director: "Akira Kurosawa",
+    id: "seven_samurai_1954",
+    inventory: 5,
+    rating: "100%",
+    review:
+      " Arguably Akira Kurosawa's masterpiece, The Seven Samurai is an epic adventure classic with an engrossing story, memorable characters, and stunning action sequences that make it one of the most influential films ever made.",
+    synopsis:
+      " A samurai answers a village's request for protection after he falls on hard times. The town needs protection from bandits,...",
+    title: "Seven Samurai",
+    year: "1954",
+  },
 ];
 
 export const testMovieIDs: string[] = [
@@ -34,7 +52,7 @@ export const testMovieIDs: string[] = [
   "l.a._confidential_1997",
 ];
 
-export const testCart: string[] = ["casablanca_1942"];
+export const testCart: string[] = ["l.a._confidential_1997"];
 
 export const testMember: Member = {
   first_name: "Sea",
@@ -42,5 +60,5 @@ export const testMember: Member = {
   username: "sea_captain",
   type: "advanced",
   cart: testCart,
-  checked_out: testMovieIDs,
+  checked_out: [testMovieIDs[0]],
 };

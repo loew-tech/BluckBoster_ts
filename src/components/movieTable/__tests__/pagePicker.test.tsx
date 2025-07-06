@@ -1,26 +1,45 @@
-import { screen } from "@testing-library/react";
-import { render } from "@testing-library/react";
-
-import { PagePicker } from "../pagePicker/pagePicker";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { PagePicker } from "../pagePicker/pagePicker";
 
-const updateMoviesSpy = jest.fn();
+describe("PagePicker", () => {
+  const mockUpdateMovies = jest.fn();
 
-describe("pagePicker", () => {
-  it("should render", () => {
-    render(<PagePicker updateMovies={updateMoviesSpy} />);
-    expect(screen.getByText("#123?!")).toBeTruthy();
-    expect(screen.getByText("A")).toBeTruthy();
-    expect(screen.getByText("Z")).toBeTruthy();
+  beforeEach(() => {
+    mockUpdateMovies.mockClear();
   });
-  it("should update movies when new page is selected", async () => {
-    render(<PagePicker updateMovies={updateMoviesSpy} />);
-    await userEvent.click(screen.getByText("W"));
-    expect(updateMoviesSpy).toBeCalled();
+
+  it("renders all default page letters and special symbol", () => {
+    render(<PagePicker updateMovies={mockUpdateMovies} />);
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+    letters.forEach((letter) => {
+      expect(screen.getByText(letter)).toBeInTheDocument();
+    });
+
+    expect(screen.getByText("#123?!")).toBeInTheDocument();
   });
-  it("should not update movies when current page is selected", async () => {
-    render(<PagePicker updateMovies={updateMoviesSpy} />);
-    await userEvent.click(screen.getByText("A"));
-    expect(updateMoviesSpy).toBeCalledTimes(0);
+
+  it("highlights the default selected page (A)", () => {
+    render(<PagePicker updateMovies={mockUpdateMovies} />);
+    const selected = screen.getByText("A");
+    expect(selected).toHaveClass("active-page"); // assumes your selected button has this class
+  });
+
+  it("calls updateMovies when a new letter is clicked", async () => {
+    render(<PagePicker updateMovies={mockUpdateMovies} />);
+    const user = userEvent.setup();
+
+    await user.click(screen.getByText("W"));
+
+    expect(mockUpdateMovies).toHaveBeenCalledWith("W");
+  });
+
+  it("does NOT call updateMovies when clicking current page again", async () => {
+    render(<PagePicker updateMovies={mockUpdateMovies} />);
+    const user = userEvent.setup();
+
+    await user.click(screen.getByText("A")); // "A" is default
+    expect(mockUpdateMovies).not.toHaveBeenCalled();
   });
 });
