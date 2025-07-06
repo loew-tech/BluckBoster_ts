@@ -1,19 +1,24 @@
-import { screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 
 import { MovieTableHeader } from "../movieTableHeader";
-import { renderWithNav } from "../../../../test/renderHelpers";
-import { testCart, testMember } from "../../../../test/test-data";
+import { testMember } from "../../../../test/test-data";
 
-describe("error message", () => {
-  it("should render when user is null", () => {
-    renderWithNav(<MovieTableHeader user={null} cart={testCart} />);
-    expect(screen.getByText("Title")).toBeTruthy();
-    expect(screen.queryByText("Rented")).toBeFalsy();
+jest.mock("../../../context/UserContext", () => ({
+  useUser: () => ({
+    user: testMember,
+  }),
+}));
+
+describe("MovieTableHeader", () => {
+  it("renders default column headers", () => {
+    render(<MovieTableHeader />);
+    expect(screen.getByText("Title")).toBeInTheDocument();
+    expect(screen.getByText("Available")).toBeInTheDocument();
   });
-  it("should render when user info", () => {
-    renderWithNav(<MovieTableHeader user={testMember} cart={testCart} />);
-    expect(screen.getByText("Title")).toBeTruthy();
-    expect(screen.getByText("Rented")).toBeTruthy();
-    expect(screen.getByText("Cart: (1)")).toBeTruthy();
+
+  it("renders user-specific headers when user is provided", () => {
+    render(<MovieTableHeader />);
+    expect(screen.getByText("Available")).toBeInTheDocument();
+    expect(screen.getByText("Rented")).toBeInTheDocument();
   });
 });

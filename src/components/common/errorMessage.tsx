@@ -7,11 +7,11 @@ type ErrorMessageProps = {
 };
 export const ErrorMessage = ({ msg }: ErrorMessageProps) => {
   return (
-    <div className="error-text">
+    <div className="error-message">
       <Message>
         <Icon name="frown" />
         <MessageHeader>Whoops, something went wrong</MessageHeader>
-        <p>{msg}</p>
+        <p className="error-text">{msg}</p>
       </Message>
     </div>
   );

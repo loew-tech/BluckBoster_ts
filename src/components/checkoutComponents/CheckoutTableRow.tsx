@@ -5,15 +5,13 @@ import { Movie } from "../../types/types";
 type CheckoutTableRowProps = {
   movie: Movie;
   cartRemove: (movieID: string) => void;
-  key: string;
 };
 export const CheckoutTableRow = ({
   movie,
   cartRemove,
-  key,
 }: CheckoutTableRowProps) => {
   return (
-    <TableRow key={key}>
+    <TableRow>
       <TableCell className="title-cell">{movie.title}</TableCell>
       <TableCell>
         {movie.inventory ? (

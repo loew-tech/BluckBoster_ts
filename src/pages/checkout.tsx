@@ -10,9 +10,9 @@ import {
   moviesPath,
   REMOVE_FROM_CART,
 } from "../constants/constants";
-import { ErrorMessage } from "../components/errorMessage";
+import { ErrorMessage } from "../components/common/errorMessage";
 import { CheckoutTable } from "../components/checkoutComponents/CheckoutTable";
-import { Spinner } from "../components/Spinner";
+import { Spinner } from "../components/common/Spinner";
 import { useUser } from "../context/UserContext";
 
 import "./checkout.css";

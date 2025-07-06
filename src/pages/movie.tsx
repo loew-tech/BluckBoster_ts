@@ -6,8 +6,8 @@ import { Movie } from "../types/types";
 import { HeaderBanner } from "../components/headerBanner/headerBanner";
 import { TriviaContainer } from "../components/movieComponents/triviaContainer";
 import { MovieElementRow } from "../components/movieComponents/movieElementRow";
-import { ErrorMessage } from "../components/errorMessage";
-import { Spinner } from "../components/Spinner";
+import { ErrorMessage } from "../components/common/errorMessage";
+import { Spinner } from "../components/common/Spinner";
 import { fetchMovie } from "../utils/utils";
 
 import "./movie.css";
@@ -64,9 +64,8 @@ export const MoviePage = () => {
         content: <TriviaContainer trivia={movie.trivia} />,
       });
     }
-    return contents.map((item, i) => (
+    return contents.map((item) => (
       <MovieElementRow
-        key={`${i}-${item.sectionTitle}`}
         sectionTitle={item.sectionTitle}
         content={item.content}
       />

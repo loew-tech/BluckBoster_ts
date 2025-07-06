@@ -4,8 +4,8 @@ import { Movie } from "../types/types";
 import { fetchMovies, returnRentals } from "../utils/utils";
 import { HeaderBanner } from "../components/headerBanner/headerBanner";
 import { MovieTable } from "../components/movieTable/movieTable";
-import { ErrorMessage } from "../components/errorMessage";
-import { Spinner } from "../components/Spinner";
+import { ErrorMessage } from "../components/common/errorMessage";
+import { Spinner } from "../components/common/Spinner";
 import { useUser } from "../context/UserContext";
 
 const errorMsg = "An unexpected error occurred fetching our movie catalog";

@@ -20,7 +20,7 @@ import { SearchSelector } from "../components/explore/SearchSelector";
 import { CreatorInputs } from "../components/explore/CreatorInputs";
 import { ExploreSummary } from "../components/explore/ExploreSummary";
 import { ResultList } from "../components/explore/ResultList";
-import { Spinner } from "../components/Spinner";
+import { Spinner } from "../components/common/Spinner";
 
 import "./explore.css";
 

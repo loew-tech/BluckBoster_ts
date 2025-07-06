@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { HeaderBanner } from "../components/headerBanner/headerBanner";
 import { loginPath } from "../constants/constants";
-import { Spinner } from "../components/Spinner";
+import { Spinner } from "../components/common/Spinner";
 import { ApiSelectionBtnGroup } from "../components/memberComponents/ApiSelectionBtnGroup";
 import { RentalTable } from "../components/memberComponents/RentalTable";
 import { useUser } from "../context/UserContext";
