@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 
-import { ErrorMessage } from "../errorMessage";
+import { ErrorMessage } from "../common/errorMessage";
 import { renderWithNav } from "../../../test/renderHelpers";
 
 describe("error message", () => {

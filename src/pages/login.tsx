@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 
 import { ExplorePath, moviesPath, USER } from "../constants/constants";
-import { ErrorMessage } from "../components/errorMessage";
+import { ErrorMessage } from "../components/common/errorMessage";
 import { useUser } from "../context/UserContext";
 import { LoginForm } from "../components/login/LoginForm";
 import { login } from "../utils/utils";

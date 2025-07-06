@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { RentalTableBody } from "./RentaTableBody";
 import { Member, Movie } from "../../types/types";
 import { RentalTableHeader } from "./rentalTableHeader";
-import { ErrorMessage } from "../errorMessage";
+import { ErrorMessage } from "../common/errorMessage";
 import { loginPath } from "../../constants/constants";
 import {
   fetchCheckedoutMovies,
