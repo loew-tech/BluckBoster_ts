@@ -1,73 +1,90 @@
-import userEvent from "@testing-library/user-event";
-import { screen, waitFor } from "@testing-library/react";
+/* eslint-disable import/first */
 
-import { MoviesPage } from "../movies";
-import { testMovies, testMember, testMovieIDs } from "../../../test/test-data";
-import { renderWithNav } from "../../../test/renderHelpers";
-import { updateCart } from "../../utils/utils";
-import { deleteCookie, setCookie } from "../../utils/cookieUtils";
+// ✅ Mock react-router-dom for movieID param
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useParams: () => ({
+    movieID: "test_movie_id",
+  }),
+}));
 
-const fetchSpy = jest.spyOn(window, "fetch");
-jest.mock("../../utils/utils");
+// ✅ Mock fetchMovie
+const mockMovie = {
+  id: "test_movie_id",
+  title: "Test Movie",
+  review: "Great movie!",
+  synopsis: "This is a synopsis.",
+  trivia: "Interesting trivia.",
+};
 
-describe("movies page", () => {
+jest.mock("../../utils/utils", () => ({
+  fetchMovie: jest.fn(),
+}));
+
+// ✅ Mock subcomponents to focus on logic
+jest.mock("../../components/headerBanner/headerBanner", () => ({
+  HeaderBanner: () => <div>Mock Header</div>,
+}));
+
+jest.mock("../../components/movieComponents/movieElementRow", () => ({
+  MovieElementRow: ({ sectionTitle }: any) => (
+    <div>{`Section: ${sectionTitle}`}</div>
+  ),
+}));
+
+jest.mock("../../components/movieComponents/triviaContainer", () => ({
+  TriviaContainer: ({ trivia }: any) => <div>{`Trivia: ${trivia}`}</div>,
+}));
+
+// ✅ Imports after mocks
+import { render, screen, waitFor } from "@testing-library/react";
+import { MoviePage } from "../movie";
+import { fetchMovie } from "../../utils/utils";
+
+describe("MoviePage", () => {
   beforeEach(() => {
-    fetchSpy.mockImplementation(async () => {
-      return {
-        ok: true,
-        status: 200,
-        json: async () => testMovies,
-      } as Response;
-    });
-    setCookie("user", JSON.stringify(testMember));
+    jest.clearAllMocks();
   });
-
-  afterEach(() => {
-    deleteCookie("user");
+  it("renders loading spinner initially", () => {
+    render(<MoviePage />);
+    expect(screen.getByText(/loading movie data/i)).toBeInTheDocument();
   });
-
-  it("should render children", async () => {
-    deleteCookie("user");
-    renderWithNav(<MoviesPage />);
-    expect(screen.getByText("Movies")).toBeTruthy();
-    expect(screen.getByText("Title")).toBeTruthy();
-    expect(screen.queryByText("Add to cart")).toBeFalsy();
-    await waitFor(() => {
-      expect(screen.getAllByText(/Director/)).toHaveLength(2);
-    });
-  });
-  it("should render full table when user is not null", () => {
-    renderWithNav(<MoviesPage />);
-    expect(screen.getByText(/captain/)).toBeTruthy();
-    expect(screen.getByText(/Cart/)).toBeTruthy();
-    expect(screen.getByText("Available")).toBeTruthy();
-  });
-  it("should update cart when button clicked", async () => {
-    (updateCart as jest.Mock).mockImplementationOnce(() => testMovieIDs);
-    renderWithNav(<MoviesPage />);
+  it("renders movie details on successful fetch", async () => {
+    (fetchMovie as jest.Mock).mockResolvedValueOnce(mockMovie);
+    render(<MoviePage />);
 
     await waitFor(() => {
-      expect(screen.getAllByText("Remove from cart")).toHaveLength(1);
+      expect(screen.getByText("Test Movie")).toBeInTheDocument();
     });
-    await userEvent.click(screen.getByText("Add to cart"));
+
+    expect(screen.getByText(/Section: Review/i)).toBeInTheDocument();
+    expect(screen.getByText(/Section: Synopsis/i)).toBeInTheDocument();
+    expect(screen.getByText(/Trivia:/i)).toBeInTheDocument();
+  });
+  it("shows error if movieID is missing", async () => {
+    // Re-mock useParams with undefined movieID
+    jest.doMock("react-router-dom", () => ({
+      ...jest.requireActual("react-router-dom"),
+      useParams: () => ({ movieID: undefined }),
+    }));
+
+    const { MoviePage } = await import("../movie");
+    render(<MoviePage />);
+
     await waitFor(() => {
-      expect(screen.getAllByText("Remove from cart")).toHaveLength(2);
-    });
-    await waitFor(() => {
-      expect(screen.getByText("Cart: (2)")).toBeTruthy();
+      expect(
+        screen.getByText(/failed to retrieve movies/i)
+      ).toBeInTheDocument();
     });
   });
-  it("should render error message when failed to fetch movies", async () => {
-    fetchSpy.mockImplementationOnce(async () => {
-      return {
-        ok: false,
-        status: 404,
-        json: async () => jest.fn(),
-      } as Response;
-    });
-    renderWithNav(<MoviesPage />);
+  it("shows error if fetchMovie returns null", async () => {
+    (fetchMovie as jest.Mock).mockResolvedValueOnce(null);
+    render(<MoviePage />);
+
     await waitFor(() => {
-      expect(screen.getByText(/Whoops/)).toBeTruthy();
+      expect(
+        screen.getByText(/failed to retrieve movies/i)
+      ).toBeInTheDocument();
     });
   });
 });
