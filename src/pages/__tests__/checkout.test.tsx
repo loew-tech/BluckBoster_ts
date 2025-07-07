@@ -1,4 +1,5 @@
 /* eslint-disable import/first */
+import { testMember, testMovies } from "../../../test/test-data";
 
 // Mocks must come first
 const mockSetUser = jest.fn();
@@ -45,7 +46,6 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { CheckoutPage } from "../checkout";
 import { fetchCart, checkout, updateCart } from "../../utils/utils";
-import { testMember, testMovies } from "../../../test/test-data";
 import { REMOVE_FROM_CART } from "../../constants/constants";
 
 describe("CheckoutPage", () => {

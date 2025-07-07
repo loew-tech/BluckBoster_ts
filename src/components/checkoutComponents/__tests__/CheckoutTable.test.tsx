@@ -22,7 +22,7 @@ describe("CheckoutTable", () => {
     const removeButtons = screen.getAllByRole("button", {
       name: /Remove From Cart/i,
     });
-    expect(removeButtons).toHaveLength(1);
+    expect(removeButtons).toHaveLength(2);
   });
 
   it("disables button if movie is out of stock", () => {
