@@ -1,4 +1,4 @@
-import { Member, Movie } from "../src/types/types";
+import { KevinBaconResponse, Member, Movie } from "../src/types/types";
 
 export const testMovies: Movie[] = [
   {
@@ -61,4 +61,27 @@ export const testMember: Member = {
   type: "advanced",
   cart: testCart,
   checked_out: [testMovieIDs[0]],
+};
+
+export const testKevinBaconResponse: KevinBaconResponse = {
+  stars: ["Chris Evans"],
+  total_stars: 1,
+  movies: [
+    {
+      title: "Footloose",
+      year: "1984",
+      id: "footloose_1984",
+      cast: ["Chris Evans", "Lori Singer"],
+      director: "Herbert Ross",
+      inventory: 2,
+      rented: 0,
+      rating: "72%",
+      review: "A classic dance movie.",
+      synopsis:
+        "A city teenager moves to a small town where rock music and dancing have been banned.",
+    },
+  ],
+  total_movies: 1,
+  directors: ["Herbert Ross"],
+  total_directors: 100,
 };

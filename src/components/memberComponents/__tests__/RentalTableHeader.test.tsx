@@ -12,7 +12,6 @@ describe("RentalTableHeader", () => {
       screen.getByRole("button", { name: /return all movies/i })
     ).toBeInTheDocument();
   });
-
   it("calls rentalReturn with all movie IDs", () => {
     const rentalReturn = jest.fn();
     render(<RentalTableHeader rentals={rentals} rentalReturn={rentalReturn} />);
@@ -20,9 +19,9 @@ describe("RentalTableHeader", () => {
     expect(rentalReturn).toHaveBeenCalledWith([
       testMovies[0].id,
       testMovies[1].id,
+      testMovies[2].id,
     ]);
   });
-
   it("disables button when rentals is empty", () => {
     render(<RentalTableHeader rentals={[]} rentalReturn={jest.fn()} />);
     expect(screen.getByRole("button")).toBeDisabled();

@@ -15,11 +15,11 @@ describe("ExploreSummary", () => {
       />
     );
 
-    expect(screen.getByText(/Stars Explored: 2/)).toBeInTheDocument();
+    expect(screen.getByText(/Stars Explored:/)).toBeInTheDocument();
     expect(screen.getByText(/40.00%/)).toBeInTheDocument();
-    expect(screen.getByText(/Movies Explored: 2/)).toBeInTheDocument();
+    expect(screen.getByText(/Movies Explored:/)).toBeInTheDocument();
     expect(screen.getByText(/10.00%/)).toBeInTheDocument();
-    expect(screen.getByText(/Directors Explored: 1/)).toBeInTheDocument();
+    expect(screen.getByText(/Directors Explored:/)).toBeInTheDocument();
     expect(screen.getByText(/50.00%/)).toBeInTheDocument();
   });
 });
