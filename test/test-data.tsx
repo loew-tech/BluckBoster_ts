@@ -12,6 +12,8 @@ export const testMovies: Movie[] = [
     synopsis: "bar",
     title: "L.A. Confidential",
     year: "1997",
+    trivia:
+      ':What object does Gelsomina constantly carry with her, symbolizing her connection to Zampanò and a source of comfort?: A broken trumpet (or a trumpet with a broken reed).&:&:Besides the titular "La Strada" (The Road), what is the alternative English translation of the film\'s title?: The Street.&:&:What kind of performance art is Zampanò known for?: He is a traveling strongman who breaks a chain wrapped around his chest.',
   },
   {
     cast: ["Humphrey Bogart", "Ingrid Bergman", "Paul Henreid", "Claude Rains"],
