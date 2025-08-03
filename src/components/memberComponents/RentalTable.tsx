@@ -66,6 +66,7 @@ export const RentalTable = ({ setIsLoading }: RentalTableProps) => {
       );
       const updatedUser = { ...user, checked_out: updatedCheckedOut };
       setUser(updatedUser);
+      // @TODO: remove use of magic strings "user" and "cart"
       setCookie("user", JSON.stringify(user));
       setMember(user);
       setReturnErr(false);

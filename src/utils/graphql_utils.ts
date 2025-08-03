@@ -155,7 +155,7 @@ export const returnRentals = async (
 ): Promise<boolean> => {
   const mutation = {
     query: `
-    mutation ReturnRentals($username: ID!, $movieIDs: [String]!) {
+    mutation ReturnRentals($username: ID!, $movieIDs: [ID]!) {
       ReturnRentals(username: $username, movieIDs: $movieIDs)
     }
   `,
@@ -185,7 +185,7 @@ export const updateCart = (
   }
   const mutation = {
     query: `
-    mutation UpdateCart($username: ID!, $movieID: String!, $removeFromCart: Boolean!) {
+    mutation UpdateCart($username: ID!, $movieID: ID!, $removeFromCart: Boolean!) {
       UpdateCart(username: $username, movieID: $movieID, removeFromCart: $removeFromCart)
     }
   `,
@@ -245,7 +245,7 @@ export const checkout = async (
   console.log("checking out");
   const mutation = {
     query: `
-    mutation Checkout($username: ID!, $movieIDs: [String]!) {
+    mutation Checkout($username: ID!, $movieIDs: [ID]!) {
       Checkout(username: $username, movieIDs: $movieIDs)
     }
   `,
@@ -354,11 +354,11 @@ export const directedMovies = async (director: string): Promise<Movie[]> => {
 
 export const kevinBacon = async (
   star?: string,
-  movie?: string,
+  title?: string,
   director?: string,
   depth?: number
 ): Promise<KevinBaconResponse | null> => {
-  if (!star && !movie && !director) {
+  if (!star && !title && !director) {
     console.warn(
       "the KevinBacon search requires at least one star, movie, or director"
     );
@@ -366,8 +366,8 @@ export const kevinBacon = async (
   }
   const query = {
     query: `
-      query KevinBacon($star: String!, $movie: String, $director: String, $depth: Int) {
-        KevinBacon(star: $star, movie: $movie, director: $director, depth: $depth) {
+      query KevinBacon($star: String, $title: String, $director: String, $depth: Int) {
+        KevinBacon(star: $star, title: $title, director: $director, depth: $depth) {
           star
           stars
           total_stars
@@ -383,7 +383,7 @@ export const kevinBacon = async (
     `,
     variables: {
       star,
-      movie,
+      title,
       director,
       depth,
     },
@@ -407,8 +407,8 @@ export const setAPIChoice = (api: "REST" | "GraphQL"): Promise<boolean> => {
 
   const mutation = {
     query: `
-      mutation SetAPIChoice($username: ID!, $apiChoice: String!) {
-        SetAPIChoice(username: $username, apiChoice: $apiChoice)
+      mutation SetAPIChoice($username: ID!, $api_choice: String) {
+        SetAPIChoice(username: $username, api_choice: $api_choice)
       }
     `,
     variables: {

@@ -12,9 +12,9 @@ export const login = async (username: string): Promise<Member | null> => {
   const api = getAPIChoiceFromCookie();
   console.log("API in login:", api);
   switch (api) {
-    case "REST":
+    case REST_API:
       return await rest.login(username);
-    case "GraphQL":
+    case GRAPHQL_API:
       return await graphql.login(username);
   }
 };
@@ -113,9 +113,9 @@ export const checkout = async (
   const api = getAPIChoiceFromCookie();
   console.log("API in checkout:", api);
   switch (api) {
-    case "REST":
+    case REST_API:
       return rest.checkout(username, movieIDs);
-    case "GraphQL":
+    case GRAPHQL_API:
       return graphql.checkout(username, movieIDs);
   }
 };
@@ -160,9 +160,9 @@ export const directedMovies = async (director: string): Promise<Movie[]> => {
 
 export const kevinBacon = async (
   star?: string,
-  movie?: string,
+  title?: string,
   director?: string,
   depth?: number
 ): Promise<KevinBaconResponse | null> => {
-  return graphql.kevinBacon(star, movie, director, depth);
+  return graphql.kevinBacon(star, title, director, depth);
 };
