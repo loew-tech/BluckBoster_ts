@@ -4,7 +4,7 @@ export const moviesPath = "/movies";
 export const memberPath = "/member";
 export const loginPath = "/login";
 export const ExplorePath = "/explore";
-export const RecEgninePath = "/recommendation";
+export const RecEnginePath = "/recommendation";
 
 // API URIs
 export const memberURI = "http://127.0.0.1:8080/api/v1/members";

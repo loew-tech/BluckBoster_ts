@@ -11,11 +11,11 @@ import {
   loginPath,
   memberPath,
   moviesPath,
-  RecEgninePath,
+  RecEnginePath,
 } from "../constants/constants";
 import { Explore } from "./explore";
 import { UserProvider } from "../context/UserContext";
-import { RecEgninePage } from "./rec_engine";
+import { RecEnginePage } from "./rec_engine";
 
 export const Main = () => {
   return (
@@ -29,7 +29,7 @@ export const Main = () => {
           <Route path={checkoutPath} element={<CheckoutPage />} />
           <Route path={memberPath} element={<MemberPage />} />
           <Route path={ExplorePath} element={<Explore />} />
-          <Route path={RecEgninePath} element={<RecEgninePage />} />
+          <Route path={RecEnginePath} element={<RecEnginePage />} />
         </Routes>
       </UserProvider>
     </BrowserRouter>

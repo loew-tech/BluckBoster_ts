@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { HeaderBanner } from "../components/headerBanner/headerBanner";
-import { VotingPanel } from "../components/recEgine/VotingPanel";
+import { VotingPanel } from "../components/recEngine/VotingPanel";
 
-export const RecEgninePage = () => {
+export const RecEnginePage = () => {
   useEffect(() => {
     // @TODO: load initial movies
-  });
+  }, []);
   return (
     <>
       <HeaderBanner />
