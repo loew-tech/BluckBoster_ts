@@ -32,3 +32,25 @@ export type KevinBaconResponse = {
   directors: string[];
   total_directors: number;
 };
+
+export type Mood = {
+  id: number;
+  acting: number;
+  action: number;
+  cinematography: number;
+  comedy: number;
+  directing: number;
+  drama: number;
+  fantasy: number;
+  horror: number;
+  romance: number;
+  story_telling: number;
+  suspense: number;
+  writing: number;
+};
+
+export type VotingResult = {
+  msg: string;
+  movies: string[];
+  newMood?: Mood;
+};

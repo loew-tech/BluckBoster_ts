@@ -1,19 +1,28 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
 import { HeaderBanner } from "../components/headerBanner/headerBanner";
 import { VotingPanel } from "../components/recEngine/VotingPanel";
+import { getVotingInitialSlate } from "../utils/utils";
 
 export const RecEnginePage = () => {
+  const [movies, setMovies] = useState<string[]>([]);
   useEffect(() => {
-    // @TODO: load initial movies
+    async function fetchMovies() {
+      const votingResult = await getVotingInitialSlate();
+      if (votingResult !== null) {
+        setMovies(votingResult.movies);
+      }
+    }
+    fetchMovies();
   }, []);
   return (
     <>
       <HeaderBanner />
       <VotingPanel
-        addVote={(id: string) => {
+        toggleVote={(id: string) => {
           console.log(id);
         }}
-        movieIDs={["m1_1999", "m2_1999"]}
+        movieIDs={movies}
       />
     </>
   );

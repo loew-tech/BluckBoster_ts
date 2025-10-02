@@ -6,8 +6,9 @@ import {
   memberURI,
   moviesURI,
   returnURI,
+  votingInitialSlateURI,
 } from "../constants/constants";
-import { Member, Movie } from "../types/types";
+import { Member, Movie, VotingResult } from "../types/types";
 import { getUserFromCookie, setCookie } from "./cookieUtils";
 
 export const login = async (username: string): Promise<Member | null> => {
@@ -149,4 +150,13 @@ export const setAPIChoice = async (
     }
   );
   return response.ok;
+};
+
+export const getVotingInitialSlate = async (): Promise<VotingResult | null> => {
+  const response = await fetch(`${votingInitialSlateURI}`);
+  if (response.ok) {
+    const data = response.json();
+    return data;
+  }
+  return null;
 };

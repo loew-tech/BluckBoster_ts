@@ -1,4 +1,9 @@
-import { KevinBaconResponse, Member, Movie } from "../types/types";
+import {
+  KevinBaconResponse,
+  Member,
+  Movie,
+  VotingResult,
+} from "../types/types";
 import * as rest from "./rest_utils";
 import * as graphql from "./graphql_utils";
 import {
@@ -165,4 +170,8 @@ export const kevinBacon = async (
   depth?: number
 ): Promise<KevinBaconResponse | null> => {
   return graphql.kevinBacon(star, title, director, depth);
+};
+
+export const getVotingInitialSlate = async (): Promise<VotingResult | null> => {
+  return rest.getVotingInitialSlate();
 };

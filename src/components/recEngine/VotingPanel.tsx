@@ -1,8 +1,25 @@
+import { useState } from "react";
+
+import { Container } from "semantic-ui-react";
+
 type VotingPanelProps = {
   movieIDs: string[];
-  addVote: (id: string) => void;
+  toggleVote: (id: string) => void;
 };
-export const VotingPanel = ({ movieIDs, addVote }: VotingPanelProps) => {
+export const VotingPanel = ({ movieIDs, toggleVote }: VotingPanelProps) => {
+  const [selected, setSelected] = useState<Set<string>>(new Set<string>());
+
+  const toggleSelection = (id: string) => {
+    if (selected.has(id)) {
+      selected.delete(id);
+    } else {
+      const newSet = new Set(selected);
+      newSet.add(id);
+      setSelected(newSet);
+    }
+    toggleVote(id);
+  };
+
   type MovieIDTitle = {
     id: string;
     title: string;
@@ -21,16 +38,16 @@ export const VotingPanel = ({ movieIDs, addVote }: VotingPanelProps) => {
   }));
 
   return (
-    <div>
+    <Container text className="explore-container">
       <ul>
         {movies.map((movie) => {
           return (
-            <li key={movie.id} onClick={() => addVote(movie.id)}>
+            <li key={movie.id} onClick={() => toggleSelection(movie.id)}>
               {movie.title}
             </li>
           );
         })}
       </ul>
-    </div>
+    </Container>
   );
 };
