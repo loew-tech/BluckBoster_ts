@@ -1,8 +1,11 @@
 import { useState } from "react";
 
+import { Button, ButtonGroup, ButtonOr, Icon, Label } from "semantic-ui-react";
+
 import { getAPIChoiceFromCookie } from "../../utils/cookieUtils";
 import { setAPIChoice } from "../../utils/utils";
-import { Button, ButtonGroup, ButtonOr, Icon, Label } from "semantic-ui-react";
+
+import { GRAPHQL_API, REST_API } from "../../constants/constants";
 
 export const ApiSelectionBtnGroup = () => {
   const api = getAPIChoiceFromCookie();
@@ -13,7 +16,7 @@ export const ApiSelectionBtnGroup = () => {
     setActiveButton(selection);
     if (
       selection !== api &&
-      (selection === "REST" || selection === "GraphQL")
+      (selection === REST_API || selection === GRAPHQL_API)
     ) {
       setAPIChoice(selection);
     }

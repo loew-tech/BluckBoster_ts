@@ -143,7 +143,10 @@ export const setAPIChoice = async (
   user.api_choice = api;
   setCookie("user", JSON.stringify(user));
   const response = await fetch(
-    `${memberURI}/${user.username}?api_choice=${api}`
+    `${memberURI}/${user.username}?api_choice=${api}`,
+    {
+      method: "PUT",
+    }
   );
   return response.ok;
 };
