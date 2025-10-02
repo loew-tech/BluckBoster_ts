@@ -1,8 +1,10 @@
 import { useState } from "react";
 
+import { Button, ButtonGroup, ButtonOr, Icon, Label } from "semantic-ui-react";
+
 import { getAPIChoiceFromCookie } from "../../utils/cookieUtils";
 import { setAPIChoice } from "../../utils/utils";
-import { Button, ButtonGroup, ButtonOr, Icon, Label } from "semantic-ui-react";
+
 import { GRAPHQL_API, REST_API } from "../../constants/constants";
 
 export const ApiSelectionBtnGroup = () => {

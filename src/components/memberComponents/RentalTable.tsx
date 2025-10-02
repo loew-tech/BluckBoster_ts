@@ -6,7 +6,7 @@ import { RentalTableBody } from "./RentaTableBody";
 import { Member, Movie } from "../../types/types";
 import { RentalTableHeader } from "./rentalTableHeader";
 import { ErrorMessage } from "../common/errorMessage";
-import { loginPath } from "../../constants/constants";
+import { loginPath, USER } from "../../constants/constants";
 import {
   fetchCheckedoutMovies,
   getUser,
@@ -66,8 +66,7 @@ export const RentalTable = ({ setIsLoading }: RentalTableProps) => {
       );
       const updatedUser = { ...user, checked_out: updatedCheckedOut };
       setUser(updatedUser);
-      // @TODO: remove use of magic strings "user" and "cart"
-      setCookie("user", JSON.stringify(user));
+      setCookie(USER, JSON.stringify(user));
       setMember(user);
       setReturnErr(false);
     } else {
