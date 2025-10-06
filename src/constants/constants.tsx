@@ -16,6 +16,9 @@ export const cartURI = "http://127.0.0.1:8080/api/v1/members/cart";
 export const cartRemoveURI = "http://127.0.0.1:8080/api/v1/members/cart/remove";
 export const votingInitialSlateURI =
   "http://127.0.0.1:8080/api/v1/members/mood/initial_voting";
+export const iterateVoteURI = "http://127.0.0.1:8080/api/v1/members/mood/vote";
+export const finalRecommendationsURI =
+  "http://127.0.0.1:8080/api/v1/members/mood/picks";
 
 // API types
 export const REST_API = "REST";

@@ -50,7 +50,12 @@ export type Mood = {
 };
 
 export type VotingResult = {
-  msg: string;
-  movies: string[];
+  msg?: string;
+  movies?: string[];
   newMood?: Mood;
+};
+
+export type Recommendation = {
+  bestPick: string;
+  goodPicks: string[];
 };

@@ -10,7 +10,7 @@ export const RecEnginePage = () => {
     async function fetchMovies() {
       const votingResult = await getVotingInitialSlate();
       if (votingResult !== null) {
-        setMovies(votingResult.movies);
+        setMovies(votingResult.movies ?? []);
       }
     }
     fetchMovies();
