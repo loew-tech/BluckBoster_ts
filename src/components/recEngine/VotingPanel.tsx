@@ -9,10 +9,10 @@ type VotingPanelProps = {
   toggleVote: (id: string) => void;
 };
 export const VotingPanel = ({ movieIDs, toggleVote }: VotingPanelProps) => {
+  const [iteration, setIteration] = useState(1);
   const [selected, setSelected] = useState<Set<string>>(new Set<string>());
 
   const toggleSelection = (id: string) => {
-    console.log("Toggling selection for ID:", id);
     if (selected.has(id)) {
       const newSet = new Set(selected);
       newSet.delete(id);
@@ -25,7 +25,7 @@ export const VotingPanel = ({ movieIDs, toggleVote }: VotingPanelProps) => {
     toggleVote(id);
   };
 
-  type MovieIDTitle = {
+  type Canidate = {
     id: string;
     title: string;
   };
@@ -37,7 +37,7 @@ export const VotingPanel = ({ movieIDs, toggleVote }: VotingPanelProps) => {
     return parts.slice(0, -1).join(" ") + ` (${parts[parts.length - 1]})`;
   };
 
-  const movies: MovieIDTitle[] = movieIDs.map((v) => ({
+  const movies: Canidate[] = movieIDs.map((v) => ({
     id: v,
     title: parseMovieTitle(v),
   }));
