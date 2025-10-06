@@ -29,7 +29,7 @@ export const VotingPanel = ({ movieIDs, toggleVote }: VotingPanelProps) => {
     if (!id || typeof id !== "string") return "Unknown Title";
     const parts = id.split("_");
     if (parts.length < 2) return id; // fallback if format is unexpected
-    return parts.slice(0, -1).join(" ");
+    return parts.slice(0, -1).join(" ") + ` (${parts[parts.length - 1]})`;
   };
 
   const movies: MovieIDTitle[] = movieIDs.map((v) => ({
