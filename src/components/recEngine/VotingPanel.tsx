@@ -1,6 +1,8 @@
 import { useState } from "react";
 
-import { Container } from "semantic-ui-react";
+import { Container, Grid } from "semantic-ui-react";
+
+import "./votingPanel.css";
 
 type VotingPanelProps = {
   movieIDs: string[];
@@ -10,8 +12,11 @@ export const VotingPanel = ({ movieIDs, toggleVote }: VotingPanelProps) => {
   const [selected, setSelected] = useState<Set<string>>(new Set<string>());
 
   const toggleSelection = (id: string) => {
+    console.log("Toggling selection for ID:", id);
     if (selected.has(id)) {
-      selected.delete(id);
+      const newSet = new Set(selected);
+      newSet.delete(id);
+      setSelected(newSet);
     } else {
       const newSet = new Set(selected);
       newSet.add(id);
@@ -39,15 +44,20 @@ export const VotingPanel = ({ movieIDs, toggleVote }: VotingPanelProps) => {
 
   return (
     <Container text className="explore-container">
-      <ul>
-        {movies.map((movie) => {
-          return (
-            <li key={movie.id} onClick={() => toggleSelection(movie.id)}>
+      <Grid stackable columns={3} textAlign="center">
+        {movies.map((movie) => (
+          <Grid.Column key={movie.id}>
+            <h3
+              className={
+                selected.has(movie.id) ? "candidate selected" : "candidate"
+              }
+              onClick={() => toggleSelection(movie.id)}
+            >
               {movie.title}
-            </li>
-          );
-        })}
-      </ul>
+            </h3>
+          </Grid.Column>
+        ))}
+      </Grid>
     </Container>
   );
 };
