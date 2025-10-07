@@ -9,7 +9,6 @@ type VotingPanelProps = {
   toggleVote: (id: string) => void;
 };
 export const VotingPanel = ({ movieIDs, toggleVote }: VotingPanelProps) => {
-  const [iteration, setIteration] = useState(1);
   const [selected, setSelected] = useState<Set<string>>(new Set<string>());
 
   const toggleSelection = (id: string) => {

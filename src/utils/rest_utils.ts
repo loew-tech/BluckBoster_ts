@@ -10,7 +10,13 @@ import {
   returnURI,
   votingInitialSlateURI,
 } from "../constants/constants";
-import { Member, Mood, Movie, Recommendation, VotingResult } from "../types/types";
+import {
+  Member,
+  Mood,
+  Movie,
+  Recommendation,
+  VotingResult,
+} from "../types/types";
 import { getUserFromCookie, setCookie } from "./cookieUtils";
 
 export const login = async (username: string): Promise<Member | null> => {
@@ -192,7 +198,7 @@ export const getFinalRecommendations = async (
   });
   if (response.ok) {
     const data = await response.json();
-    return data.movies;
+    return data;
   }
   return null;
 };

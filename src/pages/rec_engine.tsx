@@ -2,8 +2,12 @@ import { useEffect, useState } from "react";
 
 import { HeaderBanner } from "../components/headerBanner/headerBanner";
 import { VotingPanel } from "../components/recEngine/VotingPanel";
-import { getVotingInitialSlate, iterateVote } from "../utils/utils";
-import { Mood } from "../types/types";
+import {
+  getFinalRecommendations,
+  getVotingInitialSlate,
+  iterateVote,
+} from "../utils/utils";
+import { Mood, Recommendation } from "../types/types";
 import { ErrorMessage } from "../components/common/errorMessage";
 
 const getNewMood = (): Mood => {
@@ -28,6 +32,9 @@ export const RecEnginePage = () => {
   const [movieIDs, setMovieIDs] = useState<string[]>([]);
   const [votedMovieIDs, setVotedMovieIDs] = useState<Set<string>>(new Set());
   const [mood, setMood] = useState<Mood>(getNewMood());
+  const [recommendation, setRecommendation] = useState<Recommendation | null>(
+    null
+  );
   const [iteration, setIteration] = useState(1);
   const [recEngineErr, setRecEngineErr] = useState<boolean>(false);
 
@@ -41,6 +48,8 @@ export const RecEnginePage = () => {
       const votingResult = await getVotingInitialSlate();
       if (votingResult !== null) {
         setMovieIDs(votingResult.movies ?? []);
+      } else {
+        setRecEngineErr(true);
       }
     }
     fetchInitialMovies();
@@ -80,13 +89,56 @@ export const RecEnginePage = () => {
     iterate();
   };
 
+  const getFinalRecommendation = async () => {
+    const finalRecommendation = await getFinalRecommendations(mood);
+    if (finalRecommendation === null) {
+      setRecEngineErr(true);
+      return;
+    }
+    setRecommendation(finalRecommendation);
+  };
+
+  const parseMovieTitle = (id: string): string => {
+    if (!id || typeof id !== "string") return "Unknown Title";
+    const parts = id.split("_");
+    if (parts.length < 2) return id; // fallback if format is unexpected
+    return parts.slice(0, -1).join(" ") + ` (${parts[parts.length - 1]})`;
+  };
+
+  if (recEngineErr) {
+    return (
+      <>
+        <HeaderBanner />
+        <ErrorMessage msg="Error in recommendation engine. Please try again later." />
+      </>
+    );
+  }
+
   return (
     <>
       <HeaderBanner />
-      <VotingPanel toggleVote={toggleVote} movieIDs={movieIDs} />
-      <button onClick={vote}>{iteration < 5 ? "VOTE" : "PICK MOVIES"}</button>
-      {recEngineErr && (
-        <ErrorMessage msg="Error in recommendation engine. Please try again later." />
+      {!recommendation ? (
+        <>
+          <VotingPanel toggleVote={toggleVote} movieIDs={movieIDs} />
+          <button onClick={iteration < 5 ? vote : getFinalRecommendation}>
+            {iteration < 5 ? "VOTE" : "PICK MOVIES"}
+          </button>
+        </>
+      ) : (
+        // @TODO: move into its own component
+        <>
+          <h2>Your Movie Recommendations</h2>
+          <h3>
+            Best Pick{" "}
+            {recommendation ? parseMovieTitle(recommendation.bestPick) : ""}
+          </h3>
+          <h2>
+            Good Picks{" "}
+            {recommendation
+              ? recommendation.goodPicks.map(parseMovieTitle).join(", ")
+              : ""}
+          </h2>
+        </>
       )}
     </>
   );
