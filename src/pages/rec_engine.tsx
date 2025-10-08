@@ -9,6 +9,7 @@ import {
 } from "../utils/utils";
 import { Mood, Recommendation } from "../types/types";
 import { ErrorMessage } from "../components/common/errorMessage";
+import { RecommendationDisplay } from "../components/recEngine/RecommendationDisplay";
 
 const getNewMood = (): Mood => {
   return {
@@ -98,13 +99,6 @@ export const RecEnginePage = () => {
     setRecommendation(finalRecommendation);
   };
 
-  const parseMovieTitle = (id: string): string => {
-    if (!id || typeof id !== "string") return "Unknown Title";
-    const parts = id.split("_");
-    if (parts.length < 2) return id; // fallback if format is unexpected
-    return parts.slice(0, -1).join(" ") + ` (${parts[parts.length - 1]})`;
-  };
-
   if (recEngineErr) {
     return (
       <>
@@ -126,19 +120,7 @@ export const RecEnginePage = () => {
         </>
       ) : (
         // @TODO: move into its own component
-        <>
-          <h2>Your Movie Recommendations</h2>
-          <h3>
-            Best Pick{" "}
-            {recommendation ? parseMovieTitle(recommendation.bestPick) : ""}
-          </h3>
-          <h2>
-            Good Picks{" "}
-            {recommendation
-              ? recommendation.goodPicks.map(parseMovieTitle).join(", ")
-              : ""}
-          </h2>
-        </>
+        <RecommendationDisplay recommendation={recommendation} />
       )}
     </>
   );
