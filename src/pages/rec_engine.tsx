@@ -38,6 +38,7 @@ export const RecEnginePage = () => {
   );
   const [iteration, setIteration] = useState(1);
   const [recEngineErr, setRecEngineErr] = useState<boolean>(false);
+  const [numPrevSelected, setNumPrevSelected] = useState(0);
 
   const iterate = () => {
     setIteration(iteration + 1);
@@ -70,6 +71,7 @@ export const RecEnginePage = () => {
     const votingResult = iterateVote(
       mood,
       iteration,
+      numPrevSelected,
       votedMovieIDs ? Array.from(votedMovieIDs) : []
     );
     if (votingResult === null) {
@@ -80,6 +82,7 @@ export const RecEnginePage = () => {
       if (result === null) {
         return;
       }
+      setNumPrevSelected(numPrevSelected + votedMovieIDs.size);
       if (result.movies && result.movies.length > 0) {
         setMovieIDs(result.movies);
       }

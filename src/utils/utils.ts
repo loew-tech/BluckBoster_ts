@@ -181,9 +181,10 @@ export const getVotingInitialSlate = async (): Promise<VotingResult | null> => {
 export const iterateVote = async (
   currentMood: Mood,
   iteration: number,
+  numPrevSelected: number,
   movieIDs: string[]
 ): Promise<VotingResult | null> => {
-  return rest.iterateVote(currentMood, iteration, movieIDs);
+  return rest.iterateVote(currentMood, iteration, numPrevSelected, movieIDs);
 };
 
 export const getFinalRecommendations = async (
