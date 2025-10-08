@@ -33,7 +33,7 @@ export const RecommendationDisplay = ({
         <Icon name="film" color="yellow" />
       </Header>
 
-      <p className="rec-tagline">Be kind, rewind your vibes 🎬</p>
+      <p className="rec-tagline">rewind your vibes 🎬</p>
 
       {/* Best Pick */}
       <Segment inverted className="rec-best-pick">
@@ -68,11 +68,6 @@ export const RecommendationDisplay = ({
           }))}
         />
       </Segment>
-
-      {/* Footer */}
-      <p className="rec-footer">
-        © 1995 Blockbuster Video Corp. All Rights Rewound.
-      </p>
     </Segment>
   );
 };
