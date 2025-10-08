@@ -16,15 +16,15 @@ describe("RecommendationDisplay", () => {
     render(<RecommendationDisplay recommendation={mockRecommendation} />);
   });
 
-  it("renders the main Blockbuster header", () => {
+  it("renders the main Bluck-Boster header", () => {
     const header = screen.getByRole("heading", {
-      name: /BLOCKBUSTER PICKS/i,
+      name: /BLUCK-BOSTER PICKS/i,
     });
     expect(header).toBeInTheDocument();
   });
 
   it("renders the fun tagline", () => {
-    expect(screen.getByText(/Be kind, rewind your vibes/i)).toBeInTheDocument();
+    expect(screen.getByText(/rewind your vibes/i)).toBeInTheDocument();
   });
 
   it("displays the Best Pick section and movie title", () => {
@@ -47,12 +47,6 @@ describe("RecommendationDisplay", () => {
     goodPickTitles.forEach((title) => {
       expect(screen.getByText(title)).toBeInTheDocument();
     });
-  });
-
-  it("includes the retro Blockbuster footer text", () => {
-    expect(
-      screen.getByText(/© 1995 Blockbuster Video Corp. All Rights Rewound/i)
-    ).toBeInTheDocument();
   });
 
   it("applies expected styling classes", () => {

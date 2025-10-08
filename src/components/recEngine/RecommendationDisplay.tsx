@@ -29,7 +29,7 @@ export const RecommendationDisplay = ({
       {/* Header */}
       <Header as="h1" className="rec-header">
         <Icon name="film" color="yellow" />
-        BLOCKBUSTER PICKS
+        BLUCK-BOSTER PICKS
         <Icon name="film" color="yellow" />
       </Header>
 
