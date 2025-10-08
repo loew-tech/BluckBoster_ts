@@ -2,12 +2,21 @@ import {
   cartRemoveURI,
   cartURI,
   checkoutURI,
+  finalRecommendationsURI,
+  iterateVoteURI,
   memberLoginURI,
   memberURI,
   moviesURI,
   returnURI,
+  votingInitialSlateURI,
 } from "../constants/constants";
-import { Member, Movie } from "../types/types";
+import {
+  Member,
+  Mood,
+  Movie,
+  Recommendation,
+  VotingResult,
+} from "../types/types";
 import { getUserFromCookie, setCookie } from "./cookieUtils";
 
 export const login = async (username: string): Promise<Member | null> => {
@@ -149,4 +158,47 @@ export const setAPIChoice = async (
     }
   );
   return response.ok;
+};
+
+export const getVotingInitialSlate = async (): Promise<VotingResult | null> => {
+  const response = await fetch(`${votingInitialSlateURI}`);
+  if (response.ok) {
+    const data = response.json();
+    return data;
+  }
+  return null;
+};
+
+export const iterateVote = async (
+  currentMood: Mood,
+  iteration: number,
+  movieIDs: string[]
+): Promise<VotingResult | null> => {
+  const response = await fetch(`${iterateVoteURI}`, {
+    method: "POST",
+    body: JSON.stringify({
+      currentMood,
+      iteration,
+      movieIDs,
+    }),
+  });
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  }
+  return null;
+};
+
+export const getFinalRecommendations = async (
+  finalMood: Mood
+): Promise<Recommendation | null> => {
+  const response = await fetch(`${finalRecommendationsURI}`, {
+    method: "POST",
+    body: JSON.stringify({ finalMood }),
+  });
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  }
+  return null;
 };
