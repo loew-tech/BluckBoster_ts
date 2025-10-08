@@ -119,7 +119,6 @@ export const RecEnginePage = () => {
           </button>
         </>
       ) : (
-        // @TODO: move into its own component
         <RecommendationDisplay recommendation={recommendation} />
       )}
     </>

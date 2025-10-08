@@ -1,8 +1,8 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { RecommendationDisplay } from "./RecommendationDisplay";
-import { Recommendation } from "../../types/types";
+import { RecommendationDisplay } from "../RecommendationDisplay";
+import { Recommendation } from "../../../types/types";
 
 // Mock recommendation data
 const mockRecommendation: Recommendation = {
