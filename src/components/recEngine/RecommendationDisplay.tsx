@@ -4,6 +4,7 @@ import { Segment, Header, List, Icon } from "semantic-ui-react";
 import { Recommendation } from "../../types/types";
 
 import "./RecommendationDisplay.css";
+import { moviesPath } from "../../constants/constants";
 
 const parseMovieTitle = (id: string): string => {
   if (!id || typeof id !== "string") return "Unknown Title";
@@ -39,9 +40,14 @@ export const RecommendationDisplay = ({
         <Header as="h2" className="rec-section-title">
           Best Pick
         </Header>
-        <p className="rec-best-pick-text">
+        {/* @TODO: linking removes history -> i.e. back won't take you 
+             to recommendations but to rec engine page */}
+        <a
+          href={`${moviesPath}/${recommendation.bestPick}`}
+          className="rec-best-pick-text"
+        >
           🎬 {parseMovieTitle(recommendation.bestPick)}
-        </p>
+        </a>
       </Segment>
 
       {/* Good Picks */}
@@ -55,7 +61,9 @@ export const RecommendationDisplay = ({
           items={recommendation.goodPicks.map((id) => ({
             key: id,
             content: (
-              <div className="rec-good-pick-item">{parseMovieTitle(id)}</div>
+              <a href={`${moviesPath}/${id}`} className="rec-good-pick-item">
+                {parseMovieTitle(id)}
+              </a>
             ),
           }))}
         />
