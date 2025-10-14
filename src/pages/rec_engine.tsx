@@ -33,6 +33,7 @@ const getNewMood = (): Mood => {
 export const RecEnginePage = () => {
   const [movieIDs, setMovieIDs] = useState<string[]>([]);
   const [votedMovieIDs, setVotedMovieIDs] = useState<Set<string>>(new Set());
+  const [prevVoted, setPrevVoted] = useState<Set<string>>(new Set());
   const [mood, setMood] = useState<Mood>(getNewMood());
   const [recommendation, setRecommendation] = useState<Recommendation | null>(
     null
@@ -45,7 +46,6 @@ export const RecEnginePage = () => {
   const iterate = () => {
     setIteration(iteration + 1);
     setIsLoading(false);
-    setVotedMovieIDs(new Set<string>());
   };
 
   useEffect(() => {
@@ -72,7 +72,7 @@ export const RecEnginePage = () => {
     setVotedMovieIDs(newVotedMovieIDs);
   };
 
-  const vote = () => {
+  const vote = async () => {
     setIsLoading(true);
     const votingResult = iterateVote(
       mood,
@@ -81,18 +81,26 @@ export const RecEnginePage = () => {
       votedMovieIDs ? Array.from(votedMovieIDs) : []
     );
     if (votingResult === null) {
+      setIsLoading(false);
       setRecEngineErr(true);
       return;
     }
-    votingResult.then((result) => {
+
+    await votingResult.then((result) => {
       if (result === null) {
         setIsLoading(false);
         setRecEngineErr(true);
         return;
       }
+      const newPrevVoted = new Set(prevVoted);
+      votedMovieIDs.forEach((id) => newPrevVoted.add(id));
+      setPrevVoted(newPrevVoted);
       setRecEngineErr(false);
       setNumPrevSelected(numPrevSelected + votedMovieIDs.size);
       if (result.movies && result.movies.length > 0) {
+        setVotedMovieIDs(
+          new Set(result.movies.filter((id) => prevVoted.has(id)))
+        );
         setMovieIDs(result.movies);
       }
       if (result.newMood) {
@@ -125,7 +133,11 @@ export const RecEnginePage = () => {
     }
     return (
       <>
-        <VotingPanel toggleVote={toggleVote} movieIDs={movieIDs} />
+        <VotingPanel
+          toggleVote={toggleVote}
+          movieIDs={movieIDs}
+          votedMovieIDs={votedMovieIDs}
+        />
         <button onClick={iteration < 5 ? vote : getFinalRecommendation}>
           {iteration < 5 ? "VOTE" : "PICK MOVIES"}
         </button>
