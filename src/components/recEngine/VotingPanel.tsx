@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { Container, Grid } from "semantic-ui-react";
 
 import "./votingPanel.css";

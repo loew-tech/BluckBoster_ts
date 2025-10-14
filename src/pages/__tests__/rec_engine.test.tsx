@@ -107,11 +107,17 @@ describe("RecEnginePage", () => {
     render(<RecEnginePage />);
 
     await screen.findByTestId("voting-panel");
+    await screen.findByText("VOTE");
 
-    // simulate reaching 5th iteration
+    // Simulate 4 rounds of voting
     for (let i = 1; i < 5; i++) {
-      const voteButton = screen.getByText("VOTE");
-      fireEvent.click(voteButton);
+      fireEvent.click(screen.getByText("VOTE"));
+
+      // Wait for spinner to show and disappear each time
+      await screen.findByText(/Loading recommendations/i);
+      if (i < 4) {
+        await screen.findByText("VOTE");
+      }
     }
 
     // now button label should change
@@ -131,16 +137,32 @@ describe("RecEnginePage", () => {
     });
     (getFinalRecommendations as jest.Mock).mockResolvedValue(null);
 
+    // Ensure iterateVote resolves quickly so loading can finish
+    (iterateVote as jest.Mock).mockResolvedValue({
+      movies: ["Matrix_1999"],
+      newMood: { id: 1, acting: 1, action: 1 },
+    });
+
     render(<RecEnginePage />);
 
+    // Wait for first voting panel & button
     await screen.findByTestId("voting-panel");
+    await screen.findByText("VOTE");
 
-    // simulate reaching last iteration
+    // Simulate 4 rounds of voting
     for (let i = 1; i < 5; i++) {
       fireEvent.click(screen.getByText("VOTE"));
+
+      // Wait for spinner to show and disappear each time
+      await screen.findByText(/Loading recommendations/i);
+      if (i < 4) {
+        await screen.findByText("VOTE");
+      }
     }
 
-    fireEvent.click(screen.getByText("PICK MOVIES"));
+    // On 5th round, button label changes
+    const pickButton = await screen.findByText("PICK MOVIES");
+    fireEvent.click(pickButton);
 
     await waitFor(() => {
       expect(screen.getByTestId("error-msg")).toBeInTheDocument();
