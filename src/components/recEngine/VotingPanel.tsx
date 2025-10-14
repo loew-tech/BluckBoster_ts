@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { Container, Grid } from "semantic-ui-react";
 
 import "./votingPanel.css";
@@ -7,20 +5,14 @@ import "./votingPanel.css";
 type VotingPanelProps = {
   movieIDs: string[];
   toggleVote: (id: string) => void;
+  votedMovieIDs: Set<string>;
 };
-export const VotingPanel = ({ movieIDs, toggleVote }: VotingPanelProps) => {
-  const [selected, setSelected] = useState<Set<string>>(new Set<string>());
-
+export const VotingPanel = ({
+  movieIDs,
+  toggleVote,
+  votedMovieIDs,
+}: VotingPanelProps) => {
   const toggleSelection = (id: string) => {
-    if (selected.has(id)) {
-      const newSet = new Set(selected);
-      newSet.delete(id);
-      setSelected(newSet);
-    } else {
-      const newSet = new Set(selected);
-      newSet.add(id);
-      setSelected(newSet);
-    }
     toggleVote(id);
   };
 
@@ -48,7 +40,7 @@ export const VotingPanel = ({ movieIDs, toggleVote }: VotingPanelProps) => {
           <Grid.Column key={movie.id}>
             <h3
               className={
-                selected.has(movie.id) ? "candidate selected" : "candidate"
+                votedMovieIDs.has(movie.id) ? "candidate selected" : "candidate"
               }
               onClick={() => toggleSelection(movie.id)}
             >

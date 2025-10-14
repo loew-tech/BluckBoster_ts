@@ -10,6 +10,7 @@ import {
 import { Mood, Recommendation } from "../types/types";
 import { ErrorMessage } from "../components/common/errorMessage";
 import { RecommendationDisplay } from "../components/recEngine/RecommendationDisplay";
+import { Spinner } from "../components/common/Spinner";
 
 const getNewMood = (): Mood => {
   return {
@@ -32,26 +33,31 @@ const getNewMood = (): Mood => {
 export const RecEnginePage = () => {
   const [movieIDs, setMovieIDs] = useState<string[]>([]);
   const [votedMovieIDs, setVotedMovieIDs] = useState<Set<string>>(new Set());
+  const [prevVoted, setPrevVoted] = useState<Set<string>>(new Set());
   const [mood, setMood] = useState<Mood>(getNewMood());
   const [recommendation, setRecommendation] = useState<Recommendation | null>(
     null
   );
   const [iteration, setIteration] = useState(1);
   const [recEngineErr, setRecEngineErr] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [numPrevSelected, setNumPrevSelected] = useState(0);
 
   const iterate = () => {
     setIteration(iteration + 1);
-    setVotedMovieIDs(new Set<string>());
+    setIsLoading(false);
   };
 
   useEffect(() => {
     async function fetchInitialMovies() {
+      setIsLoading(true);
       const votingResult = await getVotingInitialSlate();
       if (votingResult !== null) {
         setMovieIDs(votingResult.movies ?? []);
       } else {
         setRecEngineErr(true);
       }
+      setIsLoading(false);
     }
     fetchInitialMovies();
   }, []);
@@ -66,21 +72,35 @@ export const RecEnginePage = () => {
     setVotedMovieIDs(newVotedMovieIDs);
   };
 
-  const vote = () => {
+  const vote = async () => {
+    setIsLoading(true);
     const votingResult = iterateVote(
       mood,
       iteration,
+      numPrevSelected,
       votedMovieIDs ? Array.from(votedMovieIDs) : []
     );
     if (votingResult === null) {
+      setIsLoading(false);
       setRecEngineErr(true);
       return;
     }
-    votingResult.then((result) => {
+
+    await votingResult.then((result) => {
       if (result === null) {
+        setIsLoading(false);
+        setRecEngineErr(true);
         return;
       }
+      const newPrevVoted = new Set(prevVoted);
+      votedMovieIDs.forEach((id) => newPrevVoted.add(id));
+      setPrevVoted(newPrevVoted);
+      setRecEngineErr(false);
+      setNumPrevSelected(numPrevSelected + votedMovieIDs.size);
       if (result.movies && result.movies.length > 0) {
+        setVotedMovieIDs(
+          new Set(result.movies.filter((id) => prevVoted.has(id)))
+        );
         setMovieIDs(result.movies);
       }
       if (result.newMood) {
@@ -99,28 +119,36 @@ export const RecEnginePage = () => {
     setRecommendation(finalRecommendation);
   };
 
-  if (recEngineErr) {
+  const renderContent = () => {
+    if (isLoading) {
+      return <Spinner message="📼 Loading recommendations..." />;
+    }
+    if (recEngineErr) {
+      return (
+        <ErrorMessage msg="Error in recommendation engine. Please try again later." />
+      );
+    }
+    if (recommendation) {
+      return <RecommendationDisplay recommendation={recommendation} />;
+    }
     return (
       <>
-        <HeaderBanner />
-        <ErrorMessage msg="Error in recommendation engine. Please try again later." />
+        <VotingPanel
+          toggleVote={toggleVote}
+          movieIDs={movieIDs}
+          votedMovieIDs={votedMovieIDs}
+        />
+        <button onClick={iteration < 5 ? vote : getFinalRecommendation}>
+          {iteration < 5 ? "VOTE" : "PICK MOVIES"}
+        </button>
       </>
     );
-  }
+  };
 
   return (
     <>
       <HeaderBanner />
-      {!recommendation ? (
-        <>
-          <VotingPanel toggleVote={toggleVote} movieIDs={movieIDs} />
-          <button onClick={iteration < 5 ? vote : getFinalRecommendation}>
-            {iteration < 5 ? "VOTE" : "PICK MOVIES"}
-          </button>
-        </>
-      ) : (
-        <RecommendationDisplay recommendation={recommendation} />
-      )}
+      {renderContent()}
     </>
   );
 };

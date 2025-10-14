@@ -172,6 +172,7 @@ export const getVotingInitialSlate = async (): Promise<VotingResult | null> => {
 export const iterateVote = async (
   currentMood: Mood,
   iteration: number,
+  numPrevSelected: number,
   movieIDs: string[]
 ): Promise<VotingResult | null> => {
   const response = await fetch(`${iterateVoteURI}`, {
@@ -179,6 +180,7 @@ export const iterateVote = async (
     body: JSON.stringify({
       currentMood,
       iteration,
+      numPrevSelected,
       movieIDs,
     }),
   });
