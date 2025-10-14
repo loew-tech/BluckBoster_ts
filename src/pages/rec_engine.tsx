@@ -10,6 +10,7 @@ import {
 import { Mood, Recommendation } from "../types/types";
 import { ErrorMessage } from "../components/common/errorMessage";
 import { RecommendationDisplay } from "../components/recEngine/RecommendationDisplay";
+import { Spinner } from "../components/common/Spinner";
 
 const getNewMood = (): Mood => {
   return {
@@ -38,21 +39,25 @@ export const RecEnginePage = () => {
   );
   const [iteration, setIteration] = useState(1);
   const [recEngineErr, setRecEngineErr] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [numPrevSelected, setNumPrevSelected] = useState(0);
 
   const iterate = () => {
     setIteration(iteration + 1);
+    setIsLoading(false);
     setVotedMovieIDs(new Set<string>());
   };
 
   useEffect(() => {
     async function fetchInitialMovies() {
+      setIsLoading(true);
       const votingResult = await getVotingInitialSlate();
       if (votingResult !== null) {
         setMovieIDs(votingResult.movies ?? []);
       } else {
         setRecEngineErr(true);
       }
+      setIsLoading(false);
     }
     fetchInitialMovies();
   }, []);
@@ -68,6 +73,7 @@ export const RecEnginePage = () => {
   };
 
   const vote = () => {
+    setIsLoading(true);
     const votingResult = iterateVote(
       mood,
       iteration,
@@ -80,8 +86,11 @@ export const RecEnginePage = () => {
     }
     votingResult.then((result) => {
       if (result === null) {
+        setIsLoading(false);
+        setRecEngineErr(true);
         return;
       }
+      setRecEngineErr(false);
       setNumPrevSelected(numPrevSelected + votedMovieIDs.size);
       if (result.movies && result.movies.length > 0) {
         setMovieIDs(result.movies);
@@ -102,28 +111,32 @@ export const RecEnginePage = () => {
     setRecommendation(finalRecommendation);
   };
 
-  if (recEngineErr) {
+  const renderContent = () => {
+    if (isLoading) {
+      return <Spinner message="📼 Loading recommendations..." />;
+    }
+    if (recEngineErr) {
+      return (
+        <ErrorMessage msg="Error in recommendation engine. Please try again later." />
+      );
+    }
+    if (recommendation) {
+      return <RecommendationDisplay recommendation={recommendation} />;
+    }
     return (
       <>
-        <HeaderBanner />
-        <ErrorMessage msg="Error in recommendation engine. Please try again later." />
+        <VotingPanel toggleVote={toggleVote} movieIDs={movieIDs} />
+        <button onClick={iteration < 5 ? vote : getFinalRecommendation}>
+          {iteration < 5 ? "VOTE" : "PICK MOVIES"}
+        </button>
       </>
     );
-  }
+  };
 
   return (
     <>
       <HeaderBanner />
-      {!recommendation ? (
-        <>
-          <VotingPanel toggleVote={toggleVote} movieIDs={movieIDs} />
-          <button onClick={iteration < 5 ? vote : getFinalRecommendation}>
-            {iteration < 5 ? "VOTE" : "PICK MOVIES"}
-          </button>
-        </>
-      ) : (
-        <RecommendationDisplay recommendation={recommendation} />
-      )}
+      {renderContent()}
     </>
   );
 };
