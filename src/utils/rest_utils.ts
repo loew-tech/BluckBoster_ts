@@ -204,3 +204,14 @@ export const getFinalRecommendations = async (
   }
   return null;
 };
+
+export const getMovieMetrics = async (
+  movieID: string
+): Promise<Mood | null> => {
+  const response = await fetch(`${moviesURI}/${movieID}/metrics`);
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  }
+  return null;
+};

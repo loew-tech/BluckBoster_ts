@@ -30,9 +30,9 @@ export const fetchMovie = async (movieID: string): Promise<Movie | null> => {
   const api = getAPIChoiceFromCookie();
   console.log("API in fetchMovie:", api);
   switch (api) {
-    case "REST":
+    case REST_API:
       return rest.fetchMovie(movieID);
-    case "GraphQL":
+    case GRAPHQL_API:
       return graphql.fetchMovie(movieID);
   }
 };
@@ -41,9 +41,9 @@ export const fetchMovies = async (page: string): Promise<Movie[]> => {
   const api = getAPIChoiceFromCookie();
   console.log("API in fetchMovies:", api);
   switch (api) {
-    case "REST":
+    case REST_API:
       return rest.fetchMovies(page);
-    case "GraphQL":
+    case GRAPHQL_API:
       return graphql.fetchMovies(page);
   }
 };
@@ -52,9 +52,9 @@ export const fetchCart = async (username: string): Promise<Movie[]> => {
   const api = getAPIChoiceFromCookie();
   console.log("API in fetchCart:", api);
   switch (api) {
-    case "REST":
+    case REST_API:
       return rest.fetchCart(username);
-    case "GraphQL":
+    case GRAPHQL_API:
       return graphql.fetchCart(username);
   }
 };
@@ -65,9 +65,9 @@ export const fetchCheckedoutMovies = async (
   const api = getAPIChoiceFromCookie();
   console.log("API in fetchCheckedoutMovies:", api);
   switch (api) {
-    case "REST":
+    case REST_API:
       return rest.fetchCheckedoutMovies(username);
-    case "GraphQL":
+    case GRAPHQL_API:
       return graphql.fetchCheckedoutMovies(username);
   }
 };
@@ -79,9 +79,9 @@ export const returnRentals = async (
   const api = getAPIChoiceFromCookie();
   console.log("API in returnRentals:", api);
   switch (api) {
-    case "REST":
+    case REST_API:
       return rest.returnRentals(username, movieIDs);
-    case "GraphQL":
+    case GRAPHQL_API:
       return graphql.returnRentals(username, movieIDs);
   }
 };
@@ -95,9 +95,9 @@ export const updateCart = (
   const api = getAPIChoiceFromCookie();
   console.log("API in updateCart:", api);
   switch (api) {
-    case "REST":
+    case REST_API:
       return rest.updateCart(username, movie_id, cart, removeFromCart);
-    case "GraphQL":
+    case GRAPHQL_API:
       return graphql.updateCart(username, movie_id, cart, removeFromCart);
   }
 };
@@ -106,9 +106,9 @@ export const getUser = async (): Promise<Member | null> => {
   const api = getAPIChoiceFromCookie();
   console.log("API in getUser:", api);
   switch (api) {
-    case "REST":
+    case REST_API:
       return rest.getUser();
-    case "GraphQL":
+    case GRAPHQL_API:
       return graphql.getUser();
   }
 };
@@ -191,4 +191,10 @@ export const getFinalRecommendations = async (
   finalMood: Mood
 ): Promise<Recommendation | null> => {
   return rest.getFinalRecommendations(finalMood);
+};
+
+export const getMovieMetrics = async (
+  movieID: string
+): Promise<Mood | null> => {
+  return rest.getMovieMetrics(movieID);
 };
