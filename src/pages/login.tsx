@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
+
 import { useNavigate } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 
-import { ExplorePath, moviesPath, USER } from "../constants/constants";
+import {
+  ExplorePath,
+  moviesPath,
+  RecEnginePath,
+  USER,
+} from "../constants/constants";
 import { ErrorMessage } from "../components/common/errorMessage";
 import { useUser } from "../context/UserContext";
 import { LoginForm } from "../components/login/LoginForm";
@@ -58,6 +64,7 @@ export const LoginPage = () => {
       <Button onClick={() => navigate(ExplorePath)}>
         Explore Kevin Bacon!
       </Button>
+      <Button onClick={() => navigate(RecEnginePath)}>RECOMMENDATIONS</Button>
       {failedLogin && (
         <ErrorMessage msg={`failed to login with username ${failedUsername}`} />
       )}
