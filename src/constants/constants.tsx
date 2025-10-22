@@ -20,6 +20,10 @@ export const iterateVoteURI = "http://127.0.0.1:8080/api/v1/members/mood/vote";
 export const finalRecommendationsURI =
   "http://127.0.0.1:8080/api/v1/members/mood/picks";
 
+// Rec Engine constants
+export const MAX_VOTING_ITERATIONS = 5;
+export const SEEDING_MOVIE = "seeding_movie";
+
 // API types
 export const REST_API = "REST";
 export const GRAPHQL_API = "GraphQL";

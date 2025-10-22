@@ -4,6 +4,7 @@ import { HeaderBanner } from "../components/headerBanner/headerBanner";
 import { VotingPanel } from "../components/recEngine/VotingPanel";
 import {
   getFinalRecommendations,
+  getMovieMetrics,
   getVotingInitialSlate,
   iterateVote,
 } from "../utils/utils";
@@ -11,27 +12,27 @@ import { Mood, Recommendation } from "../types/types";
 import { ErrorMessage } from "../components/common/errorMessage";
 import { RecommendationDisplay } from "../components/recEngine/RecommendationDisplay";
 import { Spinner } from "../components/common/Spinner";
+import { useSearchParams } from "react-router-dom";
+import { SEEDING_MOVIE } from "../constants/constants";
 
-const getNewMood = (): Mood => {
-  return {
-    id: 0,
-    acting: 0,
-    action: 0,
-    cinematography: 0,
-    comedy: 0,
-    directing: 0,
-    drama: 0,
-    fantasy: 0,
-    horror: 0,
-    romance: 0,
-    story_telling: 0,
-    suspense: 0,
-    writing: 0,
-  };
-};
+const getNewMood = (): Mood => ({
+  id: 0,
+  acting: 0,
+  action: 0,
+  cinematography: 0,
+  comedy: 0,
+  directing: 0,
+  drama: 0,
+  fantasy: 0,
+  horror: 0,
+  romance: 0,
+  story_telling: 0,
+  suspense: 0,
+  writing: 0,
+});
 
 export const RecEnginePage = () => {
-  const [movieIDs, setMovieIDs] = useState<string[]>([]);
+  const [movieCanidateIDs, setMovieCanidatesIDs] = useState<string[]>([]);
   const [votedMovieIDs, setVotedMovieIDs] = useState<Set<string>>(new Set());
   const [prevVoted, setPrevVoted] = useState<Set<string>>(new Set());
   const [mood, setMood] = useState<Mood>(getNewMood());
@@ -43,6 +44,10 @@ export const RecEnginePage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [numPrevSelected, setNumPrevSelected] = useState(0);
 
+  const [searchParams] = useSearchParams();
+  const urlArg = searchParams.get(SEEDING_MOVIE);
+  const seedingMovie = urlArg ? decodeURI(urlArg) : null;
+
   const iterate = () => {
     setIteration(iteration + 1);
     setIsLoading(false);
@@ -53,14 +58,38 @@ export const RecEnginePage = () => {
       setIsLoading(true);
       const votingResult = await getVotingInitialSlate();
       if (votingResult !== null) {
-        setMovieIDs(votingResult.movies ?? []);
+        setMovieCanidatesIDs(votingResult.movies ?? []);
       } else {
         setRecEngineErr(true);
       }
       setIsLoading(false);
     }
-    fetchInitialMovies();
-  }, []);
+
+    async function fetchWithMoviesSeed() {
+      setIsLoading(true);
+      const startingMood = await getMovieMetrics(seedingMovie!);
+      if (startingMood === null) {
+        setRecEngineErr(true);
+        setIsLoading(false);
+        return;
+      }
+      setMood(startingMood);
+      const votingResult = await iterateVote(startingMood, 3, 1, []);
+      if (votingResult === null) {
+        setRecEngineErr(true);
+        setIsLoading(false);
+        return;
+      }
+      setMovieCanidatesIDs(votingResult?.movies ?? []);
+      setIsLoading(false);
+    }
+
+    if (seedingMovie) {
+      fetchWithMoviesSeed();
+    } else {
+      fetchInitialMovies();
+    }
+  }, [seedingMovie]);
 
   const toggleVote = (id: string) => {
     const newVotedMovieIDs = new Set(votedMovieIDs);
@@ -74,39 +103,32 @@ export const RecEnginePage = () => {
 
   const vote = async () => {
     setIsLoading(true);
-    const votingResult = iterateVote(
+    const result = await iterateVote(
       mood,
       iteration,
       numPrevSelected,
       votedMovieIDs ? Array.from(votedMovieIDs) : []
     );
-    if (votingResult === null) {
+    if (result === null) {
       setIsLoading(false);
       setRecEngineErr(true);
       return;
     }
 
-    await votingResult.then((result) => {
-      if (result === null) {
-        setIsLoading(false);
-        setRecEngineErr(true);
-        return;
-      }
-      const newPrevVoted = new Set(prevVoted);
-      votedMovieIDs.forEach((id) => newPrevVoted.add(id));
-      setPrevVoted(newPrevVoted);
-      setRecEngineErr(false);
-      setNumPrevSelected(numPrevSelected + votedMovieIDs.size);
-      if (result.movies && result.movies.length > 0) {
-        setVotedMovieIDs(
-          new Set(result.movies.filter((id) => prevVoted.has(id)))
-        );
-        setMovieIDs(result.movies);
-      }
-      if (result.newMood) {
-        setMood(result.newMood);
-      }
-    });
+    const newPrevVoted = new Set(prevVoted);
+    votedMovieIDs.forEach((id) => newPrevVoted.add(id));
+    setPrevVoted(newPrevVoted);
+    setRecEngineErr(false);
+    setNumPrevSelected(numPrevSelected + votedMovieIDs.size);
+    if (result.movies && result.movies.length > 0) {
+      setVotedMovieIDs(
+        new Set(result.movies.filter((id) => prevVoted.has(id)))
+      );
+      setMovieCanidatesIDs(result.movies);
+    }
+    if (result.newMood) {
+      setMood(result.newMood);
+    }
     iterate();
   };
 
@@ -135,7 +157,7 @@ export const RecEnginePage = () => {
       <>
         <VotingPanel
           toggleVote={toggleVote}
-          movieIDs={movieIDs}
+          movieIDs={movieCanidateIDs}
           votedMovieIDs={votedMovieIDs}
         />
         <button onClick={iteration < 5 ? vote : getFinalRecommendation}>
