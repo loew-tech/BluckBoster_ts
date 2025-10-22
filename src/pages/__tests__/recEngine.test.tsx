@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { RecEnginePage } from "../rec_engine";
+import { RecEnginePage } from "../recEngine";
 import {
   getVotingInitialSlate,
   iterateVote,
