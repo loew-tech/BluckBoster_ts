@@ -15,7 +15,7 @@ import {
 } from "../constants/constants";
 import { Explore } from "./explore";
 import { UserProvider } from "../context/UserContext";
-import { RecEnginePage } from "./rec_engine";
+import { RecEnginePage } from "./recEngine";
 
 export const Main = () => {
   return (

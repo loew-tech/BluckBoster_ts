@@ -1,10 +1,14 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { RecEnginePage } from "../rec_engine";
+import { RecEnginePage } from "../recEngine";
 import {
   getVotingInitialSlate,
   iterateVote,
   getFinalRecommendations,
+  getMovieMetrics,
 } from "../../utils/utils";
+import { MemoryRouter } from "react-router-dom";
+import { renderWithNav } from "../../../test/renderHelpers";
+import { Mood } from "../../types/types";
 
 // Mock child components so we don’t depend on their inner logic
 jest.mock("../../components/headerBanner/headerBanner", () => ({
@@ -38,6 +42,7 @@ jest.mock("../../utils/utils", () => ({
   getVotingInitialSlate: jest.fn(),
   iterateVote: jest.fn(),
   getFinalRecommendations: jest.fn(),
+  getMovieMetrics: jest.fn(),
 }));
 
 describe("RecEnginePage", () => {
@@ -50,7 +55,7 @@ describe("RecEnginePage", () => {
       movies: ["Matrix_1999", "Titanic_1997"],
     });
 
-    render(<RecEnginePage />);
+    renderWithNav(<RecEnginePage />);
 
     expect(screen.getByTestId("header-banner")).toBeInTheDocument();
     await waitFor(() => {
@@ -62,7 +67,7 @@ describe("RecEnginePage", () => {
   it("shows ErrorMessage if getVotingInitialSlate returns null", async () => {
     (getVotingInitialSlate as jest.Mock).mockResolvedValue(null);
 
-    render(<RecEnginePage />);
+    renderWithNav(<RecEnginePage />);
 
     await waitFor(() => {
       expect(screen.getByTestId("error-msg")).toHaveTextContent(
@@ -80,7 +85,7 @@ describe("RecEnginePage", () => {
       newMood: { id: 1, acting: 1, action: 1 },
     });
 
-    render(<RecEnginePage />);
+    renderWithNav(<RecEnginePage />);
 
     await screen.findByTestId("voting-panel");
 
@@ -103,8 +108,12 @@ describe("RecEnginePage", () => {
       bestPick: "Matrix_1999",
       goodPicks: ["Titanic_1997", "JurassicPark_1993"],
     });
+    (iterateVote as jest.Mock).mockResolvedValue({
+      movies: ["MovieA_2001", "MovieB_2002"],
+      newMood: { id: 1 } as Mood,
+    });
 
-    render(<RecEnginePage />);
+    renderWithNav(<RecEnginePage />);
 
     await screen.findByTestId("voting-panel");
     await screen.findByText("VOTE");
@@ -143,7 +152,7 @@ describe("RecEnginePage", () => {
       newMood: { id: 1, acting: 1, action: 1 },
     });
 
-    render(<RecEnginePage />);
+    renderWithNav(<RecEnginePage />);
 
     // Wait for first voting panel & button
     await screen.findByTestId("voting-panel");
@@ -167,5 +176,69 @@ describe("RecEnginePage", () => {
     await waitFor(() => {
       expect(screen.getByTestId("error-msg")).toBeInTheDocument();
     });
+  });
+});
+
+// SEEDING MOVIE CASES
+
+it("fetches mood from seedingMovie and renders initial VotingPanel", async () => {
+  (getMovieMetrics as jest.Mock).mockResolvedValue({
+    id: 42,
+    acting: 3,
+    action: 4,
+  });
+  (iterateVote as jest.Mock).mockResolvedValue({
+    movies: ["Inception_2010", "Interstellar_2014"],
+    newMood: { id: 42, acting: 3, action: 4 },
+  });
+
+  render(
+    <MemoryRouter initialEntries={["/?seeding_movie=Matrix_1999"]}>
+      <RecEnginePage />
+    </MemoryRouter>
+  );
+
+  expect(screen.getByTestId("header-banner")).toBeInTheDocument();
+
+  await waitFor(() => {
+    expect(getMovieMetrics).toHaveBeenCalledWith("Matrix_1999");
+  });
+
+  await waitFor(() => {
+    expect(screen.getByTestId("voting-panel")).toBeInTheDocument();
+  });
+  expect(screen.getByText("Movie: Inception_2010")).toBeInTheDocument();
+});
+
+it("shows error message if seedingMovie metrics returns null", async () => {
+  (getMovieMetrics as jest.Mock).mockResolvedValue(null);
+
+  render(
+    <MemoryRouter initialEntries={["/?seeding_movie=BadMovie_9999"]}>
+      <RecEnginePage />
+    </MemoryRouter>
+  );
+
+  await waitFor(() => {
+    expect(screen.getByTestId("error-msg")).toBeInTheDocument();
+  });
+});
+
+it("shows error message if iterateVote fails after seedingMovie fetch", async () => {
+  (getMovieMetrics as jest.Mock).mockResolvedValue({
+    id: 5,
+    acting: 2,
+    action: 3,
+  });
+  (iterateVote as jest.Mock).mockResolvedValue(null);
+
+  render(
+    <MemoryRouter initialEntries={["/?seeding_movie=Matrix_1999"]}>
+      <RecEnginePage />
+    </MemoryRouter>
+  );
+
+  await waitFor(() => {
+    expect(screen.getByTestId("error-msg")).toBeInTheDocument();
   });
 });
