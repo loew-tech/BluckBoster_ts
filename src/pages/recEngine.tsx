@@ -32,9 +32,17 @@ const getNewMood = (): Mood => ({
 });
 
 export const RecEnginePage = () => {
+  const [searchParams] = useSearchParams();
+  const urlArg = searchParams.get(SEEDING_MOVIE);
+  const seedingMovie = urlArg ? decodeURI(urlArg) : null;
+
   const [movieCanidateIDs, setMovieCanidatesIDs] = useState<string[]>([]);
-  const [votedMovieIDs, setVotedMovieIDs] = useState<Set<string>>(new Set());
-  const [prevVoted, setPrevVoted] = useState<Set<string>>(new Set());
+  const [votedMovieIDs, setVotedMovieIDs] = useState<Set<string>>(
+    seedingMovie ? new Set([seedingMovie]) : new Set()
+  );
+  const [prevVoted, setPrevVoted] = useState<Set<string>>(
+    seedingMovie ? new Set([seedingMovie]) : new Set()
+  );
   const [mood, setMood] = useState<Mood>(getNewMood());
   const [recommendation, setRecommendation] = useState<Recommendation | null>(
     null
@@ -43,10 +51,6 @@ export const RecEnginePage = () => {
   const [recEngineErr, setRecEngineErr] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [numPrevSelected, setNumPrevSelected] = useState(0);
-
-  const [searchParams] = useSearchParams();
-  const urlArg = searchParams.get(SEEDING_MOVIE);
-  const seedingMovie = urlArg ? decodeURI(urlArg) : null;
 
   const iterate = () => {
     setIteration(iteration + 1);
@@ -80,7 +84,9 @@ export const RecEnginePage = () => {
         setIsLoading(false);
         return;
       }
-      setMovieCanidatesIDs(votingResult?.movies ?? []);
+      setMovieCanidatesIDs(
+        votingResult?.movies?.filter((id) => id !== seedingMovie) ?? []
+      );
       setIsLoading(false);
     }
 
