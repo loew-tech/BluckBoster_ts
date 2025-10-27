@@ -40,6 +40,9 @@ export const RecEnginePage = () => {
   const [votedMovieIDs, setVotedMovieIDs] = useState<Set<string>>(
     seedingMovie ? new Set([seedingMovie]) : new Set()
   );
+  const [activeVotes, setActiveVotes] = useState<Set<string>>(
+    seedingMovie ? new Set([seedingMovie]) : new Set()
+  );
   const [mood, setMood] = useState<Mood>(getNewMood());
   const [recommendation, setRecommendation] = useState<Recommendation | null>(
     null
@@ -96,12 +99,16 @@ export const RecEnginePage = () => {
 
   const toggleVote = (id: string) => {
     const newVotedMovieIDs = new Set(votedMovieIDs);
+    const tempActiveVotes = new Set(activeVotes);
     if (newVotedMovieIDs.has(id)) {
       newVotedMovieIDs.delete(id);
+      tempActiveVotes.delete(id);
     } else {
       newVotedMovieIDs.add(id);
+      tempActiveVotes.add(id);
     }
     setVotedMovieIDs(newVotedMovieIDs);
+    setActiveVotes(tempActiveVotes);
   };
 
   const vote = async () => {
@@ -112,7 +119,7 @@ export const RecEnginePage = () => {
       mood,
       iteration,
       numPrevSelected,
-      votedMovieIDs ? Array.from(votedMovieIDs) : []
+      activeVotes ? Array.from(activeVotes) : []
     );
     if (result === null) {
       setIsLoading(false);
@@ -123,6 +130,10 @@ export const RecEnginePage = () => {
     setNumPrevSelected(numPrevSelected + votedMovieIDs.size);
     if (result.movies && result.movies.length > 0) {
       setMovieCanidatesIDs(result.movies);
+      const tempNewVotes = new Set<string>(
+        result.movies.filter((id) => votedMovieIDs.has(id))
+      );
+      setActiveVotes(tempNewVotes);
     }
     if (result.newMood) {
       setMood(result.newMood);
