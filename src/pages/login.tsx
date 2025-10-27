@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
-import { Button } from "semantic-ui-react";
+import { Button, Icon } from "semantic-ui-react";
 
 import {
   ExplorePath,
@@ -64,7 +64,10 @@ export const LoginPage = () => {
       <Button onClick={() => navigate(ExplorePath)}>
         Explore Kevin Bacon!
       </Button>
-      <Button onClick={() => navigate(RecEnginePath)}>RECOMMENDATIONS</Button>
+      <Button onClick={() => navigate(RecEnginePath)}>
+        <Icon name="magic" />
+        RECOMMENDATIONS
+      </Button>
       {failedLogin && (
         <ErrorMessage msg={`failed to login with username ${failedUsername}`} />
       )}

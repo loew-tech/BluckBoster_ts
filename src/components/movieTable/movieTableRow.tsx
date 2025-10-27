@@ -1,4 +1,4 @@
-import { Button, TableCell, TableRow } from "semantic-ui-react";
+import { Button, Icon, TableCell, TableRow } from "semantic-ui-react";
 
 import { useUser } from "../../context/UserContext";
 import { Movie } from "../../types/types";
@@ -26,6 +26,7 @@ export const MovieTableRow = ({ movie, returnRental }: MovieTableRowProps) => {
             navigate(`${RecEnginePath}?${SEEDING_MOVIE}=${encodeURI(movie.id)}`)
           }
         >
+          <Icon name="magic" />
           Recs like this!
         </Button>
       </TableCell>
