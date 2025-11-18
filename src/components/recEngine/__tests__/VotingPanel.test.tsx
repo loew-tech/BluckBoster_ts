@@ -17,7 +17,7 @@ describe("VotingPanel", () => {
       <VotingPanel
         movieIDs={sampleMovieIDs}
         toggleVote={mockToggle}
-        votedMovieIDs={sampleVotedIDs}
+        prevVotedIDs={sampleVotedIDs}
       />
     );
     expect(screen.getByText("The Matrix (1999)")).toBeInTheDocument();
@@ -31,7 +31,7 @@ describe("VotingPanel", () => {
       <VotingPanel
         movieIDs={sampleMovieIDs}
         toggleVote={mockToggle}
-        votedMovieIDs={sampleVotedIDs}
+        prevVotedIDs={sampleVotedIDs}
       />
     );
 
@@ -48,7 +48,7 @@ describe("VotingPanel", () => {
       <VotingPanel
         movieIDs={["", "BadFormatID"]}
         toggleVote={mockToggle}
-        votedMovieIDs={new Set()}
+        prevVotedIDs={new Set()}
       />
     );
 
@@ -62,7 +62,7 @@ describe("VotingPanel", () => {
       <VotingPanel
         movieIDs={[]}
         toggleVote={mockToggle}
-        votedMovieIDs={new Set()}
+        prevVotedIDs={new Set()}
       />
     );
 
