@@ -40,6 +40,9 @@ export const RecEnginePage = () => {
   const [votedMovieIDs, setVotedMovieIDs] = useState<Set<string>>(
     seedingMovie ? new Set([seedingMovie]) : new Set()
   );
+  const [prevVotes, setPrevVotes] = useState<Set<string>>(
+    seedingMovie ? new Set([seedingMovie]) : new Set()
+  );
   const [mood, setMood] = useState<Mood>(getNewMood());
   const [recommendation, setRecommendation] = useState<Recommendation | null>(
     null
@@ -96,11 +99,15 @@ export const RecEnginePage = () => {
 
   const toggleVote = (id: string) => {
     const newVotedMovieIDs = new Set(votedMovieIDs);
+    const oldVotedMovieIDs = new Set(prevVotes);
     if (newVotedMovieIDs.has(id)) {
       newVotedMovieIDs.delete(id);
+      oldVotedMovieIDs.delete(id);
     } else {
       newVotedMovieIDs.add(id);
+      oldVotedMovieIDs.add(id);
     }
+    setPrevVotes(oldVotedMovieIDs);
     setVotedMovieIDs(newVotedMovieIDs);
   };
 
@@ -123,6 +130,9 @@ export const RecEnginePage = () => {
     setNumPrevSelected(numPrevSelected + votedMovieIDs.size);
     if (result.movies && result.movies.length > 0) {
       setMovieCanidatesIDs(result.movies);
+      setVotedMovieIDs(
+        new Set(result.movies.filter((id) => prevVotes.has(id)))
+      );
     }
     if (result.newMood) {
       setMood(result.newMood);
@@ -156,7 +166,7 @@ export const RecEnginePage = () => {
         <VotingPanel
           toggleVote={toggleVote}
           movieIDs={movieCanidateIDs}
-          votedMovieIDs={votedMovieIDs}
+          prevVotedIDs={prevVotes}
         />
         <button onClick={iteration < 5 ? vote : getFinalRecommendation}>
           {iteration < 5 ? "VOTE" : "PICK MOVIES"}
