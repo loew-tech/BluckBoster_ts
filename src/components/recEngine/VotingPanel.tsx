@@ -5,12 +5,12 @@ import "./votingPanel.css";
 type VotingPanelProps = {
   movieIDs: string[];
   toggleVote: (id: string) => void;
-  votedMovieIDs: Set<string>;
+  prevVotedIDs: Set<string>;
 };
 export const VotingPanel = ({
   movieIDs,
   toggleVote,
-  votedMovieIDs,
+  prevVotedIDs,
 }: VotingPanelProps) => {
   const toggleSelection = (id: string) => {
     toggleVote(id);
@@ -40,7 +40,7 @@ export const VotingPanel = ({
           <Grid.Column key={movie.id}>
             <h3
               className={
-                votedMovieIDs.has(movie.id) ? "candidate selected" : "candidate"
+                prevVotedIDs.has(movie.id) ? "candidate selected" : "candidate"
               }
               onClick={() => toggleSelection(movie.id)}
             >
