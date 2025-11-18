@@ -1,10 +1,10 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { CheckoutTableRow } from "../CheckoutTableRow";
 import { Movie } from "../../../types/types";
-import { testMovies } from "../../../../test/test-data";
+import { mockMovies } from "../../../../test/test-data";
 
 describe("CheckoutTableRow", () => {
-  const dummyMovie: Movie = testMovies[0];
+  const dummyMovie: Movie = mockMovies[0];
 
   const mockCartRemove = jest.fn();
 

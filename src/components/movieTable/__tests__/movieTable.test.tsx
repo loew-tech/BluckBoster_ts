@@ -2,7 +2,7 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import { testMember, testMovies } from "../../../../test/test-data";
+import { testMember, mockMovies } from "../../../../test/test-data";
 
 // ✅ MOCK useUser BEFORE importing the component
 jest.mock("../../../context/UserContext", () => ({
@@ -30,19 +30,19 @@ describe("MovieTable", () => {
   it("renders table header and movie titles", () => {
     renderWithNav(
       <MovieTable
-        movies={testMovies}
+        movies={mockMovies}
         updateMovies={mockUpdateMovies}
         returnRental={jest.fn()}
       />
     );
     expect(screen.getByText(/title/i)).toBeInTheDocument();
-    expect(screen.getByText(testMovies[0].title)).toBeInTheDocument();
+    expect(screen.getByText(mockMovies[0].title)).toBeInTheDocument();
   });
 
   it("shows Add to Cart buttons when user is present", () => {
     renderWithNav(
       <MovieTable
-        movies={testMovies}
+        movies={mockMovies}
         updateMovies={mockUpdateMovies}
         returnRental={jest.fn()}
       />
@@ -54,7 +54,7 @@ describe("MovieTable", () => {
   it("calls updateMovies when a page is selected", async () => {
     renderWithNav(
       <MovieTable
-        movies={testMovies}
+        movies={mockMovies}
         updateMovies={mockUpdateMovies}
         returnRental={jest.fn()}
       />
@@ -66,16 +66,16 @@ describe("MovieTable", () => {
   it("renders clickable title link", () => {
     renderWithNav(
       <MovieTable
-        movies={testMovies}
+        movies={mockMovies}
         updateMovies={mockUpdateMovies}
         returnRental={jest.fn()}
       />
     );
 
-    const link = screen.getByRole("link", { name: testMovies[0].title });
+    const link = screen.getByRole("link", { name: mockMovies[0].title });
     expect(link).toHaveAttribute(
       "href",
-      expect.stringContaining(testMovies[0].id)
+      expect.stringContaining(mockMovies[0].id)
     );
   });
 });

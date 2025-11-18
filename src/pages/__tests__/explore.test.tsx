@@ -21,14 +21,14 @@ jest.mock("../../context/UserContext", () => ({
   }),
 }));
 
-import { testKevinBaconResponse, testMovies } from "../../../test/test-data";
+import { mockKevinBaconResponse, mockMovies } from "../../../test/test-data";
 
 jest.mock("../../utils/utils", () => ({
   starredWith: jest.fn().mockResolvedValue(["Actor A", "Actor B"]),
-  starredIn: jest.fn().mockResolvedValue(testMovies),
-  kevinBacon: jest.fn().mockResolvedValue(testKevinBaconResponse),
+  starredIn: jest.fn().mockResolvedValue(mockMovies),
+  kevinBacon: jest.fn().mockResolvedValue(mockKevinBaconResponse),
   directedActors: jest.fn().mockResolvedValue(["Actor A", "Actor B"]),
-  directedMovies: jest.fn().mockResolvedValue(testMovies),
+  directedMovies: jest.fn().mockResolvedValue(mockMovies),
 }));
 
 // ✅ Imports after mocks

@@ -1,19 +1,16 @@
 import { render, screen } from "@testing-library/react";
 import { CheckoutTable } from "../CheckoutTable";
-import { Movie } from "../../../types/types";
-import { testMovies } from "../../../../test/test-data";
+import { mockMovies } from "../../../../test/test-data";
 
 describe("CheckoutTable", () => {
-  const mockMovies: Movie[] = testMovies;
-
   const mockCartRemove = jest.fn();
 
   it("renders a row for each movie", () => {
     render(<CheckoutTable movies={mockMovies} cartRemove={mockCartRemove} />);
 
     // There should be two movie titles rendered
-    expect(screen.getByText(testMovies[0].title)).toBeInTheDocument();
-    expect(screen.getByText(testMovies[1].title)).toBeInTheDocument();
+    expect(screen.getByText(mockMovies[0].title)).toBeInTheDocument();
+    expect(screen.getByText(mockMovies[1].title)).toBeInTheDocument();
   });
 
   it("displays 'Remove From Cart' button for in-stock items", () => {

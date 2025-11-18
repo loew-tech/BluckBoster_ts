@@ -1,5 +1,5 @@
 /* eslint-disable import/first */
-import { testMember, testMovies } from "../../../test/test-data";
+import { testMember, mockMovies } from "../../../test/test-data";
 
 // Mocks must come first
 const mockSetUser = jest.fn();
@@ -61,7 +61,7 @@ describe("CheckoutPage", () => {
     });
   });
   it("fetches movies and renders checkout table", async () => {
-    (fetchCart as jest.Mock).mockResolvedValueOnce(testMovies);
+    (fetchCart as jest.Mock).mockResolvedValueOnce(mockMovies);
     render(<CheckoutPage />);
     expect(await screen.findByText("Mock Checkout Table")).toBeInTheDocument();
     expect(screen.getByText(/Remove Seven Samurai/i)).toBeInTheDocument();
