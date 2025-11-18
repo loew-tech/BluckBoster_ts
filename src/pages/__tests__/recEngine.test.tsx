@@ -130,7 +130,7 @@ describe("RecEnginePage", () => {
     }
 
     // now button label should change
-    await screen.findByText(/PICK MOVIES/);
+    await screen.findByText(/PICK MOVIES/i);
     const pickButton = screen.getByText("PICK MOVIES");
     fireEvent.click(pickButton);
 

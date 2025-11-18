@@ -52,9 +52,10 @@ export const RecEnginePage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [numPrevSelected, setNumPrevSelected] = useState(0);
 
+  // @TODO: remove dead code
   const iterate = () => {
     setIteration(iteration + 1);
-    setIsLoading(false);
+    // setIsLoading(false);
   };
 
   useEffect(() => {
@@ -137,7 +138,8 @@ export const RecEnginePage = () => {
     if (result.newMood) {
       setMood(result.newMood);
     }
-    iterate();
+    setIteration(iteration + 1);
+    setIsLoading(false);
   };
 
   const getFinalRecommendation = async () => {
