@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 
 import { HeaderBanner } from "../headerBanner";
-import { testMember } from "../../../../test/test-data";
+import { mockMember } from "../../../../test/test-data";
 
 // Mock the CartButton component to isolate tests
 jest.mock("../CartButton", () => ({
@@ -14,7 +14,7 @@ jest.mock("../CartButton", () => ({
 // src\components\headerBanner\__tests__\HeaderBanner.test.tsx
 jest.mock("../../../context/UserContext", () => ({
   useUser: () => ({
-    user: testMember,
+    user: mockMember,
   }),
 }));
 

@@ -1,5 +1,5 @@
 /* eslint-disable import/first */
-import { testMember, mockMovies } from "../../../test/test-data";
+import { mockMember, mockMovies } from "../../../test/test-data";
 
 // Mocks must come first
 const mockSetUser = jest.fn();
@@ -7,7 +7,7 @@ const mockNavigate = jest.fn();
 
 jest.mock("../../context/UserContext", () => ({
   useUser: () => ({
-    user: testMember,
+    user: mockMember,
     setUser: mockSetUser,
   }),
 }));
@@ -76,7 +76,7 @@ describe("CheckoutPage", () => {
     const removeBtn = await screen.findByText("Remove Movie 1");
     await userEvent.click(removeBtn);
     expect(updateCart).toHaveBeenCalledWith(
-      testMember.username,
+      mockMember.username,
       "m1",
       ["m1", "m2"],
       REMOVE_FROM_CART
@@ -89,7 +89,7 @@ describe("CheckoutPage", () => {
     render(<CheckoutPage />);
     await userEvent.click(screen.getByRole("button", { name: /checkout/i }));
     expect(await screen.findByText(/failed to checkout/i)).toBeInTheDocument();
-    expect(testMember.cart?.includes("m1")).toBeFalsy();
+    expect(mockMember.cart?.includes("m1")).toBeFalsy();
   });
   it("calls checkout and redirects if successful", async () => {
     (fetchCart as jest.Mock).mockResolvedValueOnce([]);

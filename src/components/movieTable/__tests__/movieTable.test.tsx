@@ -2,16 +2,16 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import { testMember, mockMovies } from "../../../../test/test-data";
+import { mockMember, mockMovies } from "../../../../test/test-data";
 
 // ✅ MOCK useUser BEFORE importing the component
 jest.mock("../../../context/UserContext", () => ({
   useUser: () => ({
-    user: testMember,
+    user: mockMember,
     setUser: jest.fn(),
     logout: jest.fn(),
     getCartLength: () => 1,
-    isInCart: (movieID: string) => testMember.cart?.includes(movieID),
+    isInCart: (movieID: string) => mockMember.cart?.includes(movieID),
   }),
 }));
 

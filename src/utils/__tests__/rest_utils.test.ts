@@ -11,7 +11,7 @@ import {
 } from "../../utils/rest_utils";
 import { GRAPHQL_API } from "../../constants/constants";
 import * as cookieUtils from "../../utils/cookieUtils";
-import { testMember } from "../../../test/test-data";
+import { mockMember } from "../../../test/test-data";
 
 global.fetch = jest.fn();
 const mockFetch = fetch as jest.Mock;
@@ -152,7 +152,7 @@ describe("rest_utils", () => {
   describe("setAPIChoice", () => {
     it("returns true on success", async () => {
       jest.spyOn(cookieUtils, "getUserFromCookie").mockReturnValue({
-        ...testMember,
+        ...mockMember,
         api_choice: "REST",
       });
       mockFetch.mockResolvedValueOnce({ ok: true });
@@ -161,7 +161,7 @@ describe("rest_utils", () => {
     });
     it("returns false on failure", async () => {
       jest.spyOn(cookieUtils, "getUserFromCookie").mockReturnValue({
-        ...testMember,
+        ...mockMember,
         api_choice: "REST",
       });
       mockFetch.mockResolvedValueOnce({ ok: false });
@@ -178,7 +178,7 @@ describe("rest_utils", () => {
   describe("getUser", () => {
     it("returns user and sets cookie", async () => {
       const user = { username: "test_user" };
-      jest.spyOn(cookieUtils, "getUserFromCookie").mockReturnValue(testMember);
+      jest.spyOn(cookieUtils, "getUserFromCookie").mockReturnValue(mockMember);
       const setCookieSpy = jest
         .spyOn(cookieUtils, "setCookie")
         .mockImplementation(jest.fn());
@@ -196,7 +196,7 @@ describe("rest_utils", () => {
       expect(result).toBeNull();
     });
     it("returns null if fetch fails", async () => {
-      jest.spyOn(cookieUtils, "getUserFromCookie").mockReturnValue(testMember);
+      jest.spyOn(cookieUtils, "getUserFromCookie").mockReturnValue(mockMember);
       mockFetch.mockResolvedValueOnce({ ok: false });
       const result = await getUser();
       expect(result).toBeNull();

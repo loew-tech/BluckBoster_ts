@@ -1,4 +1,4 @@
-import { testMember } from "../../../test/test-data";
+import { mockMember } from "../../../test/test-data";
 import {
   login,
   checkout,
@@ -128,14 +128,14 @@ describe("graphql_utils", () => {
     });
   });
   it("fetchCheckedoutMovies - returns movies on success", async () => {
-    const checkedOut = testMember.checked_out;
+    const checkedOut = mockMember.checked_out;
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => ({
         data: { GetCheckedout: checkedOut },
       }),
     });
-    const result = await fetchCheckedoutMovies(testMember.username);
+    const result = await fetchCheckedoutMovies(mockMember.username);
     expect(result).toEqual(checkedOut);
   });
   it("fetchCheckedoutMovies - returns empty array on failure", async () => {

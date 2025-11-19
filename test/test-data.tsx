@@ -56,7 +56,7 @@ export const mockMovieIDs: string[] = [
 
 export const mockCart: string[] = ["l.a._confidential_1997"];
 
-export const testMember: Member = {
+export const mockMember: Member = {
   first_name: "Sea",
   last_name: "captain",
   username: "sea_captain",
