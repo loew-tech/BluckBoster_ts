@@ -1,25 +1,25 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 
 import { RentalTableHeader } from "../rentalTableHeader";
-import { testMovies } from "../../../../test/test-data";
+import { mockMovies } from "../../../../test/test-data";
 
 describe("RentalTableHeader", () => {
-  const rentals = testMovies;
-
   it("renders the Return All Movies button", () => {
-    render(<RentalTableHeader rentals={rentals} rentalReturn={jest.fn()} />);
+    render(<RentalTableHeader rentals={mockMovies} rentalReturn={jest.fn()} />);
     expect(
       screen.getByRole("button", { name: /return all movies/i })
     ).toBeInTheDocument();
   });
   it("calls rentalReturn with all movie IDs", () => {
     const rentalReturn = jest.fn();
-    render(<RentalTableHeader rentals={rentals} rentalReturn={rentalReturn} />);
+    render(
+      <RentalTableHeader rentals={mockMovies} rentalReturn={rentalReturn} />
+    );
     fireEvent.click(screen.getByRole("button", { name: /return all movies/i }));
     expect(rentalReturn).toHaveBeenCalledWith([
-      testMovies[0].id,
-      testMovies[1].id,
-      testMovies[2].id,
+      mockMovies[0].id,
+      mockMovies[1].id,
+      mockMovies[2].id,
     ]);
   });
   it("disables button when rentals is empty", () => {

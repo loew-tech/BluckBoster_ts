@@ -1,6 +1,6 @@
 import { KevinBaconResponse, Member, Movie } from "../src/types/types";
 
-export const testMovies: Movie[] = [
+export const mockMovies: Movie[] = [
   {
     cast: ["Kevin Spacey", "Russell Crowe", "Guy Pearce", "James Cromwell"],
     director: "Curtis Hanson",
@@ -49,23 +49,23 @@ export const testMovies: Movie[] = [
   },
 ];
 
-export const testMovieIDs: string[] = [
+export const mockMovieIDs: string[] = [
   "casablanca_1942",
   "l.a._confidential_1997",
 ];
 
-export const testCart: string[] = ["l.a._confidential_1997"];
+export const mockCart: string[] = ["l.a._confidential_1997"];
 
-export const testMember: Member = {
+export const mockMember: Member = {
   first_name: "Sea",
   last_name: "captain",
   username: "sea_captain",
   type: "advanced",
-  cart: testCart,
-  checked_out: [testMovieIDs[0]],
+  cart: mockCart,
+  checked_out: [mockMovieIDs[0]],
 };
 
-export const testKevinBaconResponse: KevinBaconResponse = {
+export const mockKevinBaconResponse: KevinBaconResponse = {
   stars: ["Chris Evans"],
   total_stars: 1,
   movies: [

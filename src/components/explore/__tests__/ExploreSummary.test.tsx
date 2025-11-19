@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { ExploreSummary } from "../ExploreSummary";
-import { testMovies } from "../../../../test/test-data";
+import { mockMovies } from "../../../../test/test-data";
 
 describe("ExploreSummary", () => {
   it("renders counts and percentages", () => {
@@ -8,7 +8,7 @@ describe("ExploreSummary", () => {
       <ExploreSummary
         starData={["Kevin", "Tom"]}
         starsPercentage={40}
-        movieData={testMovies}
+        movieData={mockMovies}
         moviesPercentage={10}
         directorData={["Steven Spielberg"]}
         directorPercentage={50}

@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 
 import { MovieTableHeader } from "../movieTableHeader";
-import { testMember } from "../../../../test/test-data";
+import { mockMember } from "../../../../test/test-data";
 
 jest.mock("../../../context/UserContext", () => ({
   useUser: () => ({
-    user: testMember,
+    user: mockMember,
   }),
 }));
 

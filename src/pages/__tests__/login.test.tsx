@@ -1,5 +1,5 @@
 /* eslint-disable import/first */
-import { testMember } from "../../../test/test-data";
+import { mockMember } from "../../../test/test-data";
 
 // ✅ Mock useUser BEFORE import
 const mockSetUser = jest.fn();
@@ -24,7 +24,7 @@ jest.mock("../../utils/cookieUtils", () => ({
 
 jest.mock("../../utils/utils", () => ({
   login: jest.fn(async (username: string) =>
-    username === testMember.username ? testMember : null
+    username === mockMember.username ? mockMember : null
   ),
 }));
 
@@ -80,12 +80,12 @@ describe("LoginPage", () => {
     expect(mockSetUser).toHaveBeenCalledTimes(1);
     await userEvent.type(
       screen.getByLabelText(/username/i),
-      testMember.username
+      mockMember.username
     );
     await userEvent.click(screen.getByRole("button", { name: /login/i }));
 
     expect(mockSetUser).toHaveBeenCalledTimes(2);
-    expect(mockSetUser).toHaveBeenCalledWith(testMember);
+    expect(mockSetUser).toHaveBeenCalledWith(mockMember);
     await waitFor(() => {
       expect(mockNavigate).toHaveBeenCalledWith(moviesPath);
     });

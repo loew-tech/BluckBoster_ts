@@ -52,11 +52,6 @@ export const RecEnginePage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [numPrevSelected, setNumPrevSelected] = useState(0);
 
-  const iterate = () => {
-    setIteration(iteration + 1);
-    setIsLoading(false);
-  };
-
   useEffect(() => {
     async function fetchInitialMovies() {
       setIsLoading(true);
@@ -137,7 +132,8 @@ export const RecEnginePage = () => {
     if (result.newMood) {
       setMood(result.newMood);
     }
-    iterate();
+    setIteration(iteration + 1);
+    setIsLoading(false);
   };
 
   const getFinalRecommendation = async () => {
