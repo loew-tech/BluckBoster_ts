@@ -22,6 +22,9 @@ import { getUserFromCookie, setCookie } from "./cookieUtils";
 export const login = async (username: string): Promise<Member | null> => {
   const response = await fetch(memberLoginURI, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json", // This tells Express to use the json() middleware
+    },
     body: JSON.stringify({
       username: username,
     }),
@@ -53,7 +56,7 @@ export const fetchMovies = async (page: string): Promise<Movie[]> => {
 
 export const fetchCart = async (username: string): Promise<Movie[]> => {
   const response = await fetch(
-    `http://127.0.0.1:8080/api/v1/members/${username}/cart`
+    `http://127.0.0.1:8080/api/v1/members/${username}/cart`,
   );
   if (response.ok) {
     const existingCart = await response.json();
@@ -63,10 +66,10 @@ export const fetchCart = async (username: string): Promise<Movie[]> => {
 };
 
 export const fetchCheckedoutMovies = async (
-  username: string
+  username: string,
 ): Promise<Movie[]> => {
   const response = await fetch(
-    `http://127.0.0.1:8080/api/v1/members/${username}/checkedout`
+    `http://127.0.0.1:8080/api/v1/members/${username}/checkedout`,
   );
   if (response.ok) {
     const data = await response.json();
@@ -77,7 +80,7 @@ export const fetchCheckedoutMovies = async (
 
 export const returnRentals = async (
   username: string,
-  movieIDs: string[]
+  movieIDs: string[],
 ): Promise<boolean> => {
   const response = await fetch(returnURI, {
     method: "POST",
@@ -93,7 +96,7 @@ export const updateCart = (
   username: string,
   movie_id: string,
   cart: string[],
-  removeFromCart: boolean
+  removeFromCart: boolean,
 ): string[] => {
   let newCart: string[];
   if (removeFromCart) {
@@ -119,7 +122,7 @@ export const getUser = async (): Promise<Member | null> => {
     return null;
   }
   const response = await fetch(
-    `http://127.0.0.1:8080/api/v1/members/${user.username}`
+    `http://127.0.0.1:8080/api/v1/members/${user.username}`,
   );
   if (response.ok) {
     const member = await response.json();
@@ -131,7 +134,7 @@ export const getUser = async (): Promise<Member | null> => {
 
 export const checkout = async (
   username: string,
-  movieIDs: string[]
+  movieIDs: string[],
 ): Promise<boolean> => {
   console.log("movieIDs", movieIDs);
   const response = await fetch(checkoutURI, {
@@ -142,7 +145,7 @@ export const checkout = async (
 };
 
 export const setAPIChoice = async (
-  api: "REST" | "GraphQL"
+  api: "REST" | "GraphQL",
 ): Promise<boolean> => {
   const user = getUserFromCookie();
   if (!user) {
@@ -155,7 +158,7 @@ export const setAPIChoice = async (
     `${memberURI}/${user.username}?api_choice=${api}`,
     {
       method: "PUT",
-    }
+    },
   );
   return response.ok;
 };
@@ -173,7 +176,7 @@ export const iterateVote = async (
   currentMood: Mood,
   iteration: number,
   numPrevSelected: number,
-  movieIDs: string[]
+  movieIDs: string[],
 ): Promise<VotingResult | null> => {
   const response = await fetch(`${iterateVoteURI}`, {
     method: "POST",
@@ -192,7 +195,7 @@ export const iterateVote = async (
 };
 
 export const getFinalRecommendations = async (
-  finalMood: Mood
+  finalMood: Mood,
 ): Promise<Recommendation | null> => {
   const response = await fetch(`${finalRecommendationsURI}`, {
     method: "POST",
@@ -206,7 +209,7 @@ export const getFinalRecommendations = async (
 };
 
 export const getMovieMetrics = async (
-  movieID: string
+  movieID: string,
 ): Promise<Mood | null> => {
   const response = await fetch(`${moviesURI}/${movieID}/metrics`);
   if (response.ok) {
