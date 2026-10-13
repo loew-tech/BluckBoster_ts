@@ -12,10 +12,12 @@ import {
   memberPath,
   moviesPath,
   RecEnginePath,
+  TriviaGamePath,
 } from "../constants/constants";
 import { Explore } from "./explore";
 import { UserProvider } from "../context/UserContext";
 import { RecEnginePage } from "./recEngine";
+import { TriviaGamePage } from "./triviaGame";
 
 export const Main = () => {
   return (
@@ -30,6 +32,7 @@ export const Main = () => {
           <Route path={memberPath} element={<MemberPage />} />
           <Route path={ExplorePath} element={<Explore />} />
           <Route path={RecEnginePath} element={<RecEnginePage />} />
+          <Route path={TriviaGamePath} element={<TriviaGamePage />} />
         </Routes>
       </UserProvider>
     </BrowserRouter>

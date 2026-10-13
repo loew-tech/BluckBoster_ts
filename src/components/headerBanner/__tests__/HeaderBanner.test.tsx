@@ -28,6 +28,7 @@ describe("HeaderBanner", () => {
 
     expect(screen.getByText("Movies")).toBeInTheDocument();
     expect(screen.getByText("Explore")).toBeInTheDocument();
+    expect(screen.getByText("Trivia Game")).toBeInTheDocument();
     expect(screen.getByText("Sign Out")).toBeInTheDocument();
 
     expect(screen.getByText(/sea captain/i)).toBeInTheDocument();

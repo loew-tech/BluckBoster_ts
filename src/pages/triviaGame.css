@@ -1,0 +1,180 @@
+.trivia-game-container {
+  margin: 2rem auto;
+  width: 85%;
+  max-width: 760px;
+  padding: 2rem;
+  background-color: #002366;
+  color: #fff;
+  border: 3px solid #fddb3a;
+  border-radius: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+  text-align: left;
+}
+
+.trivia-game-container h2.title-field {
+  color: #fddb3a;
+  font-size: 2rem;
+  text-align: center;
+  text-shadow: 2px 2px #000;
+  margin-bottom: 1rem;
+}
+
+.trivia-game-intro,
+.trivia-game-fallback-note {
+  line-height: 1.6;
+  text-align: center;
+}
+
+.trivia-game-fallback-note {
+  color: #fddb3a;
+  font-size: 0.9rem;
+}
+
+.trivia-game-scoreboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: space-between;
+  background-color: #001a4d;
+  border: 1px solid #fddb3a;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  font-weight: bold;
+  margin: 1.5rem 0;
+}
+
+.trivia-game-section {
+  color: #fddb3a;
+  font-family: "Arial Black", Arial, sans-serif;
+  font-size: 1.05rem;
+  margin: 1.5rem 0 0.75rem;
+  text-transform: uppercase;
+}
+
+.trivia-game-clues {
+  margin: 0;
+  padding-left: 1.4rem;
+}
+
+.trivia-game-clues li {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.trivia-game-clue-answer {
+  color: #fddb3a;
+}
+
+.trivia-game-hints {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.trivia-game-hint-button,
+.trivia-game-container button {
+  background-color: #e50914;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  padding: 0.65rem 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.trivia-game-hint-button {
+  background-color: #0047bb;
+  border: 2px solid #fddb3a;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.trivia-game-container button:hover {
+  background-color: #b20710;
+}
+
+.trivia-game-hint-button:hover {
+  background-color: #003399;
+}
+
+.trivia-game-container button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.trivia-game-hint {
+  background-color: #001a4d;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  line-height: 1.5;
+}
+
+.trivia-game-hint-label {
+  color: #fddb3a;
+  font-weight: bold;
+}
+
+.trivia-game-form {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.trivia-game-form label {
+  font-weight: bold;
+  color: #fddb3a;
+}
+
+.trivia-game-form input {
+  padding: 0.7rem;
+  border: 2px solid #fddb3a;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.trivia-game-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.trivia-game-feedback {
+  font-weight: bold;
+}
+
+.trivia-game-guessed {
+  color: #cfe3ff;
+  font-size: 0.9rem;
+}
+
+.trivia-game-result {
+  margin-top: 1.5rem;
+  background-color: #001a4d;
+  border: 1px solid #fddb3a;
+  border-radius: 6px;
+  padding: 1rem;
+  line-height: 1.6;
+}
+
+.trivia-game-answer,
+.trivia-game-final {
+  color: #fddb3a;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 600px) {
+  .trivia-game-container {
+    padding: 1rem;
+  }
+
+  .trivia-game-scoreboard {
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+}

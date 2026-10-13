@@ -5,11 +5,13 @@ import {
   memberPath,
   moviesPath,
   RecEnginePath,
+  TriviaGamePath,
 } from "../../constants/constants";
 
-import "./headerBanner.css";
 import { CartButton } from "./CartButton";
 import { useUser } from "../../context/UserContext";
+
+import "./headerBanner.css";
 
 export const HeaderBanner = () => {
   const { user } = useUser();
@@ -26,6 +28,8 @@ export const HeaderBanner = () => {
           <a href={ExplorePath}>Explore</a>
           <br />
           <a href={RecEnginePath}>Recommendations</a>
+          <br />
+          <a href={TriviaGamePath}>Trivia Game</a>
         </GridColumn>
         {user ? (
           <GridColumn width={4}>
